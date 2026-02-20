@@ -2529,6 +2529,7 @@ ul, ol { list-style: none; }
         <button class="tab-btn" onclick="showDramaTab('creative')">🎨 <span data-de="Kreativer Ausdruck" data-en="Creative Expression">Kreativer Ausdruck</span></button>
         <button class="tab-btn" onclick="showDramaTab('voice')">🗣️ <span data-de="Stimme & Körper" data-en="Voice & Body">Stimme & Körper</span></button>
         <button class="tab-btn" onclick="showDramaTab('favorites')">⭐ <span data-de="Meine Favoriten" data-en="My Favorites">Meine Favoriten</span></button>
+        <button class="tab-btn" onclick="showDramaTab('mytools')">🎨 <span data-de="Meine Werkzeuge" data-en="My Creative Tools">Meine Werkzeuge</span></button>
       </div>
 
       <!-- TAB 1: Theatre of the Oppressed -->
@@ -2990,6 +2991,272 @@ ul, ol { list-style: none; }
             <p data-de="Noch keine Favoriten. Klicke das 🤍 bei einer Technik, um sie hier hinzuzufügen." data-en="No favorites yet. Click the 🤍 on any technique to add it here.">Noch keine Favoriten. Klicke das 🤍 bei einer Technik, um sie hier hinzuzufügen.</p>
           </div>
         </div>
+      </div>
+
+      <!-- TAB 7: My Creative Tools (Original Interactive Drama Tools) -->
+      <div id="drama-tab-mytools" class="drama-tab-content">
+        <div class="card" style="margin-bottom:16px; padding:20px; text-align:center; background:linear-gradient(135deg, var(--purple-50), var(--teal-50));">
+          <h3 data-de="🎨 Deine interaktiven Kreativwerkzeuge" data-en="🎨 Your Interactive Creative Tools">🎨 Deine interaktiven Kreativwerkzeuge</h3>
+          <p data-de="Sechs kraftvolle Übungen zum Ausprobieren — mit Formularen, die du ausfüllen und speichern kannst" data-en="Six powerful hands-on exercises — with forms you can fill out and save">Sechs kraftvolle Übungen zum Ausprobieren — mit Formularen, die du ausfüllen und speichern kannst</p>
+        </div>
+        <div class="card-grid">
+          <div class="card" style="cursor:pointer;text-align:center;" onclick="openCreativeTool('stage')">
+            <div style="font-size:40px;">🎬</div>
+            <h4 data-de="Die Innere Bühne" data-en="The Inner Stage">Die Innere Bühne</h4>
+            <p style="font-size:13px;" data-de="Erzähl deine Geschichte durch einen Charakter — mit sicherer Distanz" data-en="Tell your story through a character — with safe distance">Erzähl deine Geschichte durch einen Charakter — mit sicherer Distanz</p>
+            <span class="tag" data-de="Narrative Distanzierung" data-en="Narrative Distance">Narrative Distanzierung</span>
+          </div>
+          <div class="card" style="cursor:pointer;text-align:center;" onclick="openCreativeTool('roleplay')">
+            <div style="font-size:40px;">🃏</div>
+            <h4 data-de="Rollenspiel-Karten" data-en="Role Play Cards">Rollenspiel-Karten</h4>
+            <p style="font-size:13px;" data-de="Erkunde verschiedene Perspektiven mit geführten Szenariokarten" data-en="Explore different perspectives with guided scenario cards">Erkunde verschiedene Perspektiven mit geführten Szenariokarten</p>
+            <span class="tag" data-de="Perspektivwechsel" data-en="Perspective Shift">Perspektivwechsel</span>
+          </div>
+          <div class="card" style="cursor:pointer;text-align:center;" onclick="openCreativeTool('mask')">
+            <div style="font-size:40px;">🎭</div>
+            <h4 data-de="Masken-Studio" data-en="Mask Studio">Masken-Studio</h4>
+            <p style="font-size:13px;" data-de="Erkunde dein äußeres und inneres Gesicht mit zwei Masken" data-en="Explore your outer and inner face with two masks">Erkunde dein äußeres und inneres Gesicht mit zwei Masken</p>
+            <span class="tag" data-de="Selbsterkundung" data-en="Self-Exploration">Selbsterkundung</span>
+          </div>
+          <div class="card" style="cursor:pointer;text-align:center;" onclick="openCreativeTool('fairytale')">
+            <div style="font-size:40px;">📜</div>
+            <h4 data-de="Mein Märchen" data-en="My Fairy Tale">Mein Märchen</h4>
+            <p style="font-size:13px;" data-de="Schreib deine Geschichte in der dritten Person als Märchen" data-en="Write your story in the third person as a fairy tale">Schreib deine Geschichte in der dritten Person als Märchen</p>
+            <span class="tag" data-de="Narrative Distanz" data-en="Narrative Distance">Narrative Distanz</span>
+          </div>
+          <div class="card" style="cursor:pointer;text-align:center;" onclick="openCreativeTool('perspective')">
+            <div style="font-size:40px;">👁️</div>
+            <h4 data-de="Perspektiven-Spiel" data-en="Perspective Game">Perspektiven-Spiel</h4>
+            <p style="font-size:13px;" data-de="Sieh eine Situation durch 4 verschiedene Augen" data-en="See a situation through 4 different eyes">Sieh eine Situation durch 4 verschiedene Augen</p>
+            <span class="tag" data-de="Empathie" data-en="Empathy">Empathie</span>
+          </div>
+          <div class="card" style="cursor:pointer;text-align:center;" onclick="openCreativeTool('bodycompass')">
+            <div style="font-size:40px;">🧘</div>
+            <h4 data-de="Körper-Kompass" data-en="Body Compass">Körper-Kompass</h4>
+            <p style="font-size:13px;" data-de="Entdecke, wo du Gefühle in deinem Körper trägst" data-en="Discover where you carry feelings in your body">Entdecke, wo du Gefühle in deinem Körper trägst</p>
+            <span class="tag" data-de="Körperwahrnehmung" data-en="Body Awareness">Körperwahrnehmung</span>
+          </div>
+        </div>
+
+        <!-- MODAL: Inner Stage -->
+        <div class="creative-modal-overlay" id="creative-modal-stage" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:999;justify-content:center;align-items:center;">
+          <div style="background:var(--card-bg);border-radius:16px;padding:24px;max-width:500px;width:90%;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-xl);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+              <h3>🎬 <span data-de="Die Innere Bühne" data-en="The Inner Stage">Die Innere Bühne</span></h3>
+              <button onclick="closeCreativeTool('stage')" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-muted);">✕</button>
+            </div>
+            <p style="color:var(--text-muted);font-size:14px;margin-bottom:16px;" data-de="Erschaffe einen Charakter, der deine Geschichte trägt. Du musst nicht direkt über dich selbst sprechen." data-en="Create a character who carries your story. You don't have to speak directly about yourself.">Erschaffe einen Charakter, der deine Geschichte trägt. Du musst nicht direkt über dich selbst sprechen.</p>
+            <div style="margin-bottom:12px;">
+              <label style="font-weight:600;font-size:13px;display:block;margin-bottom:4px;" data-de="Name deines Charakters" data-en="Your character's name">Name deines Charakters</label>
+              <input type="text" id="ct-char-name" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);" data-de-placeholder="z.B. Luna, Max, Phönix..." data-en-placeholder="e.g. Luna, Max, Phoenix..." placeholder="z.B. Luna, Max, Phönix...">
+            </div>
+            <div style="margin-bottom:12px;">
+              <label style="font-weight:600;font-size:13px;display:block;margin-bottom:4px;" data-de="Alter und Wesen" data-en="Age and nature">Alter und Wesen</label>
+              <input type="text" id="ct-char-age" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);" data-de-placeholder="z.B. 15 Jahre, mutig aber verletzt..." data-en-placeholder="e.g. 15 years, brave but hurt..." placeholder="z.B. 15 Jahre, mutig aber verletzt...">
+            </div>
+            <div style="margin-bottom:12px;">
+              <label style="font-weight:600;font-size:13px;display:block;margin-bottom:4px;" data-de="Was hat dein Charakter erlebt?" data-en="What did your character experience?">Was hat dein Charakter erlebt?</label>
+              <textarea id="ct-char-experience" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;min-height:80px;background:var(--bg);color:var(--text);resize:vertical;" data-de-placeholder="Erzähl in der dritten Person..." data-en-placeholder="Tell in third person..." placeholder="Erzähl in der dritten Person..."></textarea>
+            </div>
+            <div style="margin-bottom:12px;">
+              <label style="font-weight:600;font-size:13px;display:block;margin-bottom:4px;" data-de="Wie hat er/sie sich gefühlt?" data-en="How did they feel?">Wie hat er/sie sich gefühlt?</label>
+              <textarea id="ct-char-feelings" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;min-height:60px;background:var(--bg);color:var(--text);resize:vertical;" data-de-placeholder="Wut, Trauer, Verwirrung, Taubheit..." data-en-placeholder="Anger, sadness, confusion, numbness..." placeholder="Wut, Trauer, Verwirrung, Taubheit..."></textarea>
+            </div>
+            <div style="margin-bottom:16px;">
+              <label style="font-weight:600;font-size:13px;display:block;margin-bottom:4px;" data-de="Was hat er/sie gebraucht?" data-en="What did they need?">Was hat er/sie gebraucht?</label>
+              <textarea id="ct-char-needs" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;min-height:60px;background:var(--bg);color:var(--text);resize:vertical;" data-de-placeholder="Sicherheit, jemanden zum Reden, Ruhe..." data-en-placeholder="Safety, someone to talk to, peace..." placeholder="Sicherheit, jemanden zum Reden, Ruhe..."></textarea>
+            </div>
+            <button class="btn-primary" style="width:100%;padding:12px;border-radius:8px;font-size:15px;" onclick="saveCreativeCharacter()">💾 <span data-de="Charakter speichern" data-en="Save character">Charakter speichern</span></button>
+            <div id="ct-char-saved" style="display:none;text-align:center;margin-top:12px;color:var(--teal);font-weight:700;">✓ <span data-de="Gespeichert!" data-en="Saved!">Gespeichert!</span></div>
+          </div>
+        </div>
+
+        <!-- MODAL: Role Play Cards -->
+        <div class="creative-modal-overlay" id="creative-modal-roleplay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:999;justify-content:center;align-items:center;">
+          <div style="background:var(--card-bg);border-radius:16px;padding:24px;max-width:500px;width:90%;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-xl);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+              <h3>🃏 <span data-de="Rollenspiel-Karten" data-en="Role Play Cards">Rollenspiel-Karten</span></h3>
+              <button onclick="closeCreativeTool('roleplay')" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-muted);">✕</button>
+            </div>
+            <p style="color:var(--text-muted);font-size:14px;margin-bottom:16px;" data-de="Wähle eine Karte und erkunde verschiedene Rollen. Tippe auf eine Rolle, um Reflexionsfragen zu sehen." data-en="Choose a card and explore different roles. Tap a role to see reflection questions.">Wähle eine Karte und erkunde verschiedene Rollen. Tippe auf eine Rolle, um Reflexionsfragen zu sehen.</p>
+            <div id="ct-rp-container"></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;">
+              <button class="btn-secondary" onclick="ctPrevCard()" style="padding:8px 16px;border-radius:8px;">← <span data-de="Zurück" data-en="Back">Zurück</span></button>
+              <span id="ct-rp-counter" style="color:var(--text-muted);font-size:13px;"></span>
+              <button class="btn-primary" onclick="ctNextCard()" style="padding:8px 16px;border-radius:8px;"><span data-de="Nächste" data-en="Next">Nächste</span> →</button>
+            </div>
+            <div id="ct-rp-reflection" style="display:none;margin-top:16px;background:rgba(107,33,168,0.07);border-radius:12px;padding:16px;">
+              <div style="font-weight:700;font-size:13px;color:var(--purple);margin-bottom:8px;" data-de="Reflexionsfragen" data-en="Reflection Questions">Reflexionsfragen</div>
+              <div id="ct-rp-questions" style="font-size:13px;color:var(--text-muted);line-height:1.7;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODAL: Mask Studio -->
+        <div class="creative-modal-overlay" id="creative-modal-mask" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:999;justify-content:center;align-items:center;">
+          <div style="background:var(--card-bg);border-radius:16px;padding:24px;max-width:500px;width:90%;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-xl);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+              <h3>🎭 <span data-de="Masken-Studio" data-en="Mask Studio">Masken-Studio</span></h3>
+              <button onclick="closeCreativeTool('mask')" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-muted);">✕</button>
+            </div>
+            <p style="color:var(--text-muted);font-size:14px;margin-bottom:16px;" data-de="Jeder trägt zwei Gesichter — das, was die Welt sieht, und das, wer wir wirklich sind." data-en="Everyone wears two faces — what the world sees, and who we really are.">Jeder trägt zwei Gesichter — das, was die Welt sieht, und das, wer wir wirklich sind.</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+              <div style="text-align:center;">
+                <div style="font-weight:600;font-size:13px;margin-bottom:8px;" data-de="Was die Welt sieht" data-en="What the world sees">Was die Welt sieht</div>
+                <div id="ct-mask-outer" onclick="ctCycleMask('outer')" style="font-size:48px;cursor:pointer;user-select:none;">😐</div>
+                <div style="color:var(--text-muted);font-size:11px;" data-de="(Tippe zum Wechseln)" data-en="(Tap to change)">(Tippe zum Wechseln)</div>
+                <input type="text" id="ct-mask-outer-word" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:8px;margin-top:8px;background:var(--bg);color:var(--text);" data-de-placeholder="Ein Wort..." data-en-placeholder="One word..." placeholder="Ein Wort..." onkeydown="if(event.key==='Enter')ctAddMaskWord('outer')">
+                <div id="ct-mask-outer-words" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px;justify-content:center;"></div>
+              </div>
+              <div style="text-align:center;">
+                <div style="font-weight:600;font-size:13px;margin-bottom:8px;" data-de="Wer ich wirklich bin" data-en="Who I really am">Wer ich wirklich bin</div>
+                <div id="ct-mask-inner" onclick="ctCycleMask('inner')" style="font-size:48px;cursor:pointer;user-select:none;">💜</div>
+                <div style="color:var(--text-muted);font-size:11px;" data-de="(Tippe zum Wechseln)" data-en="(Tap to change)">(Tippe zum Wechseln)</div>
+                <input type="text" id="ct-mask-inner-word" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:8px;margin-top:8px;background:var(--bg);color:var(--text);" data-de-placeholder="Ein Wort..." data-en-placeholder="One word..." placeholder="Ein Wort..." onkeydown="if(event.key==='Enter')ctAddMaskWord('inner')">
+                <div id="ct-mask-inner-words" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px;justify-content:center;"></div>
+              </div>
+            </div>
+            <div style="margin-bottom:16px;">
+              <label style="font-weight:600;font-size:13px;display:block;margin-bottom:4px;" data-de="Gib deiner Maske einen Namen" data-en="Give your mask a name">Gib deiner Maske einen Namen</label>
+              <input type="text" id="ct-mask-name" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);" data-de-placeholder="z.B. Die Kriegerin, Das stille Kind..." data-en-placeholder="e.g. The Warrior, The Quiet Child..." placeholder="z.B. Die Kriegerin, Das stille Kind...">
+            </div>
+            <button class="btn-primary" style="width:100%;padding:12px;border-radius:8px;font-size:15px;" onclick="ctSaveMask()">💾 <span data-de="Maske speichern" data-en="Save mask">Maske speichern</span></button>
+          </div>
+        </div>
+
+        <!-- MODAL: Fairy Tale -->
+        <div class="creative-modal-overlay" id="creative-modal-fairytale" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:999;justify-content:center;align-items:center;">
+          <div style="background:var(--card-bg);border-radius:16px;padding:24px;max-width:500px;width:90%;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-xl);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+              <h3>📜 <span data-de="Mein Märchen" data-en="My Fairy Tale">Mein Märchen</span></h3>
+              <button onclick="closeCreativeTool('fairytale')" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-muted);">✕</button>
+            </div>
+            <p style="color:var(--text-muted);font-size:14px;margin-bottom:16px;" data-de="Schreib deine Geschichte in der dritten Person — das gibt dir Distanz und Schutz." data-en="Write your story in the third person — this gives you distance and protection.">Schreib deine Geschichte in der dritten Person — das gibt dir Distanz und Schutz.</p>
+            <div style="margin-bottom:12px;background:rgba(107,33,168,0.05);border-radius:12px;padding:14px;">
+              <div style="font-weight:700;color:var(--purple);font-size:14px;margin-bottom:6px;">✨ <span data-de="Es war einmal..." data-en="Once upon a time...">Es war einmal...</span></div>
+              <textarea id="ct-fairy-intro" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;min-height:60px;background:var(--bg);color:var(--text);resize:vertical;" data-de-placeholder="Es war einmal ein Mädchen / ein Junge / eine Person, die..." data-en-placeholder="Once upon a time there was a girl / a boy / a person who..." placeholder="Es war einmal ein Mädchen / ein Junge / eine Person, die..."></textarea>
+            </div>
+            <div style="margin-bottom:12px;background:rgba(107,33,168,0.05);border-radius:12px;padding:14px;">
+              <div style="font-weight:700;color:var(--purple);font-size:14px;margin-bottom:6px;">⚡ <span data-de="Die Herausforderung" data-en="The Challenge">Die Herausforderung</span></div>
+              <textarea id="ct-fairy-challenge" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;min-height:60px;background:var(--bg);color:var(--text);resize:vertical;" data-de-placeholder="Dann geschah etwas Schwieriges..." data-en-placeholder="Then something difficult happened..." placeholder="Dann geschah etwas Schwieriges..."></textarea>
+            </div>
+            <div style="margin-bottom:12px;background:rgba(107,33,168,0.05);border-radius:12px;padding:14px;">
+              <div style="font-weight:700;color:var(--purple);font-size:14px;margin-bottom:6px;">🌀 <span data-de="Der Wendepunkt" data-en="The Turning Point">Der Wendepunkt</span></div>
+              <textarea id="ct-fairy-turning" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;min-height:60px;background:var(--bg);color:var(--text);resize:vertical;" data-de-placeholder="Aber dann..." data-en-placeholder="But then..." placeholder="Aber dann..."></textarea>
+            </div>
+            <div style="margin-bottom:12px;background:rgba(107,33,168,0.05);border-radius:12px;padding:14px;">
+              <div style="font-weight:700;color:var(--purple);font-size:14px;margin-bottom:6px;">💪 <span data-de="Die innere Stärke" data-en="The Inner Strength">Die innere Stärke</span></div>
+              <textarea id="ct-fairy-strength" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;min-height:60px;background:var(--bg);color:var(--text);resize:vertical;" data-de-placeholder="Diese Person entdeckte in sich..." data-en-placeholder="This person discovered within..." placeholder="Diese Person entdeckte in sich..."></textarea>
+            </div>
+            <div style="margin-bottom:16px;background:rgba(107,33,168,0.05);border-radius:12px;padding:14px;">
+              <div style="font-weight:700;color:var(--purple);font-size:14px;margin-bottom:6px;">🌱 <span data-de="Das neue Kapitel" data-en="The New Chapter">Das neue Kapitel</span></div>
+              <textarea id="ct-fairy-new" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;min-height:60px;background:var(--bg);color:var(--text);resize:vertical;" data-de-placeholder="Und so begann ein neues Kapitel..." data-en-placeholder="And so a new chapter began..." placeholder="Und so begann ein neues Kapitel..."></textarea>
+            </div>
+            <button class="btn-primary" style="width:100%;padding:12px;border-radius:8px;font-size:15px;" onclick="ctSaveFairytale()">💾 <span data-de="Märchen speichern" data-en="Save fairy tale">Märchen speichern</span></button>
+            <div id="ct-fairy-saved" style="display:none;text-align:center;margin-top:12px;color:var(--teal);font-weight:700;">✓ <span data-de="Gespeichert!" data-en="Saved!">Gespeichert!</span></div>
+          </div>
+        </div>
+
+        <!-- MODAL: Perspective Game -->
+        <div class="creative-modal-overlay" id="creative-modal-perspective" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:999;justify-content:center;align-items:center;">
+          <div style="background:var(--card-bg);border-radius:16px;padding:24px;max-width:500px;width:90%;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-xl);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+              <h3>👁️ <span data-de="Perspektiven-Spiel" data-en="Perspective Game">Perspektiven-Spiel</span></h3>
+              <button onclick="closeCreativeTool('perspective')" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-muted);">✕</button>
+            </div>
+            <div style="margin-bottom:12px;">
+              <label style="font-weight:600;font-size:13px;display:block;margin-bottom:4px;" data-de="Beschreibe eine schwierige Situation" data-en="Describe a difficult situation">Beschreibe eine schwierige Situation</label>
+              <textarea id="ct-persp-situation" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;min-height:80px;background:var(--bg);color:var(--text);resize:vertical;" data-de-placeholder="Was ist passiert? Wie hast du dich gefühlt?" data-en-placeholder="What happened? How did you feel?" placeholder="Was ist passiert? Wie hast du dich gefühlt?"></textarea>
+            </div>
+            <p style="color:var(--text-muted);font-size:14px;margin-bottom:12px;" data-de="Tippe auf eine Perspektive, um Reflexionsfragen zu sehen:" data-en="Tap a perspective to see reflection questions:">Tippe auf eine Perspektive, um Reflexionsfragen zu sehen:</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+              <div class="card ct-persp-card" onclick="ctTogglePerspective(this,'mine')" style="cursor:pointer;text-align:center;padding:16px;">
+                <div style="font-size:32px;">🙋</div>
+                <div style="font-weight:600;font-size:13px;" data-de="Meine Sicht" data-en="My View">Meine Sicht</div>
+                <div class="ct-persp-qs" style="display:none;text-align:left;margin-top:8px;font-size:12px;color:var(--text-muted);">
+                  <div data-de="• Was habe ich genau erlebt?" data-en="• What exactly did I experience?">• Was habe ich genau erlebt?</div>
+                  <div data-de="• Welche Gedanken hatte ich sofort?" data-en="• What thoughts did I have immediately?">• Welche Gedanken hatte ich sofort?</div>
+                  <div data-de="• Was hat mein Körper gespürt?" data-en="• What did my body feel?">• Was hat mein Körper gespürt?</div>
+                </div>
+              </div>
+              <div class="card ct-persp-card" onclick="ctTogglePerspective(this,'friend')" style="cursor:pointer;text-align:center;padding:16px;">
+                <div style="font-size:32px;">👫</div>
+                <div style="font-weight:600;font-size:13px;" data-de="Ein Freund" data-en="A Friend">Ein Freund</div>
+                <div class="ct-persp-qs" style="display:none;text-align:left;margin-top:8px;font-size:12px;color:var(--text-muted);">
+                  <div data-de="• Was würde mein bester Freund sagen?" data-en="• What would my best friend say?">• Was würde mein bester Freund sagen?</div>
+                  <div data-de="• Wie würde er/sie mich trösten?" data-en="• How would they comfort me?">• Wie würde er/sie mich trösten?</div>
+                  <div data-de="• Was würde er/sie als Stärke in mir sehen?" data-en="• What strength would they see in me?">• Was würde er/sie als Stärke in mir sehen?</div>
+                </div>
+              </div>
+              <div class="card ct-persp-card" onclick="ctTogglePerspective(this,'wise')" style="cursor:pointer;text-align:center;padding:16px;">
+                <div style="font-size:32px;">🦉</div>
+                <div style="font-weight:600;font-size:13px;" data-de="Eine weise Person" data-en="A Wise Person">Eine weise Person</div>
+                <div class="ct-persp-qs" style="display:none;text-align:left;margin-top:8px;font-size:12px;color:var(--text-muted);">
+                  <div data-de="• Was würde eine weise Person erkennen?" data-en="• What would a wise person recognize?">• Was würde eine weise Person erkennen?</div>
+                  <div data-de="• Welchen größeren Zusammenhang sieht sie?" data-en="• What bigger context do they see?">• Welchen größeren Zusammenhang sieht sie?</div>
+                  <div data-de="• Was gibt sie mir als Rat?" data-en="• What advice do they give me?">• Was gibt sie mir als Rat?</div>
+                </div>
+              </div>
+              <div class="card ct-persp-card" onclick="ctTogglePerspective(this,'future')" style="cursor:pointer;text-align:center;padding:16px;">
+                <div style="font-size:32px;">🔮</div>
+                <div style="font-weight:600;font-size:13px;" data-de="Mein zukünftiges Ich" data-en="My Future Self">Mein zukünftiges Ich</div>
+                <div class="ct-persp-qs" style="display:none;text-align:left;margin-top:8px;font-size:12px;color:var(--text-muted);">
+                  <div data-de="• Wie sehe ich das in 5 Jahren?" data-en="• How will I see this in 5 years?">• Wie sehe ich das in 5 Jahren?</div>
+                  <div data-de="• Was habe ich daraus gelernt?" data-en="• What will I have learned?">• Was habe ich daraus gelernt?</div>
+                  <div data-de="• Was würde mein zukünftiges Ich zu mir sagen?" data-en="• What would my future self say to me now?">• Was würde mein zukünftiges Ich zu mir sagen?</div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-bottom:16px;">
+              <label style="font-weight:600;font-size:13px;display:block;margin-bottom:4px;" data-de="Deine Gedanken nach dem Perspektivwechsel" data-en="Your thoughts after the perspective shift">Deine Gedanken nach dem Perspektivwechsel</label>
+              <textarea id="ct-persp-reflection" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;min-height:80px;background:var(--bg);color:var(--text);resize:vertical;" data-de-placeholder="Was erkennst du jetzt neu?" data-en-placeholder="What do you recognize now?" placeholder="Was erkennst du jetzt neu?"></textarea>
+            </div>
+            <button class="btn-primary" style="width:100%;padding:12px;border-radius:8px;font-size:15px;" onclick="ctSavePerspective()">💾 <span data-de="Reflexion speichern" data-en="Save reflection">Reflexion speichern</span></button>
+          </div>
+        </div>
+
+        <!-- MODAL: Body Compass -->
+        <div class="creative-modal-overlay" id="creative-modal-bodycompass" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:999;justify-content:center;align-items:center;">
+          <div style="background:var(--card-bg);border-radius:16px;padding:24px;max-width:500px;width:90%;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-xl);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+              <h3>🧘 <span data-de="Körper-Kompass" data-en="Body Compass">Körper-Kompass</span></h3>
+              <button onclick="closeCreativeTool('bodycompass')" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-muted);">✕</button>
+            </div>
+            <p style="color:var(--text-muted);font-size:14px;margin-bottom:16px;" data-de="Tippe auf einen Körperbereich und wähle, was du dort spürst. Trauma lebt oft im Körper." data-en="Tap a body area and choose what you feel there. Trauma often lives in the body.">Tippe auf einen Körperbereich und wähle, was du dort spürst. Trauma lebt oft im Körper.</p>
+            <div style="text-align:center;margin-bottom:12px;">
+              <svg viewBox="0 0 100 200" style="width:180px;height:auto;" xmlns="http://www.w3.org/2000/svg">
+                <circle id="ct-ba-head" cx="50" cy="18" r="14" fill="rgba(107,33,168,0.1)" stroke="var(--purple)" stroke-width="1.5" style="cursor:pointer;" onclick="ctSelectBodyArea('head')"/>
+                <text x="50" y="22" text-anchor="middle" font-size="8" fill="var(--purple)" pointer-events="none" data-de="Kopf" data-en="Head">Kopf</text>
+                <rect id="ct-ba-chest" x="30" y="38" width="40" height="35" rx="6" fill="rgba(107,33,168,0.1)" stroke="var(--purple)" stroke-width="1.5" style="cursor:pointer;" onclick="ctSelectBodyArea('chest')"/>
+                <text x="50" y="60" text-anchor="middle" font-size="7" fill="var(--purple)" pointer-events="none" data-de="Brust" data-en="Chest">Brust</text>
+                <rect id="ct-ba-belly" x="32" y="78" width="36" height="28" rx="6" fill="rgba(107,33,168,0.1)" stroke="var(--purple)" stroke-width="1.5" style="cursor:pointer;" onclick="ctSelectBodyArea('belly')"/>
+                <text x="50" y="97" text-anchor="middle" font-size="7" fill="var(--purple)" pointer-events="none" data-de="Bauch" data-en="Belly">Bauch</text>
+                <rect id="ct-ba-leftarm" x="10" y="40" width="18" height="50" rx="8" fill="rgba(107,33,168,0.1)" stroke="var(--purple)" stroke-width="1.5" style="cursor:pointer;" onclick="ctSelectBodyArea('leftarm')"/>
+                <text x="19" y="70" text-anchor="middle" font-size="6" fill="var(--purple)" pointer-events="none" data-de="Arm" data-en="Arm">Arm</text>
+                <rect id="ct-ba-rightarm" x="72" y="40" width="18" height="50" rx="8" fill="rgba(107,33,168,0.1)" stroke="var(--purple)" stroke-width="1.5" style="cursor:pointer;" onclick="ctSelectBodyArea('rightarm')"/>
+                <text x="81" y="70" text-anchor="middle" font-size="6" fill="var(--purple)" pointer-events="none" data-de="Arm" data-en="Arm">Arm</text>
+                <rect id="ct-ba-leftleg" x="30" y="112" width="18" height="70" rx="8" fill="rgba(107,33,168,0.1)" stroke="var(--purple)" stroke-width="1.5" style="cursor:pointer;" onclick="ctSelectBodyArea('leftleg')"/>
+                <text x="39" y="152" text-anchor="middle" font-size="6" fill="var(--purple)" pointer-events="none" data-de="Bein" data-en="Leg">Bein</text>
+                <rect id="ct-ba-rightleg" x="52" y="112" width="18" height="70" rx="8" fill="rgba(107,33,168,0.1)" stroke="var(--purple)" stroke-width="1.5" style="cursor:pointer;" onclick="ctSelectBodyArea('rightleg')"/>
+                <text x="61" y="152" text-anchor="middle" font-size="6" fill="var(--purple)" pointer-events="none" data-de="Bein" data-en="Leg">Bein</text>
+              </svg>
+            </div>
+            <div id="ct-body-selected" style="text-align:center;font-weight:700;color:var(--purple);font-size:15px;margin-bottom:8px;"></div>
+            <div id="ct-body-feelings" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:12px;">
+              <span class="tag ct-feeling-chip" onclick="this.classList.toggle('active');this.style.background=this.classList.contains('active')?'var(--purple)':'';this.style.color=this.classList.contains('active')?'#fff':'';" data-de="Anspannung" data-en="Tension" style="cursor:pointer;padding:6px 12px;border-radius:20px;border:1px solid var(--border);">Anspannung</span>
+              <span class="tag ct-feeling-chip" onclick="this.classList.toggle('active');this.style.background=this.classList.contains('active')?'var(--purple)':'';this.style.color=this.classList.contains('active')?'#fff':'';" data-de="Taubheit" data-en="Numbness" style="cursor:pointer;padding:6px 12px;border-radius:20px;border:1px solid var(--border);">Taubheit</span>
+              <span class="tag ct-feeling-chip" onclick="this.classList.toggle('active');this.style.background=this.classList.contains('active')?'var(--purple)':'';this.style.color=this.classList.contains('active')?'#fff':'';" data-de="Schmerz" data-en="Pain" style="cursor:pointer;padding:6px 12px;border-radius:20px;border:1px solid var(--border);">Schmerz</span>
+              <span class="tag ct-feeling-chip" onclick="this.classList.toggle('active');this.style.background=this.classList.contains('active')?'var(--purple)':'';this.style.color=this.classList.contains('active')?'#fff':'';" data-de="Wärme" data-en="Warmth" style="cursor:pointer;padding:6px 12px;border-radius:20px;border:1px solid var(--border);">Wärme</span>
+              <span class="tag ct-feeling-chip" onclick="this.classList.toggle('active');this.style.background=this.classList.contains('active')?'var(--purple)':'';this.style.color=this.classList.contains('active')?'#fff':'';" data-de="Sicherheit" data-en="Safety" style="cursor:pointer;padding:6px 12px;border-radius:20px;border:1px solid var(--border);">Sicherheit</span>
+              <span class="tag ct-feeling-chip" onclick="this.classList.toggle('active');this.style.background=this.classList.contains('active')?'var(--purple)':'';this.style.color=this.classList.contains('active')?'#fff':'';" data-de="Zittern" data-en="Trembling" style="cursor:pointer;padding:6px 12px;border-radius:20px;border:1px solid var(--border);">Zittern</span>
+              <span class="tag ct-feeling-chip" onclick="this.classList.toggle('active');this.style.background=this.classList.contains('active')?'var(--purple)':'';this.style.color=this.classList.contains('active')?'#fff':'';" data-de="Enge" data-en="Tightness" style="cursor:pointer;padding:6px 12px;border-radius:20px;border:1px solid var(--border);">Enge</span>
+              <span class="tag ct-feeling-chip" onclick="this.classList.toggle('active');this.style.background=this.classList.contains('active')?'var(--purple)':'';this.style.color=this.classList.contains('active')?'#fff':'';" data-de="Leichtigkeit" data-en="Lightness" style="cursor:pointer;padding:6px 12px;border-radius:20px;border:1px solid var(--border);">Leichtigkeit</span>
+            </div>
+            <textarea id="ct-body-notes" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;min-height:60px;margin-bottom:12px;background:var(--bg);color:var(--text);resize:vertical;" data-de-placeholder="Was möchtest du über diesen Bereich anmerken?" data-en-placeholder="What would you like to note about this area?" placeholder="Was möchtest du über diesen Bereich anmerken?"></textarea>
+            <button class="btn-primary" style="width:100%;padding:12px;border-radius:8px;font-size:15px;" onclick="ctSaveBodyLog()">💾 <span data-de="Körpergefühl speichern" data-en="Save body feeling">Körpergefühl speichern</span></button>
+          </div>
+        </div>
+
       </div>
 
     </div>
@@ -6353,6 +6620,167 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(() => {});
 }
 
+
+/* ==========================================================================
+   CREATIVE TOOLS — Original Interactive Drama Tools (restored from V1)
+   ========================================================================== */
+// Role-play card data
+const ctRpCards = [
+  { cat:{de:'Familie',en:'Family'}, scenario:{de:'Zuhause fühlt sich nicht sicher an. Du weißt nicht, wie du deinen Eltern erklären kannst, was du durchmachst.',en:"Home doesn't feel safe. You don't know how to explain to your parents what you're going through."}, chars:{de:['Stärke','Verletzt','Zeuge','Schützer'],en:['Strength','Hurt','Witness','Protector']}, questions:{de:'Was würde deine "Stärke"-Rolle sagen?\nWas braucht die "Verletzte"-Rolle?\nWas beobachtet der "Zeuge"?',en:'What would your "Strength" role say?\nWhat does the "Hurt" role need?\nWhat does the "Witness" observe?'} },
+  { cat:{de:'Schule',en:'School'}, scenario:{de:'In der Schule fühlst du dich wie ein Fremder. Niemand weiß, was du trägst.',en:'At school you feel like a stranger. No one knows what you carry.'}, chars:{de:['Unsichtbar','Mutig','Freund','Lehrer'],en:['Invisible','Brave','Friend','Teacher']}, questions:{de:'Was braucht "Unsichtbar", um gesehen zu werden?\nWas würde "Mutig" anders machen?',en:'What does "Invisible" need to be seen?\nWhat would "Brave" do differently?'} },
+  { cat:{de:'Innen',en:'Inner World'}, scenario:{de:'Ein Flashback hat dich mitten in den Tag katapultiert. Dein Herz rast.',en:'A flashback catapulted you into the middle of the day. Your heart is racing.'}, chars:{de:['Vergangenheit','Gegenwart','Beschützer','Heiler'],en:['Past','Present','Protector','Healer']}, questions:{de:'Was sagt "Gegenwart" zu "Vergangenheit"?\nWas braucht der "Beschützer"?',en:'What does "Present" say to "Past"?\nWhat does the "Protector" need?'} },
+  { cat:{de:'Freundschaft',en:'Friendship'}, scenario:{de:'Ein Freund fragt, warum du dich so verändert hast. Du weißt nicht, wie du antworten sollst.',en:"A friend asks why you've changed so much. You don't know how to answer."}, chars:{de:['Ehrlich','Verschlossen','Verständnisvoll','Verwirrt'],en:['Honest','Closed','Understanding','Confused']}, questions:{de:'Was würde "Ehrlich" sagen?\nWas fühlt "Verschlossen" dabei?',en:'What would "Honest" say?\nWhat does "Closed" feel?'} },
+  { cat:{de:'Zukunft',en:'Future'}, scenario:{de:'Du stellst dir vor, wie dein Leben in 5 Jahren aussieht — jenseits des Traumas.',en:'You imagine what your life looks like in 5 years — beyond the trauma.'}, chars:{de:['Hoffnung','Zweifel','Weisheit','Freiheit'],en:['Hope','Doubt','Wisdom','Freedom']}, questions:{de:'Was zeigt "Hoffnung" dir?\nWas fürchtet "Zweifel"?\nWas weiß "Weisheit"?',en:'What does "Hope" show you?\nWhat does "Doubt" fear?\nWhat does "Wisdom" know?'} },
+  { cat:{de:'Vergangenheit',en:'Past'}, scenario:{de:'Du schreibst einen Brief an dein jüngeres Ich — vor dem Trauma.',en:'You write a letter to your younger self — before the trauma.'}, chars:{de:['Älteres Ich','Jüngeres Ich','Beschützer','Zeuge'],en:['Older Self','Younger Self','Protector','Witness']}, questions:{de:'Was möchte "Älteres Ich" dem jüngeren sagen?\nWas braucht "Jüngeres Ich" zu hören?',en:'What does "Older Self" want to say?\nWhat does "Younger Self" need to hear?'} }
+];
+let ctRpIndex = 0;
+let ctSelectedBodyArea = null;
+const ctMaskEmojis = { outer:['😐','😊','😎','🤔','😤','😭','🙃','😏'], inner:['💜','🔥','🌊','⭐','💔','🌱','🌙','✨'] };
+let ctMaskOuterIdx = 0, ctMaskInnerIdx = 0;
+
+window.openCreativeTool = function(name) {
+  const modal = document.getElementById('creative-modal-' + name);
+  if (modal) { modal.style.display = 'flex'; }
+  if (name === 'roleplay') ctRenderRpCard();
+};
+window.closeCreativeTool = function(name) {
+  const modal = document.getElementById('creative-modal-' + name);
+  if (modal) modal.style.display = 'none';
+};
+// Close modals on overlay click
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('creative-modal-overlay')) {
+    e.target.style.display = 'none';
+  }
+});
+
+// Role Play Cards
+function ctRenderRpCard() {
+  const container = document.getElementById('ct-rp-container');
+  if (!container) return;
+  const card = ctRpCards[ctRpIndex];
+  container.innerHTML = '<div style="background:rgba(107,33,168,0.07);border-radius:12px;padding:16px;margin-bottom:8px;">' +
+    '<div style="font-size:11px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">' + card.cat[currentLang] + '</div>' +
+    '<div style="font-size:14px;color:var(--text);line-height:1.6;margin-bottom:12px;">' + card.scenario[currentLang] + '</div>' +
+    '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + card.chars[currentLang].map((c,i) =>
+      '<span onclick="ctShowRpReflection(' + ctRpIndex + ')" style="cursor:pointer;background:var(--purple);color:#fff;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;">' + c + '</span>'
+    ).join('') + '</div></div>';
+  document.getElementById('ct-rp-counter').textContent = (ctRpIndex + 1) + ' / ' + ctRpCards.length;
+  document.getElementById('ct-rp-reflection').style.display = 'none';
+}
+window.ctNextCard = function() { ctRpIndex = (ctRpIndex + 1) % ctRpCards.length; ctRenderRpCard(); };
+window.ctPrevCard = function() { ctRpIndex = (ctRpIndex - 1 + ctRpCards.length) % ctRpCards.length; ctRenderRpCard(); };
+window.ctShowRpReflection = function(idx) {
+  const card = ctRpCards[idx];
+  const qs = document.getElementById('ct-rp-questions');
+  qs.innerHTML = card.questions[currentLang].split('\n').map(q => '<div style="padding:4px 0;border-bottom:1px dashed var(--border);">• ' + q + '</div>').join('');
+  document.getElementById('ct-rp-reflection').style.display = 'block';
+};
+
+// Mask Studio
+window.ctCycleMask = function(side) {
+  if (side === 'outer') { ctMaskOuterIdx = (ctMaskOuterIdx + 1) % ctMaskEmojis.outer.length; document.getElementById('ct-mask-outer').textContent = ctMaskEmojis.outer[ctMaskOuterIdx]; }
+  else { ctMaskInnerIdx = (ctMaskInnerIdx + 1) % ctMaskEmojis.inner.length; document.getElementById('ct-mask-inner').textContent = ctMaskEmojis.inner[ctMaskInnerIdx]; }
+};
+window.ctAddMaskWord = function(side) {
+  const inp = document.getElementById('ct-mask-' + side + '-word');
+  const word = inp.value.trim();
+  if (!word) return;
+  const span = document.createElement('span');
+  span.style.cssText = 'background:var(--purple-100);color:var(--purple);padding:4px 10px;border-radius:12px;font-size:12px;font-weight:600;';
+  span.textContent = word;
+  document.getElementById('ct-mask-' + side + '-words').appendChild(span);
+  inp.value = '';
+};
+window.ctSaveMask = function() {
+  if (!currentUser) return;
+  const data = {
+    name: document.getElementById('ct-mask-name').value,
+    outerEmoji: document.getElementById('ct-mask-outer').textContent,
+    innerEmoji: document.getElementById('ct-mask-inner').textContent,
+    outerWords: [...document.querySelectorAll('#ct-mask-outer-words span')].map(w => w.textContent),
+    innerWords: [...document.querySelectorAll('#ct-mask-inner-words span')].map(w => w.textContent),
+    date: Date.now()
+  };
+  saveData('creativeToolMask', data);
+  closeCreativeTool('mask');
+  showToast('Maske gespeichert!', 'Mask saved!');
+};
+
+// Character (Inner Stage)
+window.saveCreativeCharacter = function() {
+  if (!currentUser) return;
+  const chars = loadData('creativeToolChars', []);
+  chars.push({
+    name: document.getElementById('ct-char-name').value,
+    age: document.getElementById('ct-char-age').value,
+    experience: document.getElementById('ct-char-experience').value,
+    feelings: document.getElementById('ct-char-feelings').value,
+    needs: document.getElementById('ct-char-needs').value,
+    date: Date.now()
+  });
+  saveData('creativeToolChars', chars);
+  const saved = document.getElementById('ct-char-saved');
+  saved.style.display = 'block';
+  setTimeout(() => { saved.style.display = 'none'; }, 2000);
+  showToast('Charakter gespeichert!', 'Character saved!');
+};
+
+// Fairy Tale
+window.ctSaveFairytale = function() {
+  if (!currentUser) return;
+  const tales = loadData('creativeToolTales', []);
+  tales.push({
+    intro: document.getElementById('ct-fairy-intro').value,
+    challenge: document.getElementById('ct-fairy-challenge').value,
+    turning: document.getElementById('ct-fairy-turning').value,
+    strength: document.getElementById('ct-fairy-strength').value,
+    newChapter: document.getElementById('ct-fairy-new').value,
+    date: Date.now()
+  });
+  saveData('creativeToolTales', tales);
+  const saved = document.getElementById('ct-fairy-saved');
+  saved.style.display = 'block';
+  setTimeout(() => { saved.style.display = 'none'; }, 2000);
+  showToast('Märchen gespeichert!', 'Fairy tale saved!');
+};
+
+// Perspective Game
+window.ctTogglePerspective = function(card, id) {
+  const wasActive = card.style.borderColor === 'var(--purple)';
+  document.querySelectorAll('.ct-persp-card').forEach(c => { c.style.borderColor = ''; c.querySelector('.ct-persp-qs').style.display = 'none'; });
+  if (!wasActive) { card.style.borderColor = 'var(--purple)'; card.querySelector('.ct-persp-qs').style.display = 'block'; }
+};
+window.ctSavePerspective = function() {
+  if (!currentUser) return;
+  const perspectives = loadData('creativeToolPerspectives', []);
+  perspectives.push({
+    situation: document.getElementById('ct-persp-situation').value,
+    reflection: document.getElementById('ct-persp-reflection').value,
+    date: Date.now()
+  });
+  saveData('creativeToolPerspectives', perspectives);
+  closeCreativeTool('perspective');
+  showToast('Reflexion gespeichert!', 'Reflection saved!');
+};
+
+// Body Compass
+window.ctSelectBodyArea = function(area) {
+  ctSelectedBodyArea = area;
+  document.querySelectorAll('[id^="ct-ba-"]').forEach(el => { el.setAttribute('fill', 'rgba(107,33,168,0.1)'); });
+  document.getElementById('ct-ba-' + area).setAttribute('fill', 'rgba(107,33,168,0.35)');
+  const names = { head:{de:'Kopf',en:'Head'}, chest:{de:'Brust',en:'Chest'}, belly:{de:'Bauch',en:'Belly'}, leftarm:{de:'Linker Arm',en:'Left Arm'}, rightarm:{de:'Rechter Arm',en:'Right Arm'}, leftleg:{de:'Linkes Bein',en:'Left Leg'}, rightleg:{de:'Rechtes Bein',en:'Right Leg'} };
+  document.getElementById('ct-body-selected').textContent = names[area][currentLang];
+};
+window.ctSaveBodyLog = function() {
+  if (!currentUser) return;
+  const logs = loadData('creativeToolBodyLogs', []);
+  const feelings = [...document.querySelectorAll('.ct-feeling-chip.active')].map(c => c.textContent);
+  logs.push({ area: ctSelectedBodyArea, feelings, notes: document.getElementById('ct-body-notes').value, date: Date.now() });
+  saveData('creativeToolBodyLogs', logs);
+  closeCreativeTool('bodycompass');
+  showToast('Körpergefühl gespeichert!', 'Body feeling saved!');
+};
 </script>
 </body>
 </html>
