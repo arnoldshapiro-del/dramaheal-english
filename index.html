@@ -1,0 +1,2392 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DramaHeal â€” DramapÃ¤dagogik & PTBS fÃ¼r Jugendliche</title>
+<meta name="theme-color" content="#6B21A8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="DramaHeal">
+<style>
+  :root {
+    --purple: #6B21A8;
+    --purple-light: #9333EA;
+    --purple-dark: #4C1D95;
+    --teal: #0D9488;
+    --teal-light: #14B8A6;
+    --amber: #F59E0B;
+    --amber-light: #FCD34D;
+    --cream: #FFF7ED;
+    --sidebar-w: 230px;
+    --bg: #FFF7ED;
+    --card-bg: #ffffff;
+    --text: #1F2937;
+    --text-muted: #6B7280;
+    --border: #E5E7EB;
+    --shadow: 0 4px 24px rgba(107,33,168,0.10);
+  }
+  [data-theme="dark"] {
+    --bg: #18122B;
+    --card-bg: #231942;
+    --text: #F3F0FF;
+    --text-muted: #A78BFA;
+    --border: #3B2D6B;
+    --shadow: 0 4px 24px rgba(0,0,0,0.40);
+    --cream: #18122B;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; transition: background 0.3s, color 0.3s; }
+
+  /* AUTH SCREEN */
+  #auth-screen {
+    position: fixed; inset: 0; z-index: 1000;
+    background: linear-gradient(135deg, #4C1D95 0%, #0D9488 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .auth-box {
+    background: white; border-radius: 24px; padding: 48px 40px; max-width: 420px; width: 90%;
+    text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .auth-logo { font-size: 64px; margin-bottom: 12px; }
+  .auth-title { font-size: 28px; font-weight: 800; color: #4C1D95; margin-bottom: 6px; }
+  .auth-tagline { color: #6B7280; margin-bottom: 32px; font-size: 15px; line-height: 1.5; }
+  .auth-btn {
+    width: 100%; padding: 14px; border-radius: 12px; border: none; cursor: pointer;
+    font-size: 16px; font-weight: 600; margin-bottom: 12px; transition: all 0.2s;
+  }
+  .auth-btn-google { background: #4285F4; color: white; }
+  .auth-btn-google:hover { background: #3367D6; transform: translateY(-1px); }
+  .auth-btn-email { background: #6B21A8; color: white; }
+  .auth-btn-email:hover { background: #4C1D95; transform: translateY(-1px); }
+  .auth-divider { color: #9CA3AF; margin: 16px 0; font-size: 13px; }
+  .auth-input {
+    width: 100%; padding: 12px 16px; border: 2px solid #E5E7EB; border-radius: 10px;
+    font-size: 15px; margin-bottom: 10px; outline: none; transition: border 0.2s;
+  }
+  .auth-input:focus { border-color: #6B21A8; }
+  #email-form { display: none; }
+  .auth-toggle { color: #6B21A8; cursor: pointer; font-size: 14px; text-decoration: underline; margin-top: 8px; display: inline-block; }
+  .auth-error { color: #EF4444; font-size: 13px; margin-top: 8px; display: none; }
+  [data-theme="dark"] .auth-box { background: #231942; }
+  [data-theme="dark"] .auth-title { color: #C4B5FD; }
+  [data-theme="dark"] .auth-input { background: #18122B; border-color: #3B2D6B; color: #F3F0FF; }
+
+  /* SIDEBAR */
+  #sidebar {
+    width: var(--sidebar-w); min-height: 100vh; background: linear-gradient(180deg, #4C1D95 0%, #0D9488 100%);
+    display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+  }
+  .sidebar-brand {
+    padding: 22px 18px 16px; border-bottom: 1px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sidebar-brand-icon { font-size: 30px; }
+  .sidebar-brand-text { color: white; font-weight: 800; font-size: 15px; line-height: 1.2; }
+  .sidebar-brand-sub { color: rgba(255,255,255,0.65); font-size: 11px; font-weight: 400; }
+  .sidebar-nav { flex: 1; padding: 10px 0; overflow-y: auto; }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 18px; cursor: pointer; transition: all 0.2s;
+    border-left: 3px solid transparent; color: rgba(255,255,255,0.75);
+    font-size: 14px; font-weight: 500;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.12); color: white; border-left-color: rgba(255,255,255,0.4); }
+  .nav-item.active { background: rgba(255,255,255,0.18); color: white; border-left-color: #FCD34D; font-weight: 700; }
+  .nav-icon { font-size: 18px; min-width: 22px; text-align: center; }
+  .nav-label { white-space: nowrap; }
+  .sidebar-footer { padding: 14px 18px; border-top: 1px solid rgba(255,255,255,0.15); }
+  .user-info { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .user-avatar { width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 16px; overflow: hidden; }
+  .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .user-name { color: white; font-size: 13px; font-weight: 600; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .signout-btn { width: 100%; padding: 8px; background: rgba(255,255,255,0.15); border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+  .signout-btn:hover { background: rgba(255,255,255,0.25); }
+
+  /* MAIN CONTENT */
+  #main { margin-left: var(--sidebar-w); flex: 1; min-height: 100vh; display: flex; flex-direction: column; }
+
+  /* HEADER */
+  #header {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--card-bg); border-bottom: 1px solid var(--border);
+    padding: 12px 28px; display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .header-title { font-size: 20px; font-weight: 700; color: var(--purple); }
+  .header-controls { display: flex; align-items: center; gap: 10px; }
+  .lang-btn {
+    padding: 7px 14px; border-radius: 20px; border: 2px solid var(--purple);
+    background: transparent; color: var(--purple); cursor: pointer; font-size: 13px; font-weight: 600;
+    transition: all 0.2s;
+  }
+  .lang-btn:hover { background: var(--purple); color: white; }
+  .dark-btn {
+    padding: 7px 12px; border-radius: 20px; border: 2px solid var(--border);
+    background: transparent; color: var(--text); cursor: pointer; font-size: 16px; transition: all 0.2s;
+  }
+  .dark-btn:hover { border-color: var(--purple); }
+
+  /* CONTENT AREA */
+  #content { flex: 1; padding: 28px; overflow-y: auto; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* CARDS */
+  .card {
+    background: var(--card-bg); border-radius: 16px; padding: 24px;
+    box-shadow: var(--shadow); border: 1px solid var(--border); margin-bottom: 20px;
+  }
+  .card-title { font-size: 18px; font-weight: 700; color: var(--purple); margin-bottom: 4px; }
+  .card-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 900px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #4C1D95 0%, #0D9488 100%);
+    border-radius: 20px; padding: 36px 32px; color: white; margin-bottom: 24px;
+    position: relative; overflow: hidden;
+  }
+  .hero::after { content: 'ðŸŽ­'; position: absolute; right: 32px; top: 50%; transform: translateY(-50%); font-size: 80px; opacity: 0.2; }
+  .hero h1 { font-size: 26px; font-weight: 800; margin-bottom: 8px; }
+  .hero p { font-size: 15px; opacity: 0.85; max-width: 480px; line-height: 1.6; }
+
+  /* MOOD */
+  .mood-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 12px 0; }
+  .mood-btn {
+    font-size: 32px; padding: 10px 16px; border: 2px solid var(--border); border-radius: 14px;
+    background: var(--card-bg); cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  .mood-btn span { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+  .mood-btn:hover, .mood-btn.selected { border-color: var(--purple); background: rgba(107,33,168,0.08); transform: scale(1.08); }
+  .mood-response { background: linear-gradient(135deg, #EDE9FE, #CCFBF1); border-radius: 12px; padding: 16px; margin-top: 12px; display: none; }
+  .mood-response.show { display: block; animation: fadeIn 0.4s; }
+
+  /* QUICK CARDS */
+  .quick-card {
+    background: var(--card-bg); border-radius: 14px; padding: 18px; border: 1px solid var(--border);
+    cursor: pointer; transition: all 0.2s; text-align: center; box-shadow: var(--shadow);
+  }
+  .quick-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(107,33,168,0.15); border-color: var(--purple-light); }
+  .quick-card-icon { font-size: 36px; margin-bottom: 8px; }
+  .quick-card-title { font-weight: 700; font-size: 14px; color: var(--text); }
+  .quick-card-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+  /* STREAK */
+  .streak-card { display: flex; align-items: center; gap: 14px; background: linear-gradient(135deg, #FEF3C7, #FDE68A); border-radius: 14px; padding: 16px 20px; border: 1px solid #FCD34D; }
+  .streak-num { font-size: 40px; font-weight: 900; color: #92400E; }
+  .streak-text { color: #78350F; font-weight: 600; font-size: 15px; }
+  .streak-sub { color: #92400E; font-size: 12px; margin-top: 2px; }
+
+  /* CRISIS BANNER */
+  .crisis-banner { background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: 12px; padding: 14px 18px; display: flex; align-items: center; gap: 12px; margin-top: 24px; }
+  .crisis-banner-icon { font-size: 22px; }
+  .crisis-text { font-size: 13px; color: #7F1D1D; line-height: 1.5; }
+  .crisis-text strong { font-weight: 700; }
+
+  /* DRAMA TOOLS */
+  .tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
+  .tool-card {
+    background: var(--card-bg); border-radius: 16px; padding: 22px; border: 1px solid var(--border);
+    cursor: pointer; transition: all 0.25s; box-shadow: var(--shadow);
+  }
+  .tool-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(107,33,168,0.18); border-color: var(--purple-light); }
+  .tool-icon { font-size: 42px; margin-bottom: 12px; }
+  .tool-name { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .tool-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+  .tool-tag { display: inline-block; margin-top: 10px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; background: rgba(107,33,168,0.1); color: var(--purple); }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 500;
+    display: none; align-items: center; justify-content: center; padding: 20px;
+  }
+  .modal-overlay.open { display: flex; animation: fadeIn 0.2s; }
+  .modal {
+    background: var(--card-bg); border-radius: 20px; max-width: 640px; width: 100%;
+    max-height: 90vh; overflow-y: auto; padding: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .modal-title { font-size: 20px; font-weight: 700; color: var(--purple); }
+  .modal-close { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-muted); line-height: 1; }
+  .modal-close:hover { color: var(--text); }
+
+  /* INPUTS */
+  .form-group { margin-bottom: 16px; }
+  .form-label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .form-input, .form-textarea, .form-select {
+    width: 100%; padding: 10px 14px; border: 2px solid var(--border); border-radius: 10px;
+    background: var(--card-bg); color: var(--text); font-size: 14px; outline: none; transition: border 0.2s;
+    font-family: inherit;
+  }
+  .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--purple); }
+  .form-textarea { min-height: 120px; resize: vertical; line-height: 1.6; }
+
+  /* BUTTONS */
+  .btn {
+    padding: 10px 20px; border-radius: 10px; border: none; cursor: pointer;
+    font-size: 14px; font-weight: 600; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-primary { background: var(--purple); color: white; }
+  .btn-primary:hover { background: var(--purple-dark); transform: translateY(-1px); }
+  .btn-teal { background: var(--teal); color: white; }
+  .btn-teal:hover { background: #0F766E; transform: translateY(-1px); }
+  .btn-amber { background: var(--amber); color: #7C2D12; }
+  .btn-amber:hover { background: #D97706; }
+  .btn-outline { background: transparent; border: 2px solid var(--purple); color: var(--purple); }
+  .btn-outline:hover { background: var(--purple); color: white; }
+  .btn-sm { padding: 7px 14px; font-size: 13px; }
+
+  /* TABS */
+  .tabs { display: flex; gap: 4px; background: var(--border); border-radius: 12px; padding: 4px; margin-bottom: 20px; flex-wrap: wrap; }
+  .tab { padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-muted); transition: all 0.2s; white-space: nowrap; }
+  .tab.active { background: var(--card-bg); color: var(--purple); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn 0.3s; }
+
+  /* BADGES */
+  .badge-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+  .badge { text-align: center; padding: 14px; border-radius: 14px; width: 90px; opacity: 0.35; transition: all 0.3s; }
+  .badge.earned { opacity: 1; animation: badgePop 0.5s; }
+  .badge-icon { font-size: 32px; }
+  .badge-name { font-size: 10px; font-weight: 600; color: var(--text-muted); margin-top: 4px; }
+
+  /* PROGRESS CHART */
+  .mood-chart { display: flex; align-items: flex-end; gap: 4px; height: 80px; margin-top: 12px; }
+  .mood-bar { flex: 1; border-radius: 4px 4px 0 0; transition: height 0.5s; min-width: 8px; }
+
+  /* BODY COMPASS */
+  .body-compass { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .body-svg { width: 180px; cursor: pointer; }
+  .body-area { fill: #E9D5FF; stroke: #6B21A8; stroke-width: 1.5; transition: fill 0.2s; cursor: pointer; }
+  .body-area:hover, .body-area.active { fill: #6B21A8; }
+  .body-feelings { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .feeling-chip {
+    padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    border: 2px solid var(--border); cursor: pointer; transition: all 0.2s;
+    background: var(--card-bg); color: var(--text);
+  }
+  .feeling-chip.selected { border-color: var(--purple); background: rgba(107,33,168,0.1); color: var(--purple); }
+
+  /* ROLE PLAY CARDS */
+  .rp-card-container { position: relative; height: 280px; }
+  .rp-card {
+    position: absolute; inset: 0; background: linear-gradient(135deg, #4C1D95, #0D9488);
+    border-radius: 20px; padding: 28px; color: white; display: none; flex-direction: column;
+    justify-content: space-between; cursor: pointer;
+  }
+  .rp-card.visible { display: flex; animation: fadeIn 0.3s; }
+  .rp-card-category { font-size: 11px; font-weight: 700; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px; }
+  .rp-card-scenario { font-size: 17px; font-weight: 700; line-height: 1.4; margin: 12px 0; }
+  .rp-card-chars { display: flex; gap: 8px; flex-wrap: wrap; }
+  .rp-char { padding: 5px 12px; border-radius: 20px; background: rgba(255,255,255,0.2); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .rp-char:hover { background: rgba(255,255,255,0.35); }
+  .rp-nav { display: flex; gap: 10px; justify-content: center; margin-top: 14px; }
+
+  /* MASK STUDIO */
+  .mask-studio { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .mask-side { text-align: center; }
+  .mask-face { font-size: 80px; display: block; margin: 12px auto; cursor: pointer; transition: transform 0.2s; }
+  .mask-face:hover { transform: scale(1.1); }
+  .mask-label { font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; }
+  .mask-words { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; min-height: 40px; margin-top: 8px; }
+  .mask-word { padding: 3px 10px; border-radius: 20px; background: rgba(107,33,168,0.1); color: var(--purple); font-size: 12px; font-weight: 600; }
+
+  /* FAIRY TALE */
+  .fairy-section { background: linear-gradient(135deg, #FDF4FF, #F0FDF4); border-radius: 14px; padding: 20px; margin-bottom: 14px; border-left: 4px solid var(--purple); }
+  .fairy-section-title { font-size: 13px; font-weight: 700; color: var(--purple); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* PERSPECTIVE GAME */
+  .perspective-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .perspective-card { background: var(--card-bg); border: 2px solid var(--border); border-radius: 14px; padding: 18px; cursor: pointer; transition: all 0.2s; }
+  .perspective-card:hover, .perspective-card.active { border-color: var(--purple); background: rgba(107,33,168,0.05); }
+  .perspective-icon { font-size: 30px; margin-bottom: 8px; }
+  .perspective-name { font-size: 13px; font-weight: 700; color: var(--text); }
+  .perspective-questions { display: none; margin-top: 10px; }
+  .perspective-card.active .perspective-questions { display: block; }
+  .perspective-q { font-size: 13px; color: var(--text-muted); padding: 5px 0; border-bottom: 1px dashed var(--border); }
+  .perspective-q:last-child { border: none; }
+
+  /* KNOWLEDGE */
+  .knowledge-section { background: var(--card-bg); border-radius: 14px; padding: 20px; margin-bottom: 14px; border: 1px solid var(--border); }
+  .brain-diagram { background: linear-gradient(135deg, #EDE9FE, #CCFBF1); border-radius: 14px; padding: 20px; margin: 14px 0; text-align: center; }
+  .symptom-category { border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+  .symptom-cat-re { background: #FEF2F2; border-left: 4px solid #EF4444; }
+  .symptom-cat-av { background: #FFFBEB; border-left: 4px solid #F59E0B; }
+  .symptom-cat-th { background: #EFF6FF; border-left: 4px solid #3B82F6; }
+  .symptom-cat-hy { background: #F0FDF4; border-left: 4px solid #22C55E; }
+  .symptom-cat-title { font-weight: 700; font-size: 14px; margin-bottom: 8px; }
+  .symptom-list { list-style: none; }
+  .symptom-list li { font-size: 13px; color: var(--text-muted); padding: 3px 0; }
+  .symptom-list li::before { content: "â€¢ "; color: var(--purple); }
+  .faq-item { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 10px; }
+  .faq-q { padding: 14px 16px; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; justify-content: space-between; align-items: center; background: var(--card-bg); }
+  .faq-q:hover { background: rgba(107,33,168,0.05); }
+  .faq-a { padding: 0 16px 14px; font-size: 13px; color: var(--text-muted); line-height: 1.6; display: none; }
+  .faq-item.open .faq-a { display: block; }
+  .faq-item.open .faq-arrow { transform: rotate(180deg); }
+  .faq-arrow { transition: transform 0.2s; }
+
+  /* EXERCISES */
+  .exercise-card { background: var(--card-bg); border-radius: 16px; padding: 22px; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 16px; }
+  .exercise-header { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+  .exercise-icon { font-size: 36px; }
+  .exercise-name { font-size: 17px; font-weight: 700; color: var(--text); }
+  .exercise-type { font-size: 12px; color: var(--text-muted); }
+  .breathing-box { width: 160px; height: 160px; border: 4px solid var(--purple); border-radius: 20px; margin: 20px auto; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: var(--purple); transition: all 1s; }
+  .breathing-box.inhale { transform: scale(1.15); background: rgba(107,33,168,0.1); }
+  .breathing-box.hold { background: rgba(107,33,168,0.2); }
+  .breathing-box.exhale { transform: scale(0.9); background: transparent; }
+  .grounding-step { background: rgba(13,148,136,0.08); border-radius: 12px; padding: 16px; margin-bottom: 10px; border-left: 4px solid var(--teal); }
+  .grounding-num { font-size: 28px; font-weight: 900; color: var(--teal); margin-bottom: 4px; }
+  .grounding-label { font-size: 15px; font-weight: 700; color: var(--text); }
+  .grounding-sub { font-size: 13px; color: var(--text-muted); }
+  .timer-circle { width: 120px; height: 120px; border-radius: 50%; border: 6px solid var(--teal); display: flex; align-items: center; justify-content: center; margin: 20px auto; font-size: 32px; font-weight: 900; color: var(--teal); }
+
+  /* TRAUMA BINDER */
+  .binder-tabs { display: flex; gap: 0; overflow-x: auto; border-bottom: 2px solid var(--border); margin-bottom: 20px; }
+  .binder-tab { padding: 10px 18px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-muted); border-bottom: 3px solid transparent; white-space: nowrap; transition: all 0.2s; }
+  .binder-tab.active { color: var(--purple); border-bottom-color: var(--purple); }
+  .binder-section { display: none; }
+  .binder-section.active { display: block; animation: fadeIn 0.3s; }
+  .contact-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
+  .contact-info { display: flex; align-items: center; gap: 12px; }
+  .contact-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--purple), var(--teal)); display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; }
+  .contact-name { font-weight: 700; font-size: 14px; }
+  .contact-role { font-size: 12px; color: var(--text-muted); }
+
+  /* SUPERCLUB */
+  .hero-card { background: linear-gradient(135deg, #F5F3FF, #CCFBF1); border-radius: 20px; padding: 28px; border: 1px solid #DDD6FE; margin-bottom: 20px; }
+  .character-display { text-align: center; padding: 20px; }
+  .character-avatar { font-size: 72px; margin-bottom: 12px; display: block; }
+  .character-name { font-size: 22px; font-weight: 800; color: var(--purple); }
+  .character-power { font-size: 14px; color: var(--text-muted); margin-top: 6px; }
+  .community-post { background: var(--card-bg); border-radius: 12px; padding: 16px; border: 1px solid var(--border); margin-bottom: 10px; }
+  .post-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--purple), var(--teal)); display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; margin-right: 10px; float: left; }
+  .post-name { font-size: 13px; font-weight: 700; color: var(--purple); }
+  .post-text { font-size: 13px; color: var(--text); margin-top: 6px; line-height: 1.5; clear: both; }
+  .challenge-card { background: linear-gradient(135deg, #4C1D95, #0D9488); border-radius: 16px; padding: 22px; color: white; margin-bottom: 12px; }
+  .challenge-num { font-size: 12px; font-weight: 700; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px; }
+  .challenge-text { font-size: 18px; font-weight: 700; margin: 8px 0; }
+  .challenge-done { display: inline-block; padding: 6px 16px; border-radius: 20px; background: rgba(255,255,255,0.2); font-size: 13px; cursor: pointer; border: none; color: white; transition: all 0.2s; }
+  .challenge-done:hover { background: rgba(255,255,255,0.35); }
+  .challenge-done.completed { background: #FCD34D; color: #7C2D12; }
+
+  /* PROGRESS */
+  .progress-stat { background: var(--card-bg); border-radius: 14px; padding: 20px; border: 1px solid var(--border); text-align: center; }
+  .progress-num { font-size: 40px; font-weight: 900; color: var(--purple); }
+  .progress-label { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+  .streak-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 12px; }
+  .streak-day { width: 100%; aspect-ratio: 1; border-radius: 4px; background: var(--border); }
+  .streak-day.done { background: var(--purple); }
+  .streak-day.done-light { background: #C4B5FD; }
+
+  /* OUTPATIENT */
+  .crisis-box { background: linear-gradient(135deg, #FEF2F2, #FFF7ED); border: 2px solid #FCA5A5; border-radius: 16px; padding: 22px; margin-bottom: 20px; }
+  .crisis-title { font-size: 18px; font-weight: 800; color: #991B1B; margin-bottom: 14px; }
+  .crisis-number { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #FCA5A5; }
+  .crisis-number:last-child { border: none; }
+  .crisis-flag { font-size: 22px; }
+  .crisis-info strong { display: block; font-size: 15px; color: #7F1D1D; }
+  .crisis-info span { font-size: 13px; color: #991B1B; }
+  .therapy-type { background: var(--card-bg); border-radius: 12px; padding: 16px; border: 1px solid var(--border); margin-bottom: 10px; }
+  .therapy-name { font-weight: 700; font-size: 15px; color: var(--purple); }
+  .therapy-desc { font-size: 13px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
+
+  /* ANIMATIONS */
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes badgePop { 0% { transform: scale(0.5); } 70% { transform: scale(1.2); } 100% { transform: scale(1); } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spin { animation: spin 1s linear infinite; }
+
+  /* CONFETTI */
+  .confetti-piece { position: fixed; width: 10px; height: 10px; top: -10px; animation: confettiFall 3s ease-in forwards; border-radius: 2px; z-index: 9999; }
+  @keyframes confettiFall { to { top: 110vh; transform: rotate(720deg) translateX(var(--drift)); } }
+
+  /* UTILITY */
+  .text-center { text-align: center; }
+  .text-muted { color: var(--text-muted); font-size: 13px; }
+  .mb-0 { margin-bottom: 0; }
+  .mb-8 { margin-bottom: 8px; }
+  .mb-16 { margin-bottom: 16px; }
+  .mt-16 { margin-top: 16px; }
+  .flex { display: flex; }
+  .items-center { align-items: center; }
+  .gap-8 { gap: 8px; }
+  .gap-12 { gap: 12px; }
+  .gap-16 { gap: 16px; }
+  .w-full { width: 100%; }
+  .hidden { display: none !important; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+  a { color: var(--purple); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="auth-screen">
+  <div class="auth-box">
+    <div class="auth-logo">ðŸŽ­</div>
+    <div class="auth-title">DramaHeal</div>
+    <div class="auth-tagline" id="auth-tagline">Deine Geschichte. Deine StÃ¤rke.<br>Dein Weg zur Heilung.</div>
+    <button class="auth-btn auth-btn-google" onclick="signInGoogle()">ðŸ”µ Mit Google anmelden</button>
+    <div class="auth-divider" id="auth-or">â€” oder â€”</div>
+    <button class="auth-btn auth-btn-email" onclick="toggleEmailForm()" id="email-toggle-btn">âœ‰ï¸ Mit E-Mail anmelden</button>
+    <div id="email-form">
+      <input type="email" class="auth-input" id="auth-email" placeholder="E-Mail" />
+      <input type="password" class="auth-input" id="auth-password" placeholder="Passwort" />
+      <button class="auth-btn auth-btn-email" onclick="signInEmail()">Anmelden / Registrieren</button>
+      <div class="auth-error" id="auth-error"></div>
+    </div>
+    <div class="auth-error" id="auth-error-google"></div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-brand">
+    <span class="sidebar-brand-icon">ðŸŽ­</span>
+    <div>
+      <div class="sidebar-brand-text">DramaHeal</div>
+      <div class="sidebar-brand-sub" id="sb-sub">FÃ¼r Jugendliche</div>
+    </div>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-item active" onclick="showSection('home')"><span class="nav-icon">ðŸ </span><span class="nav-label" data-de="Startseite" data-en="Home">Startseite</span></div>
+    <div class="nav-item" onclick="showSection('drama')"><span class="nav-icon">ðŸŽ­</span><span class="nav-label" data-de="Dramawerkzeuge" data-en="Drama Tools">Dramawerkzeuge</span></div>
+    <div class="nav-item" onclick="showSection('story')"><span class="nav-icon">ðŸ“–</span><span class="nav-label" data-de="Meine Geschichte" data-en="My Story">Meine Geschichte</span></div>
+    <div class="nav-item" onclick="showSection('knowledge')"><span class="nav-icon">ðŸ§ </span><span class="nav-label" data-de="PTBS-Wissen" data-en="PTSD Knowledge">PTBS-Wissen</span></div>
+    <div class="nav-item" onclick="showSection('exercises')"><span class="nav-icon">ðŸŒ±</span><span class="nav-label" data-de="Ãœbungen" data-en="Exercises">Ãœbungen</span></div>
+    <div class="nav-item" onclick="showSection('binder')"><span class="nav-icon">ðŸ“</span><span class="nav-label" data-de="Trauma-Ordner" data-en="Trauma Binder">Trauma-Ordner</span></div>
+    <div class="nav-item" onclick="showSection('superclub')"><span class="nav-icon">ðŸ‘¥</span><span class="nav-label" data-de="SuperClub" data-en="Super Club">SuperClub</span></div>
+    <div class="nav-item" onclick="showSection('progress')"><span class="nav-icon">ðŸ“Š</span><span class="nav-label" data-de="Fortschritt" data-en="Progress">Fortschritt</span></div>
+    <div class="nav-item" onclick="showSection('help')"><span class="nav-icon">ðŸ¥</span><span class="nav-label" data-de="Ambulante Hilfe" data-en="Outpatient Help">Ambulante Hilfe</span></div>
+    <div class="nav-item" onclick="showSection('settings')"><span class="nav-icon">âš™ï¸</span><span class="nav-label" data-de="Einstellungen" data-en="Settings">Einstellungen</span></div>
+  </div>
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <div class="user-avatar" id="sidebar-avatar">ðŸ‘¤</div>
+      <div class="user-name" id="sidebar-username">Gast</div>
+    </div>
+    <button class="signout-btn" onclick="signOut()" data-de="Abmelden" data-en="Sign Out">Abmelden</button>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+  <!-- HEADER -->
+  <div id="header">
+    <div class="header-title" id="header-title">ðŸŽ­ DramaHeal</div>
+    <div class="header-controls">
+      <button class="lang-btn" id="lang-btn" onclick="toggleLang()">ðŸ‡¬ðŸ‡§ English</button>
+      <button class="dark-btn" onclick="toggleDark()" title="Dark Mode">ðŸŒ™</button>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div id="content">
+
+    <!-- HOME -->
+    <div id="section-home" class="section active">
+      <div class="hero">
+        <h1 data-de="Willkommen bei DramaHeal ðŸŽ­" data-en="Welcome to DramaHeal ðŸŽ­">Willkommen bei DramaHeal ðŸŽ­</h1>
+        <p data-de="Ein sicherer Raum fÃ¼r deine Geschichte. Nutze DramapÃ¤dagogik und kreative Ãœbungen, um deinen Weg zur Heilung zu finden." data-en="A safe space for your story. Use drama pedagogy and creative exercises to find your path to healing.">Ein sicherer Raum fÃ¼r deine Geschichte. Nutze DramapÃ¤dagogik und kreative Ãœbungen, um deinen Weg zur Heilung zu finden.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title" data-de="Wie geht es dir heute?" data-en="How are you today?">Wie geht es dir heute?</div>
+        <div class="card-sub" data-de="WÃ¤hle, was am besten zu dir passt" data-en="Choose what fits best">WÃ¤hle, was am besten zu dir passt</div>
+        <div class="mood-row">
+          <button class="mood-btn" onclick="selectMood(1,this)">ðŸ˜¢<span data-de="Sehr schlecht" data-en="Very bad">Sehr schlecht</span></button>
+          <button class="mood-btn" onclick="selectMood(2,this)">ðŸ˜Ÿ<span data-de="Nicht gut" data-en="Not good">Nicht gut</span></button>
+          <button class="mood-btn" onclick="selectMood(3,this)">ðŸ˜<span data-de="Na ja" data-en="So-so">Na ja</span></button>
+          <button class="mood-btn" onclick="selectMood(4,this)">ðŸ˜Š<span data-de="Gut" data-en="Good">Gut</span></button>
+          <button class="mood-btn" onclick="selectMood(5,this)">ðŸŒŸ<span data-de="Super!" data-en="Great!">Super!</span></button>
+        </div>
+        <div class="mood-response" id="mood-response">
+          <div id="mood-message"></div>
+          <div id="mood-suggestion" style="margin-top:10px;"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" data-de="Drama-Ãœbung des Tages" data-en="Drama Exercise of the Day">Drama-Ãœbung des Tages</div>
+        <div id="daily-exercise-card" style="background:linear-gradient(135deg,#F5F3FF,#CCFBF1);border-radius:12px;padding:18px;margin-top:8px;">
+          <div style="font-size:28px;margin-bottom:8px;" id="daily-icon">ðŸŽ­</div>
+          <div style="font-weight:700;font-size:15px;" id="daily-title">Lade...</div>
+          <div style="font-size:13px;color:var(--text-muted);margin-top:6px;line-height:1.5;" id="daily-desc">Lade...</div>
+          <button class="btn btn-primary mt-16" onclick="showSection('drama')" data-de="Jetzt ausprobieren â†’" data-en="Try it now â†’">Jetzt ausprobieren â†’</button>
+        </div>
+      </div>
+
+      <div class="grid-3 mb-16">
+        <div class="quick-card" onclick="showSection('drama')">
+          <div class="quick-card-icon">ðŸŽ­</div>
+          <div class="quick-card-title" data-de="Drama-Werkzeuge" data-en="Drama Tools">Drama-Werkzeuge</div>
+          <div class="quick-card-sub" data-de="6 kreative Techniken" data-en="6 creative techniques">6 kreative Techniken</div>
+        </div>
+        <div class="quick-card" onclick="showSection('exercises')">
+          <div class="quick-card-icon">ðŸŒ±</div>
+          <div class="quick-card-title" data-de="Ãœbungen" data-en="Exercises">Ãœbungen</div>
+          <div class="quick-card-sub" data-de="Grounding & AtemÃ¼bungen" data-en="Grounding & breathing">Grounding & AtemÃ¼bungen</div>
+        </div>
+        <div class="quick-card" onclick="showSection('binder')">
+          <div class="quick-card-icon">ðŸ“</div>
+          <div class="quick-card-title" data-de="Trauma-Ordner" data-en="Trauma Binder">Trauma-Ordner</div>
+          <div class="quick-card-sub" data-de="Dein persÃ¶nlicher Bereich" data-en="Your personal space">Dein persÃ¶nlicher Bereich</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px;">
+        <div class="streak-card" style="flex:1;min-width:200px;">
+          <div class="streak-num" id="home-streak">0</div>
+          <div>
+            <div class="streak-text" data-de="Tage dabei! ðŸ”¥" data-en="Days going! ðŸ”¥">Tage dabei! ðŸ”¥</div>
+            <div class="streak-sub" data-de="Du machst das groÃŸartig" data-en="You're doing great">Du machst das groÃŸartig</div>
+          </div>
+        </div>
+        <div class="card mb-0" style="flex:2;min-width:220px;padding:16px;">
+          <div style="font-size:13px;font-weight:700;color:var(--text-muted);margin-bottom:8px;" data-de="Zitat des Tages" data-en="Quote of the Day">Zitat des Tages</div>
+          <div style="font-size:14px;font-style:italic;color:var(--text);line-height:1.6;" id="daily-quote">Lade...</div>
+        </div>
+      </div>
+
+      <div class="crisis-banner">
+        <div class="crisis-banner-icon">ðŸ“ž</div>
+        <div class="crisis-text">
+          <strong data-de="Brauchst du sofort Hilfe?" data-en="Need help right now?">Brauchst du sofort Hilfe?</strong>
+          <span data-de=" Ruf an: Telefonseelsorge 0800 111 0 111 (kostenlos, 24/7) Â· Kinder & Jugend: 0800 111 0 333" data-en=" Call: Telefonseelsorge 0800 111 0 111 (free, 24/7) Â· Youth: 0800 111 0 333"> Ruf an: Telefonseelsorge 0800 111 0 111 (kostenlos, 24/7) Â· Kinder & Jugend: 0800 111 0 333</span>
+        </div>
+      </div>
+    </div>
+    <!-- END HOME -->
+
+    <!-- DRAMA TOOLS -->
+    <div id="section-drama" class="section">
+      <div class="hero">
+        <h1 data-de="Dramawerkzeuge ðŸŽ­" data-en="Drama Tools ðŸŽ­">Dramawerkzeuge ðŸŽ­</h1>
+        <p data-de="Kreative Techniken aus der DramapÃ¤dagogik fÃ¼r deine Heilung" data-en="Creative techniques from drama pedagogy for your healing">Kreative Techniken aus der DramapÃ¤dagogik fÃ¼r deine Heilung</p>
+      </div>
+
+      <div class="tool-grid" id="tool-grid">
+        <div class="tool-card" onclick="openTool('stage')">
+          <div class="tool-icon">ðŸŽ¬</div>
+          <div class="tool-name" data-de="Die Innere BÃ¼hne" data-en="The Inner Stage">Die Innere BÃ¼hne</div>
+          <div class="tool-desc" data-de="ErzÃ¤hl deine Geschichte durch einen Charakter â€” mit sicherer Distanz" data-en="Tell your story through a character â€” with safe distance">ErzÃ¤hl deine Geschichte durch einen Charakter â€” mit sicherer Distanz</div>
+          <span class="tool-tag" data-de="Narrative Distanzierung" data-en="Narrative Distance">Narrative Distanzierung</span>
+        </div>
+        <div class="tool-card" onclick="openTool('roleplay')">
+          <div class="tool-icon">ðŸƒ</div>
+          <div class="tool-name" data-de="Rollenspiel-Karten" data-en="Role Play Cards">Rollenspiel-Karten</div>
+          <div class="tool-desc" data-de="Erkunde verschiedene Perspektiven mit gefÃ¼hrten Szenariokarten" data-en="Explore different perspectives with guided scenario cards">Erkunde verschiedene Perspektiven mit gefÃ¼hrten Szenariokarten</div>
+          <span class="tool-tag" data-de="Perspektivwechsel" data-en="Perspective Shift">Perspektivwechsel</span>
+        </div>
+        <div class="tool-card" onclick="openTool('mask')">
+          <div class="tool-icon">ðŸŽ­</div>
+          <div class="tool-name" data-de="Masken-Studio" data-en="Mask Studio">Masken-Studio</div>
+          <div class="tool-desc" data-de="Erkunde dein Ã¤uÃŸeres und inneres Gesicht mit zwei Masken" data-en="Explore your outer and inner face with two masks">Erkunde dein Ã¤uÃŸeres und inneres Gesicht mit zwei Masken</div>
+          <span class="tool-tag" data-de="Selbsterkundung" data-en="Self-Exploration">Selbsterkundung</span>
+        </div>
+        <div class="tool-card" onclick="openTool('fairytale')">
+          <div class="tool-icon">ðŸ“œ</div>
+          <div class="tool-name" data-de="Mein MÃ¤rchen" data-en="My Fairy Tale">Mein MÃ¤rchen</div>
+          <div class="tool-desc" data-de="Schreib deine Geschichte in der dritten Person als MÃ¤rchen" data-en="Write your story in the third person as a fairy tale">Schreib deine Geschichte in der dritten Person als MÃ¤rchen</div>
+          <span class="tool-tag" data-de="Narrative Distanz" data-en="Narrative Distance">Narrative Distanz</span>
+        </div>
+        <div class="tool-card" onclick="openTool('perspective')">
+          <div class="tool-icon">ðŸ‘ï¸</div>
+          <div class="tool-name" data-de="Perspektiven-Spiel" data-en="Perspective Game">Perspektiven-Spiel</div>
+          <div class="tool-desc" data-de="Sieh eine Situation durch 4 verschiedene Augen" data-en="See a situation through 4 different eyes">Sieh eine Situation durch 4 verschiedene Augen</div>
+          <span class="tool-tag" data-de="Empathie" data-en="Empathy">Empathie</span>
+        </div>
+        <div class="tool-card" onclick="openTool('body')">
+          <div class="tool-icon">ðŸ§</div>
+          <div class="tool-name" data-de="KÃ¶rper-Kompass" data-en="Body Compass">KÃ¶rper-Kompass</div>
+          <div class="tool-desc" data-de="Entdecke, wo du GefÃ¼hle in deinem KÃ¶rper trÃ¤gst" data-en="Discover where you carry feelings in your body">Entdecke, wo du GefÃ¼hle in deinem KÃ¶rper trÃ¤gst</div>
+          <span class="tool-tag" data-de="KÃ¶rperwahrnehmung" data-en="Body Awareness">KÃ¶rperwahrnehmung</span>
+        </div>
+      </div>
+
+      <!-- TOOL MODALS -->
+      <!-- INNER STAGE -->
+      <div class="modal-overlay" id="modal-stage">
+        <div class="modal">
+          <div class="modal-header">
+            <div class="modal-title">ðŸŽ¬ <span data-de="Die Innere BÃ¼hne" data-en="The Inner Stage">Die Innere BÃ¼hne</span></div>
+            <button class="modal-close" onclick="closeTool('stage')">âœ•</button>
+          </div>
+          <p class="text-muted mb-16" data-de="Erschaffe einen Charakter, der deine Geschichte trÃ¤gt. Du musst nicht direkt Ã¼ber dich selbst sprechen." data-en="Create a character who carries your story. You don't have to speak directly about yourself.">Erschaffe einen Charakter, der deine Geschichte trÃ¤gt. Du musst nicht direkt Ã¼ber dich selbst sprechen.</p>
+          <div class="form-group">
+            <label class="form-label" data-de="Name deines Charakters" data-en="Your character's name">Name deines Charakters</label>
+            <input class="form-input" id="char-name" placeholder="z.B. Luna, Max, PhÃ¶nix..." />
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-de="Alter und Wesen" data-en="Age and nature">Alter und Wesen</label>
+            <input class="form-input" id="char-age" placeholder="z.B. 15 Jahre, mutig aber verletzt..." />
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-de="Was hat dein Charakter erlebt?" data-en="What did your character experience?">Was hat dein Charakter erlebt?</label>
+            <textarea class="form-textarea" id="char-experience" placeholder="ErzÃ¤hl in der dritten Person..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-de="Wie hat er/sie sich gefÃ¼hlt?" data-en="How did they feel?">Wie hat er/sie sich gefÃ¼hlt?</label>
+            <textarea class="form-textarea" id="char-feelings" placeholder="Wut, Trauer, Verwirrung, Taubheit..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-de="Was hat er/sie gebraucht?" data-en="What did they need?">Was hat er/sie gebraucht?</label>
+            <textarea class="form-textarea" id="char-needs" placeholder="Sicherheit, jemanden zum Reden, Ruhe..."></textarea>
+          </div>
+          <button class="btn btn-primary w-full" onclick="saveCharacter()">ðŸ’¾ <span data-de="Charakter speichern" data-en="Save character">Charakter speichern</span></button>
+          <div id="char-saved" class="hidden" style="text-align:center;margin-top:12px;color:var(--teal);font-weight:700;">âœ“ <span data-de="Gespeichert!" data-en="Saved!">Gespeichert!</span></div>
+        </div>
+      </div>
+
+      <!-- ROLE PLAY CARDS -->
+      <div class="modal-overlay" id="modal-roleplay">
+        <div class="modal">
+          <div class="modal-header">
+            <div class="modal-title">ðŸƒ <span data-de="Rollenspiel-Karten" data-en="Role Play Cards">Rollenspiel-Karten</span></div>
+            <button class="modal-close" onclick="closeTool('roleplay')">âœ•</button>
+          </div>
+          <p class="text-muted mb-16" data-de="WÃ¤hle eine Karte und erkunde verschiedene Rollen. Tippe auf eine Rolle, um sie einzunehmen." data-en="Choose a card and explore different roles. Tap a role to take it on.">WÃ¤hle eine Karte und erkunde verschiedene Rollen. Tippe auf eine Rolle, um sie einzunehmen.</p>
+          <div class="rp-card-container" id="rp-container"></div>
+          <div class="rp-nav">
+            <button class="btn btn-outline btn-sm" onclick="prevCard()">â† <span data-de="ZurÃ¼ck" data-en="Back">ZurÃ¼ck</span></button>
+            <span id="rp-counter" style="color:var(--text-muted);font-size:13px;align-self:center;"></span>
+            <button class="btn btn-primary btn-sm" onclick="nextCard()"><span data-de="NÃ¤chste" data-en="Next">NÃ¤chste</span> â†’</button>
+          </div>
+          <div id="rp-reflection" class="hidden" style="margin-top:16px;background:rgba(107,33,168,0.07);border-radius:12px;padding:16px;">
+            <div style="font-weight:700;font-size:13px;color:var(--purple);margin-bottom:8px;" data-de="Reflexionsfragen" data-en="Reflection Questions">Reflexionsfragen</div>
+            <div id="rp-questions" style="font-size:13px;color:var(--text-muted);line-height:1.7;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MASK STUDIO -->
+      <div class="modal-overlay" id="modal-mask">
+        <div class="modal">
+          <div class="modal-header">
+            <div class="modal-title">ðŸŽ­ <span data-de="Masken-Studio" data-en="Mask Studio">Masken-Studio</span></div>
+            <button class="modal-close" onclick="closeTool('mask')">âœ•</button>
+          </div>
+          <p class="text-muted mb-16" data-de="Jeder trÃ¤gt zwei Gesichter â€” das, was die Welt sieht, und das, wer wir wirklich sind." data-en="Everyone wears two faces â€” what the world sees, and who we really are.">Jeder trÃ¤gt zwei Gesichter â€” das, was die Welt sieht, und das, wer wir wirklich sind.</p>
+          <div class="mask-studio">
+            <div class="mask-side">
+              <div class="mask-label" data-de="Was die Welt sieht" data-en="What the world sees">Was die Welt sieht</div>
+              <div class="mask-face" id="mask-outer" onclick="cycleMask('outer')">ðŸ˜</div>
+              <div class="text-muted" style="font-size:11px;" data-de="(Tippe zum Wechseln)" data-en="(Tap to change)">(Tippe zum Wechseln)</div>
+              <div class="form-group mt-16">
+                <input class="form-input" id="mask-outer-word" placeholder="Ein Wort..." onkeydown="if(event.key==='Enter')addMaskWord('outer')" />
+              </div>
+              <div class="mask-words" id="mask-outer-words"></div>
+            </div>
+            <div class="mask-side">
+              <div class="mask-label" data-de="Wer ich wirklich bin" data-en="Who I really am">Wer ich wirklich bin</div>
+              <div class="mask-face" id="mask-inner" onclick="cycleMask('inner')">ðŸ’œ</div>
+              <div class="text-muted" style="font-size:11px;" data-de="(Tippe zum Wechseln)" data-en="(Tap to change)">(Tippe zum Wechseln)</div>
+              <div class="form-group mt-16">
+                <input class="form-input" id="mask-inner-word" placeholder="Ein Wort..." onkeydown="if(event.key==='Enter')addMaskWord('inner')" />
+              </div>
+              <div class="mask-words" id="mask-inner-words"></div>
+            </div>
+          </div>
+          <div class="form-group mt-16">
+            <label class="form-label" data-de="Gib deiner Maske einen Namen" data-en="Give your mask a name">Gib deiner Maske einen Namen</label>
+            <input class="form-input" id="mask-name" placeholder="z.B. Die Kriegerin, Das stille Kind..." />
+          </div>
+          <button class="btn btn-primary w-full" onclick="saveMask()">ðŸ’¾ <span data-de="Maske speichern" data-en="Save mask">Maske speichern</span></button>
+        </div>
+      </div>
+
+      <!-- FAIRY TALE -->
+      <div class="modal-overlay" id="modal-fairytale">
+        <div class="modal">
+          <div class="modal-header">
+            <div class="modal-title">ðŸ“œ <span data-de="Mein MÃ¤rchen" data-en="My Fairy Tale">Mein MÃ¤rchen</span></div>
+            <button class="modal-close" onclick="closeTool('fairytale')">âœ•</button>
+          </div>
+          <p class="text-muted mb-16" data-de="Schreib deine Geschichte in der dritten Person â€” das gibt dir Distanz und Schutz." data-en="Write your story in the third person â€” this gives you distance and protection.">Schreib deine Geschichte in der dritten Person â€” das gibt dir Distanz und Schutz.</p>
+          <div class="fairy-section">
+            <div class="fairy-section-title">âœ¨ <span data-de="Es war einmal..." data-en="Once upon a time...">Es war einmal...</span></div>
+            <textarea class="form-textarea" id="fairy-intro" placeholder="Es war einmal ein MÃ¤dchen / ein Junge / eine Person, die..."></textarea>
+          </div>
+          <div class="fairy-section">
+            <div class="fairy-section-title">âš¡ <span data-de="Die Herausforderung" data-en="The Challenge">Die Herausforderung</span></div>
+            <textarea class="form-textarea" id="fairy-challenge" placeholder="Dann geschah etwas Schwieriges..."></textarea>
+          </div>
+          <div class="fairy-section">
+            <div class="fairy-section-title">ðŸŒ€ <span data-de="Der Wendepunkt" data-en="The Turning Point">Der Wendepunkt</span></div>
+            <textarea class="form-textarea" id="fairy-turning" placeholder="Aber dann..."></textarea>
+          </div>
+          <div class="fairy-section">
+            <div class="fairy-section-title">ðŸ’ª <span data-de="Die innere StÃ¤rke" data-en="The Inner Strength">Die innere StÃ¤rke</span></div>
+            <textarea class="form-textarea" id="fairy-strength" placeholder="Diese Person entdeckte in sich..."></textarea>
+          </div>
+          <div class="fairy-section">
+            <div class="fairy-section-title">ðŸŒ± <span data-de="Das neue Kapitel" data-en="The New Chapter">Das neue Kapitel</span></div>
+            <textarea class="form-textarea" id="fairy-new" placeholder="Und so begann ein neues Kapitel..."></textarea>
+          </div>
+          <button class="btn btn-primary w-full" onclick="saveFairytale()">ðŸ’¾ <span data-de="MÃ¤rchen speichern" data-en="Save fairy tale">MÃ¤rchen speichern</span></button>
+          <div id="fairy-saved" class="hidden" style="text-align:center;margin-top:12px;color:var(--teal);font-weight:700;">âœ“ <span data-de="Gespeichert!" data-en="Saved!">Gespeichert!</span></div>
+        </div>
+      </div>
+
+      <!-- PERSPECTIVE GAME -->
+      <div class="modal-overlay" id="modal-perspective">
+        <div class="modal">
+          <div class="modal-header">
+            <div class="modal-title">ðŸ‘ï¸ <span data-de="Perspektiven-Spiel" data-en="Perspective Game">Perspektiven-Spiel</span></div>
+            <button class="modal-close" onclick="closeTool('perspective')">âœ•</button>
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-de="Beschreibe eine schwierige Situation" data-en="Describe a difficult situation">Beschreibe eine schwierige Situation</label>
+            <textarea class="form-textarea" id="persp-situation" placeholder="Was ist passiert? Wie hast du dich gefÃ¼hlt?" style="min-height:80px;"></textarea>
+          </div>
+          <p class="text-muted mb-16" data-de="Tippe auf eine Perspektive, um Reflexionsfragen zu sehen:" data-en="Tap a perspective to see reflection questions:">Tippe auf eine Perspektive, um Reflexionsfragen zu sehen:</p>
+          <div class="perspective-grid">
+            <div class="perspective-card" onclick="togglePerspective(this, 'mine')">
+              <div class="perspective-icon">ðŸ™‹</div>
+              <div class="perspective-name" data-de="Meine Sicht" data-en="My View">Meine Sicht</div>
+              <div class="perspective-questions" id="persp-mine">
+                <div class="perspective-q" data-de="Was habe ich genau erlebt?" data-en="What exactly did I experience?">Was habe ich genau erlebt?</div>
+                <div class="perspective-q" data-de="Welche Gedanken hatte ich sofort?" data-en="What thoughts did I have immediately?">Welche Gedanken hatte ich sofort?</div>
+                <div class="perspective-q" data-de="Was hat mein KÃ¶rper gespÃ¼rt?" data-en="What did my body feel?">Was hat mein KÃ¶rper gespÃ¼rt?</div>
+              </div>
+            </div>
+            <div class="perspective-card" onclick="togglePerspective(this, 'friend')">
+              <div class="perspective-icon">ðŸ‘«</div>
+              <div class="perspective-name" data-de="Ein Freund" data-en="A Friend">Ein Freund</div>
+              <div class="perspective-questions" id="persp-friend">
+                <div class="perspective-q" data-de="Was wÃ¼rde mein bester Freund sagen?" data-en="What would my best friend say?">Was wÃ¼rde mein bester Freund sagen?</div>
+                <div class="perspective-q" data-de="Wie wÃ¼rde er/sie mich trÃ¶sten?" data-en="How would they comfort me?">Wie wÃ¼rde er/sie mich trÃ¶sten?</div>
+                <div class="perspective-q" data-de="Was wÃ¼rde er/sie als StÃ¤rke in mir sehen?" data-en="What strength would they see in me?">Was wÃ¼rde er/sie als StÃ¤rke in mir sehen?</div>
+              </div>
+            </div>
+            <div class="perspective-card" onclick="togglePerspective(this, 'wise')">
+              <div class="perspective-icon">ðŸ¦‰</div>
+              <div class="perspective-name" data-de="Eine weise Person" data-en="A Wise Person">Eine weise Person</div>
+              <div class="perspective-questions" id="persp-wise">
+                <div class="perspective-q" data-de="Was wÃ¼rde eine weise, Ã¤ltere Person erkennen?" data-en="What would a wise elder recognize?">Was wÃ¼rde eine weise, Ã¤ltere Person erkennen?</div>
+                <div class="perspective-q" data-de="Welchen grÃ¶ÃŸeren Zusammenhang sieht sie?" data-en="What bigger context do they see?">Welchen grÃ¶ÃŸeren Zusammenhang sieht sie?</div>
+                <div class="perspective-q" data-de="Was gibt sie mir als Rat?" data-en="What advice do they give me?">Was gibt sie mir als Rat?</div>
+              </div>
+            </div>
+            <div class="perspective-card" onclick="togglePerspective(this, 'future')">
+              <div class="perspective-icon">ðŸ”®</div>
+              <div class="perspective-name" data-de="Mein zukÃ¼nftiges Ich" data-en="My Future Self">Mein zukÃ¼nftiges Ich</div>
+              <div class="perspective-questions" id="persp-future">
+                <div class="perspective-q" data-de="Wie sehe ich das in 5 Jahren?" data-en="How will I see this in 5 years?">Wie sehe ich das in 5 Jahren?</div>
+                <div class="perspective-q" data-de="Was habe ich daraus gelernt?" data-en="What will I have learned?">Was habe ich daraus gelernt?</div>
+                <div class="perspective-q" data-de="Was wÃ¼rde mein zukÃ¼nftiges Ich zu mir jetzt sagen?" data-en="What would my future self say to me now?">Was wÃ¼rde mein zukÃ¼nftiges Ich zu mir jetzt sagen?</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group mt-16">
+            <label class="form-label" data-de="Deine Gedanken nach dem Perspektivwechsel" data-en="Your thoughts after the perspective shift">Deine Gedanken nach dem Perspektivwechsel</label>
+            <textarea class="form-textarea" id="persp-reflection" placeholder="Was erkennst du jetzt neu?"></textarea>
+          </div>
+          <button class="btn btn-primary w-full" onclick="savePerspective()">ðŸ’¾ <span data-de="Reflexion speichern" data-en="Save reflection">Reflexion speichern</span></button>
+        </div>
+      </div>
+
+      <!-- BODY COMPASS -->
+      <div class="modal-overlay" id="modal-body">
+        <div class="modal">
+          <div class="modal-header">
+            <div class="modal-title">ðŸ§ <span data-de="KÃ¶rper-Kompass" data-en="Body Compass">KÃ¶rper-Kompass</span></div>
+            <button class="modal-close" onclick="closeTool('body')">âœ•</button>
+          </div>
+          <p class="text-muted mb-16" data-de="Tippe auf einen KÃ¶rperbereich und wÃ¤hle, was du dort spÃ¼rst. Trauma lebt oft im KÃ¶rper." data-en="Tap a body area and choose what you feel there. Trauma often lives in the body.">Tippe auf einen KÃ¶rperbereich und wÃ¤hle, was du dort spÃ¼rst. Trauma lebt oft im KÃ¶rper.</p>
+          <div class="body-compass">
+            <svg class="body-svg" viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
+              <circle class="body-area" id="ba-head" cx="50" cy="18" r="14" onclick="selectBodyArea('head')" />
+              <text x="50" y="22" text-anchor="middle" font-size="8" fill="#4C1D95" pointer-events="none">Kopf</text>
+              <rect class="body-area" id="ba-chest" x="30" y="38" width="40" height="35" rx="6" onclick="selectBodyArea('chest')" />
+              <text x="50" y="60" text-anchor="middle" font-size="7" fill="#4C1D95" pointer-events="none">Brust</text>
+              <rect class="body-area" id="ba-belly" x="32" y="78" width="36" height="28" rx="6" onclick="selectBodyArea('belly')" />
+              <text x="50" y="97" text-anchor="middle" font-size="7" fill="#4C1D95" pointer-events="none">Bauch</text>
+              <rect class="body-area" id="ba-leftarm" x="10" y="40" width="18" height="50" rx="8" onclick="selectBodyArea('leftarm')" />
+              <text x="19" y="70" text-anchor="middle" font-size="6" fill="#4C1D95" pointer-events="none">Arm</text>
+              <rect class="body-area" id="ba-rightarm" x="72" y="40" width="18" height="50" rx="8" onclick="selectBodyArea('rightarm')" />
+              <text x="81" y="70" text-anchor="middle" font-size="6" fill="#4C1D95" pointer-events="none">Arm</text>
+              <rect class="body-area" id="ba-leftleg" x="30" y="112" width="18" height="70" rx="8" onclick="selectBodyArea('leftleg')" />
+              <text x="39" y="152" text-anchor="middle" font-size="6" fill="#4C1D95" pointer-events="none">Bein</text>
+              <rect class="body-area" id="ba-rightleg" x="52" y="112" width="18" height="70" rx="8" onclick="selectBodyArea('rightleg')" />
+              <text x="61" y="152" text-anchor="middle" font-size="6" fill="#4C1D95" pointer-events="none">Bein</text>
+            </svg>
+            <div id="body-selected-area" style="font-weight:700;color:var(--purple);font-size:15px;"></div>
+            <div class="body-feelings" id="body-feelings-area">
+              <div class="feeling-chip" onclick="toggleFeeling(this)" data-de="Anspannung" data-en="Tension">Anspannung</div>
+              <div class="feeling-chip" onclick="toggleFeeling(this)" data-de="Taubheit" data-en="Numbness">Taubheit</div>
+              <div class="feeling-chip" onclick="toggleFeeling(this)" data-de="Schmerz" data-en="Pain">Schmerz</div>
+              <div class="feeling-chip" onclick="toggleFeeling(this)" data-de="WÃ¤rme" data-en="Warmth">WÃ¤rme</div>
+              <div class="feeling-chip" onclick="toggleFeeling(this)" data-de="Sicherheit" data-en="Safety">Sicherheit</div>
+              <div class="feeling-chip" onclick="toggleFeeling(this)" data-de="Zittern" data-en="Trembling">Zittern</div>
+              <div class="feeling-chip" onclick="toggleFeeling(this)" data-de="Enge" data-en="Tightness">Enge</div>
+              <div class="feeling-chip" onclick="toggleFeeling(this)" data-de="Leichtigkeit" data-en="Lightness">Leichtigkeit</div>
+            </div>
+            <div class="form-group w-full">
+              <textarea class="form-textarea" id="body-notes" placeholder="Was mÃ¶chtest du Ã¼ber diesen Bereich anmerken?" style="min-height:80px;"></textarea>
+            </div>
+            <button class="btn btn-teal w-full" onclick="saveBodyLog()">ðŸ’¾ <span data-de="KÃ¶rpergefÃ¼hl speichern" data-en="Save body feeling">KÃ¶rpergefÃ¼hl speichern</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END DRAMA TOOLS -->
+
+    <!-- MY STORY -->
+    <div id="section-story" class="section">
+      <div class="hero">
+        <h1 data-de="Meine Geschichte ðŸ“–" data-en="My Story ðŸ“–">Meine Geschichte ðŸ“–</h1>
+        <p data-de="Dein sicherer Raum zum Schreiben. Alle EintrÃ¤ge bleiben auf deinem GerÃ¤t." data-en="Your safe space for writing. All entries stay on your device.">Dein sicherer Raum zum Schreiben. Alle EintrÃ¤ge bleiben auf deinem GerÃ¤t.</p>
+      </div>
+      <div class="tabs" id="story-tabs">
+        <div class="tab active" onclick="switchTab('story','free')" data-de="Frei schreiben" data-en="Write freely">Frei schreiben</div>
+        <div class="tab" onclick="switchTab('story','guided')" data-de="GefÃ¼hrt" data-en="Guided">GefÃ¼hrt</div>
+        <div class="tab" onclick="switchTab('story','poetic')" data-de="Poetisch" data-en="Poetic">Poetisch</div>
+        <div class="tab" onclick="switchTab('story','entries')" data-de="Meine EintrÃ¤ge" data-en="My Entries">Meine EintrÃ¤ge</div>
+      </div>
+      <div id="story-tab-free" class="tab-content active">
+        <div class="card">
+          <div class="card-title" data-de="Schreib frei" data-en="Write freely">Schreib frei</div>
+          <div class="card-sub" data-de="Keine Regeln. Nur du und deine Gedanken." data-en="No rules. Just you and your thoughts.">Keine Regeln. Nur du und deine Gedanken.</div>
+          <textarea class="form-textarea" id="story-free-text" style="min-height:280px;" placeholder="Schreib hier, was auf dem Herzen liegt..."></textarea>
+          <div class="flex gap-8 mt-16">
+            <button class="btn btn-primary" onclick="saveStoryEntry('free')">ðŸ’¾ <span data-de="Speichern" data-en="Save">Speichern</span></button>
+            <button class="btn btn-outline" onclick="clearStoryField('story-free-text')" data-de="Leeren" data-en="Clear">Leeren</button>
+          </div>
+        </div>
+      </div>
+      <div id="story-tab-guided" class="tab-content">
+        <div class="card">
+          <div class="card-title" data-de="GefÃ¼hrte Reflexion" data-en="Guided Reflection">GefÃ¼hrte Reflexion</div>
+          <div class="card-sub" data-de="Beantworte diese Fragen in deinem eigenen Tempo." data-en="Answer these questions at your own pace.">Beantworte diese Fragen in deinem eigenen Tempo.</div>
+          <div class="form-group">
+            <label class="form-label" data-de="Vor dem Erlebnis war ich..." data-en="Before the event I was...">Vor dem Erlebnis war ich...</label>
+            <textarea class="form-textarea" id="guided-before" placeholder="Beschreibe dich damals..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-de="Das Schwerste war fÃ¼r mich..." data-en="The hardest thing was...">Das Schwerste war fÃ¼r mich...</label>
+            <textarea class="form-textarea" id="guided-hardest" placeholder="Was hat am meisten wehgetan?"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-de="Was mir geholfen hat..." data-en="What helped me...">Was mir geholfen hat...</label>
+            <textarea class="form-textarea" id="guided-helped" placeholder="Menschen, Dinge, Momente..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-de="Ich habe gelernt, dass..." data-en="I have learned that...">Ich habe gelernt, dass...</label>
+            <textarea class="form-textarea" id="guided-learned" placeholder="Welche Weisheit trÃ¤gst du jetzt?"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-de="In der Zukunft mÃ¶chte ich..." data-en="In the future I want to...">In der Zukunft mÃ¶chte ich...</label>
+            <textarea class="form-textarea" id="guided-future" placeholder="Deine Hoffnungen und TrÃ¤ume..."></textarea>
+          </div>
+          <button class="btn btn-primary" onclick="saveStoryEntry('guided')">ðŸ’¾ <span data-de="Reflexion speichern" data-en="Save reflection">Reflexion speichern</span></button>
+        </div>
+      </div>
+      <div id="story-tab-poetic" class="tab-content">
+        <div class="card">
+          <div class="card-title" data-de="Poetisch schreiben" data-en="Write poetically">Poetisch schreiben</div>
+          <div class="card-sub" data-de="Nutze Bilder und Metaphern. Kein Trauma muss direkt benannt werden." data-en="Use images and metaphors. No trauma needs to be named directly.">Nutze Bilder und Metaphern. Kein Trauma muss direkt benannt werden.</div>
+          <div style="background:rgba(107,33,168,0.07);border-radius:12px;padding:14px;margin-bottom:16px;">
+            <div style="font-size:12px;font-weight:700;color:var(--purple);margin-bottom:8px;" data-de="Metaphern-Impulse" data-en="Metaphor prompts">Metaphern-Impulse</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.8;" data-de="â€¢ Wenn mein Schmerz ein Wetter wÃ¤re...<br>â€¢ Mein Herz ist wie ein...<br>â€¢ Ich bin ein Baum, dessen Wurzeln...<br>â€¢ In meiner dunkelsten Stunde war ich ein..." data-en="â€¢ If my pain were a weather pattern...<br>â€¢ My heart is like a...<br>â€¢ I am a tree whose roots...<br>â€¢ In my darkest hour I was a...">â€¢ Wenn mein Schmerz ein Wetter wÃ¤re...<br>â€¢ Mein Herz ist wie ein...<br>â€¢ Ich bin ein Baum, dessen Wurzeln...<br>â€¢ In meiner dunkelsten Stunde war ich ein...</div>
+          </div>
+          <textarea class="form-textarea" id="story-poetic-text" style="min-height:220px;" placeholder="Schreib ein Gedicht, eine Metapher, ein Bild..."></textarea>
+          <button class="btn btn-primary mt-16" onclick="saveStoryEntry('poetic')">ðŸ’¾ <span data-de="Gedicht speichern" data-en="Save poem">Gedicht speichern</span></button>
+        </div>
+      </div>
+      <div id="story-tab-entries" class="tab-content">
+        <div class="card">
+          <div class="card-title" data-de="Meine gespeicherten EintrÃ¤ge" data-en="My Saved Entries">Meine gespeicherten EintrÃ¤ge</div>
+          <div id="story-entries-list"></div>
+        </div>
+      </div>
+    </div>
+    <!-- END MY STORY -->
+
+    <!-- PTSD KNOWLEDGE -->
+    <div id="section-knowledge" class="section">
+      <div class="hero">
+        <h1 data-de="PTBS-Wissen ðŸ§ " data-en="PTSD Knowledge ðŸ§ ">PTBS-Wissen ðŸ§ </h1>
+        <p data-de="Verstehe, was in dir vorgeht â€” in deiner Sprache, nicht in Doktor-Sprache." data-en="Understand what's happening inside you â€” in your language, not doctor language.">Verstehe, was in dir vorgeht â€” in deiner Sprache, nicht in Doktor-Sprache.</p>
+      </div>
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab('know','what')">Was ist PTBS?</div>
+        <div class="tab" onclick="switchTab('know','symptoms')"><span data-de="Symptome" data-en="Symptoms">Symptome</span></div>
+        <div class="tab" onclick="switchTab('know','faq')">FAQ</div>
+        <div class="tab" onclick="switchTab('know','drama-science')" data-de="Warum Drama?" data-en="Why Drama?">Warum Drama?</div>
+      </div>
+      <div id="know-tab-what" class="tab-content active">
+        <div class="card">
+          <div class="card-title" data-de="Was ist PTBS?" data-en="What is PTSD?">Was ist PTBS?</div>
+          <div class="brain-diagram">
+            <div style="font-size:48px;margin-bottom:8px;">ðŸ§ </div>
+            <div style="font-weight:800;font-size:16px;color:#4C1D95;margin-bottom:6px;" data-de="Dein Gehirn ist wie eine Alarmanlage..." data-en="Your brain is like an alarm system...">Dein Gehirn ist wie eine Alarmanlage...</div>
+            <div style="font-size:13px;color:#5B21B6;line-height:1.6;" data-de="Normalerweise schaltet der Alarm nach einer Gefahr ab. Aber nach einem Trauma kann der Alarm steckenbleiben â€” er klingelt weiter, auch wenn keine Gefahr mehr da ist." data-en="Normally the alarm turns off after danger. But after trauma, the alarm can get stuck â€” it keeps ringing even when there's no more danger.">Normalerweise schaltet der Alarm nach einer Gefahr ab. Aber nach einem Trauma kann der Alarm steckenbleiben â€” er klingelt weiter, auch wenn keine Gefahr mehr da ist.</div>
+          </div>
+          <div style="background:linear-gradient(135deg,#F0FDF4,#DCFCE7);border-radius:14px;padding:20px;margin-bottom:16px;border-left:4px solid #22C55E;">
+            <div style="font-size:20px;margin-bottom:8px;">ðŸ’š</div>
+            <div style="font-weight:700;font-size:16px;color:#166534;margin-bottom:6px;" data-de="Du bist nicht kaputt." data-en="You are not broken.">Du bist nicht kaputt.</div>
+            <div style="font-size:13px;color:#166534;line-height:1.6;" data-de="PTBS ist keine SchwÃ¤che. Dein Gehirn und dein KÃ¶rper haben das Schlimmste Ã¼berlebt und versuchen jetzt, dich zu schÃ¼tzen. Das ist eine StÃ¤rke â€” auch wenn es sich nicht so anfÃ¼hlt." data-en="PTSD is not weakness. Your brain and body survived the worst and are now trying to protect you. That is a strength â€” even if it doesn't feel that way.">PTBS ist keine SchwÃ¤che. Dein Gehirn und dein KÃ¶rper haben das Schlimmste Ã¼berlebt und versuchen jetzt, dich zu schÃ¼tzen. Das ist eine StÃ¤rke â€” auch wenn es sich nicht so anfÃ¼hlt.</div>
+          </div>
+          <div class="knowledge-section">
+            <div style="font-weight:700;font-size:15px;color:var(--text);margin-bottom:8px;" data-de="Was passiert bei PTBS im Gehirn?" data-en="What happens in the brain with PTSD?">Was passiert bei PTBS im Gehirn?</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.7;">
+              <span data-de="ðŸ”´ <strong>Amygdala</strong> (Alarmglocke): Ist Ã¼bermÃ¤ÃŸig aktiv â€” sieht Ã¼berall Gefahr<br>ðŸŸ¡ <strong>Hippocampus</strong> (Kalender des Gehirns): Bringt die Erinnerung nicht richtig in die Vergangenheit<br>ðŸŸ¢ <strong>PrÃ¤frontaler Kortex</strong> (Vernunft): Hat Schwierigkeiten, die Alarmglocke zu beruhigen" data-en="ðŸ”´ <strong>Amygdala</strong> (alarm bell): Overly active â€” sees danger everywhere<br>ðŸŸ¡ <strong>Hippocampus</strong> (brain's calendar): Doesn't properly file the memory in the past<br>ðŸŸ¢ <strong>Prefrontal Cortex</strong> (reason): Has trouble calming the alarm bell">ðŸ”´ <strong>Amygdala</strong> (Alarmglocke): Ist Ã¼bermÃ¤ÃŸig aktiv â€” sieht Ã¼berall Gefahr<br>ðŸŸ¡ <strong>Hippocampus</strong> (Kalender des Gehirns): Bringt die Erinnerung nicht richtig in die Vergangenheit<br>ðŸŸ¢ <strong>PrÃ¤frontaler Kortex</strong> (Vernunft): Hat Schwierigkeiten, die Alarmglocke zu beruhigen</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="know-tab-symptoms" class="tab-content">
+        <div class="card">
+          <div class="card-title" data-de="PTBS-Symptome erkennen" data-en="Recognizing PTSD Symptoms">PTBS-Symptome erkennen</div>
+          <div class="card-sub" data-de="Dies ist keine Diagnose â€” nur Information zum Verstehen." data-en="This is not a diagnosis â€” just information to understand.">Dies ist keine Diagnose â€” nur Information zum Verstehen.</div>
+          <div class="symptom-category symptom-cat-re">
+            <div class="symptom-cat-title" style="color:#991B1B;">ðŸ”´ <span data-de="Wiedererleben" data-en="Re-experiencing">Wiedererleben</span></div>
+            <ul class="symptom-list">
+              <li data-de="Flashbacks â€” das Trauma fÃ¼hlt sich wieder real an" data-en="Flashbacks â€” the trauma feels real again">Flashbacks â€” das Trauma fÃ¼hlt sich wieder real an</li>
+              <li data-de="AlptrÃ¤ume Ã¼ber das Erlebte" data-en="Nightmares about what happened">AlptrÃ¤ume Ã¼ber das Erlebte</li>
+              <li data-de="Starke Reaktionen auf AuslÃ¶ser (Trigger)" data-en="Strong reactions to triggers">Starke Reaktionen auf AuslÃ¶ser (Trigger)</li>
+              <li data-de="Bilder oder Gedanken tauchen ungewollt auf" data-en="Images or thoughts appear unwanted">Bilder oder Gedanken tauchen ungewollt auf</li>
+            </ul>
+          </div>
+          <div class="symptom-category symptom-cat-av">
+            <div class="symptom-cat-title" style="color:#92400E;">ðŸŸ¡ <span data-de="Vermeidung" data-en="Avoidance">Vermeidung</span></div>
+            <ul class="symptom-list">
+              <li data-de="Orte, Menschen oder Situationen meiden" data-en="Avoiding places, people or situations">Orte, Menschen oder Situationen meiden</li>
+              <li data-de="Ãœber das Trauma nicht sprechen wollen" data-en="Not wanting to talk about the trauma">Ãœber das Trauma nicht sprechen wollen</li>
+              <li data-de="Emotionale Taubheit oder Abgestumpftheit" data-en="Emotional numbness or blunting">Emotionale Taubheit oder Abgestumpftheit</li>
+              <li data-de="Verlust von Interesse an Dingen, die frÃ¼her SpaÃŸ gemacht haben" data-en="Loss of interest in things that used to be fun">Verlust von Interesse an Dingen, die frÃ¼her SpaÃŸ gemacht haben</li>
+            </ul>
+          </div>
+          <div class="symptom-category symptom-cat-th">
+            <div class="symptom-cat-title" style="color:#1E40AF;">ðŸ”µ <span data-de="VerÃ¤nderte Gedanken" data-en="Changed Thinking">VerÃ¤nderte Gedanken</span></div>
+            <ul class="symptom-list">
+              <li data-de="'Es ist meine Schuld' â€” negative Ãœberzeugungen" data-en="'It's my fault' â€” negative beliefs">'Es ist meine Schuld' â€” negative Ãœberzeugungen</li>
+              <li data-de="Sich von anderen getrennt oder fremd fÃ¼hlen" data-en="Feeling separated or estranged from others">Sich von anderen getrennt oder fremd fÃ¼hlen</li>
+              <li data-de="Scham, Schuld, Ekel gegenÃ¼ber sich selbst" data-en="Shame, guilt, disgust toward oneself">Scham, Schuld, Ekel gegenÃ¼ber sich selbst</li>
+              <li data-de="Schwierigkeiten, positive GefÃ¼hle zu empfinden" data-en="Difficulty experiencing positive feelings">Schwierigkeiten, positive GefÃ¼hle zu empfinden</li>
+            </ul>
+          </div>
+          <div class="symptom-category symptom-cat-hy">
+            <div class="symptom-cat-title" style="color:#166534;">ðŸŸ¢ <span data-de="Ãœberreizung" data-en="Hyperarousal">Ãœberreizung</span></div>
+            <ul class="symptom-list">
+              <li data-de="Schreckhaftigkeit â€” auf Kleinigkeiten stark reagieren" data-en="Startle response â€” reacting strongly to small things">Schreckhaftigkeit â€” auf Kleinigkeiten stark reagieren</li>
+              <li data-de="Schlafprobleme: Einschlafen oder Durchschlafen" data-en="Sleep problems: falling or staying asleep">Schlafprobleme: Einschlafen oder Durchschlafen</li>
+              <li data-de="Reizbarkeit oder WutausbrÃ¼che" data-en="Irritability or anger outbursts">Reizbarkeit oder WutausbrÃ¼che</li>
+              <li data-de="Konzentrationsschwierigkeiten" data-en="Difficulty concentrating">Konzentrationsschwierigkeiten</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div id="know-tab-faq" class="tab-content">
+        <div class="card">
+          <div class="card-title">FAQ</div>
+          <div id="faq-list"></div>
+        </div>
+      </div>
+      <div id="know-tab-drama-science" class="tab-content">
+        <div class="card">
+          <div class="card-title" data-de="Warum Drama-Therapie wirkt" data-en="Why Drama Therapy Works">Warum Drama-Therapie wirkt</div>
+          <div class="card-sub" data-de="Wenn Worte nicht reichen â€” die Wissenschaft dahinter" data-en="When words aren't enough â€” the science behind it">Wenn Worte nicht reichen â€” die Wissenschaft dahinter</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px;">
+            <div style="background:linear-gradient(135deg,#EDE9FE,#F5F3FF);border-radius:12px;padding:16px;border-left:4px solid #6B21A8;">
+              <div style="font-size:24px;margin-bottom:6px;">ðŸ§ </div>
+              <div style="font-weight:700;font-size:13px;color:#4C1D95;margin-bottom:4px;" data-de="Rechts-Gehirn-Zugang" data-en="Right Brain Access">Rechts-Gehirn-Zugang</div>
+              <div style="font-size:12px;color:#5B21B6;line-height:1.5;" data-de="Trauma wird in der rechten GehirnhÃ¤lfte gespeichert. Drama erreicht diese Bereiche, die Worte allein nicht erreichen." data-en="Trauma is stored in the right hemisphere. Drama reaches these areas that words alone cannot.">Trauma wird in der rechten GehirnhÃ¤lfte gespeichert. Drama erreicht diese Bereiche, die Worte allein nicht erreichen.</div>
+            </div>
+            <div style="background:linear-gradient(135deg,#CCFBF1,#F0FDF4);border-radius:12px;padding:16px;border-left:4px solid #0D9488;">
+              <div style="font-size:24px;margin-bottom:6px;">ðŸ›¡ï¸</div>
+              <div style="font-weight:700;font-size:13px;color:#0F766E;margin-bottom:4px;" data-de="SchÃ¼tzende Distanz" data-en="Protective Distance">SchÃ¼tzende Distanz</div>
+              <div style="font-size:12px;color:#0D9488;line-height:1.5;" data-de="'Es war einmal...' schafft sicheren Abstand. Du musst das Trauma nicht direkt berÃ¼hren." data-en="'Once upon a time...' creates safe distance. You don't have to touch the trauma directly.">'Es war einmal...' schafft sicheren Abstand. Du musst das Trauma nicht direkt berÃ¼hren.</div>
+            </div>
+            <div style="background:linear-gradient(135deg,#FEF3C7,#FFFBEB);border-radius:12px;padding:16px;border-left:4px solid #F59E0B;">
+              <div style="font-size:24px;margin-bottom:6px;">ðŸƒ</div>
+              <div style="font-weight:700;font-size:13px;color:#92400E;margin-bottom:4px;" data-de="KÃ¶rperwissen" data-en="Body Knowledge">KÃ¶rperwissen</div>
+              <div style="font-size:12px;color:#B45309;line-height:1.5;" data-de="Trauma lebt im KÃ¶rper. Bewegung, Ausdruck und VerkÃ¶rperung helfen, es zu lÃ¶sen." data-en="Trauma lives in the body. Movement, expression and embodiment help release it.">Trauma lebt im KÃ¶rper. Bewegung, Ausdruck und VerkÃ¶rperung helfen, es zu lÃ¶sen.</div>
+            </div>
+            <div style="background:linear-gradient(135deg,#FEF2F2,#FFF1F2);border-radius:12px;padding:16px;border-left:4px solid #EF4444;">
+              <div style="font-size:24px;margin-bottom:6px;">ðŸŽ­</div>
+              <div style="font-weight:700;font-size:13px;color:#991B1B;margin-bottom:4px;" data-de="Neue Enden" data-en="New Endings">Neue Enden</div>
+              <div style="font-size:12px;color:#B91C1C;line-height:1.5;" data-de="Im Drama kannst du die Geschichte neu schreiben. Das Gehirn kann neue, heilende Erfahrungen machen." data-en="In drama you can rewrite the story. The brain can make new, healing experiences.">Im Drama kannst du die Geschichte neu schreiben. Das Gehirn kann neue, heilende Erfahrungen machen.</div>
+            </div>
+          </div>
+          <div style="background:linear-gradient(135deg,#4C1D95,#0D9488);border-radius:14px;padding:20px;margin-top:16px;color:white;text-align:center;">
+            <div style="font-size:18px;font-weight:800;margin-bottom:6px;" data-de="Forschung zeigt:" data-en="Research shows:">Forschung zeigt:</div>
+            <div style="font-size:14px;opacity:0.9;line-height:1.6;" data-de="Drama-Therapie ist besonders wirksam nach Trauma und bei jungen Menschen mit starken Symptomen. Sie wirkt anders als GesprÃ¤che â€” und genau das macht sie so wertvoll." data-en="Drama therapy is especially effective after trauma and in young people with strong symptoms. It works differently than talk therapy â€” and that's exactly what makes it so valuable.">Drama-Therapie ist besonders wirksam nach Trauma und bei jungen Menschen mit starken Symptomen. Sie wirkt anders als GesprÃ¤che â€” und genau das macht sie so wertvoll.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END KNOWLEDGE -->
+
+    <!-- EXERCISES -->
+    <div id="section-exercises" class="section">
+      <div class="hero">
+        <h1 data-de="Ãœbungen ðŸŒ±" data-en="Exercises ðŸŒ±">Ãœbungen ðŸŒ±</h1>
+        <p data-de="Evidenzbasierte Ãœbungen fÃ¼r Grounding, Regulation und SelbstfÃ¼rsorge" data-en="Evidence-based exercises for grounding, regulation and self-care">Evidenzbasierte Ãœbungen fÃ¼r Grounding, Regulation und SelbstfÃ¼rsorge</p>
+      </div>
+
+      <!-- GROUNDING 5-4-3-2-1 -->
+      <div class="exercise-card">
+        <div class="exercise-header">
+          <div class="exercise-icon">ðŸŒ</div>
+          <div>
+            <div class="exercise-name" data-de="Geerdet bleiben: 5-4-3-2-1" data-en="Stay Grounded: 5-4-3-2-1">Geerdet bleiben: 5-4-3-2-1</div>
+            <div class="exercise-type" data-de="Sensorisches Grounding Â· 3 Minuten" data-en="Sensory Grounding Â· 3 minutes">Sensorisches Grounding Â· 3 Minuten</div>
+          </div>
+        </div>
+        <div class="grounding-step">
+          <div class="grounding-num">5</div>
+          <div class="grounding-label" data-de="Dinge, die du SIEHST" data-en="Things you SEE">Dinge, die du SIEHST</div>
+          <div class="grounding-sub" data-de="Schau dich um. Nenne 5 Dinge, die du sehen kannst." data-en="Look around. Name 5 things you can see.">Schau dich um. Nenne 5 Dinge, die du sehen kannst.</div>
+          <textarea class="form-textarea mt-16" style="min-height:60px;" placeholder="1. ... 2. ... 3. ... 4. ... 5. ..."></textarea>
+        </div>
+        <div class="grounding-step">
+          <div class="grounding-num">4</div>
+          <div class="grounding-label" data-de="Dinge, die du BERÃœHRST" data-en="Things you TOUCH">Dinge, die du BERÃœHRST</div>
+          <div class="grounding-sub" data-de="BerÃ¼hre 4 Dinge um dich herum. Wie fÃ¼hlen sie sich an?" data-en="Touch 4 things around you. How do they feel?">BerÃ¼hre 4 Dinge um dich herum. Wie fÃ¼hlen sie sich an?</div>
+          <textarea class="form-textarea mt-16" style="min-height:60px;" placeholder="1. ... 2. ... 3. ... 4. ..."></textarea>
+        </div>
+        <div class="grounding-step">
+          <div class="grounding-num">3</div>
+          <div class="grounding-label" data-de="Dinge, die du HÃ–RST" data-en="Things you HEAR">Dinge, die du HÃ–RST</div>
+          <div class="grounding-sub" data-de="HÃ¶r genau hin. Was nimmst du wahr?" data-en="Listen carefully. What do you notice?">HÃ¶r genau hin. Was nimmst du wahr?</div>
+          <textarea class="form-textarea mt-16" style="min-height:60px;" placeholder="1. ... 2. ... 3. ..."></textarea>
+        </div>
+        <div class="grounding-step">
+          <div class="grounding-num">2</div>
+          <div class="grounding-label" data-de="Dinge, die du RIECHST" data-en="Things you SMELL">Dinge, die du RIECHST</div>
+          <div class="grounding-sub" data-de="SchnÃ¼ffel dich um. Was riechst du?" data-en="Sniff around. What do you smell?">SchnÃ¼ffel dich um. Was riechst du?</div>
+          <textarea class="form-textarea mt-16" style="min-height:60px;" placeholder="1. ... 2. ..."></textarea>
+        </div>
+        <div class="grounding-step">
+          <div class="grounding-num">1</div>
+          <div class="grounding-label" data-de="Ding, das du SCHMECKST" data-en="Thing you TASTE">Ding, das du SCHMECKST</div>
+          <div class="grounding-sub" data-de="Was schmeckst du gerade in deinem Mund?" data-en="What do you taste right now in your mouth?">Was schmeckst du gerade in deinem Mund?</div>
+          <textarea class="form-textarea mt-16" style="min-height:60px;" placeholder="1. ..."></textarea>
+        </div>
+        <div style="background:linear-gradient(135deg,#F0FDF4,#DCFCE7);border-radius:12px;padding:14px;margin-top:12px;text-align:center;">
+          <div style="font-size:18px;margin-bottom:4px;">âœ…</div>
+          <div style="font-weight:700;font-size:14px;color:#166534;" data-de="Du bist hier. Du bist sicher. Jetzt, in diesem Moment." data-en="You are here. You are safe. Right now, in this moment.">Du bist hier. Du bist sicher. Jetzt, in diesem Moment.</div>
+        </div>
+      </div>
+
+      <!-- BOX BREATHING -->
+      <div class="exercise-card">
+        <div class="exercise-header">
+          <div class="exercise-icon">ðŸ“¦</div>
+          <div>
+            <div class="exercise-name" data-de="Box-Atmung" data-en="Box Breathing">Box-Atmung</div>
+            <div class="exercise-type" data-de="Atemregulation Â· 4 Minuten" data-en="Breath regulation Â· 4 minutes">Atemregulation Â· 4 Minuten</div>
+          </div>
+        </div>
+        <p class="text-muted mb-16" data-de="Atme mit dem Rechteck: 4 Sekunden einatmen, 4 halten, 4 ausatmen, 4 halten." data-en="Breathe with the box: 4 seconds inhale, 4 hold, 4 exhale, 4 hold.">Atme mit dem Rechteck: 4 Sekunden einatmen, 4 halten, 4 ausatmen, 4 halten.</p>
+        <div style="text-align:center;">
+          <div class="breathing-box" id="breath-box"><span id="breath-text" data-de="Starten" data-en="Start">Starten</span></div>
+          <button class="btn btn-teal" onclick="startBoxBreathing()" id="breath-btn" data-de="Ãœbung starten" data-en="Start exercise">Ãœbung starten</button>
+        </div>
+      </div>
+
+      <!-- SAFE PLACE -->
+      <div class="exercise-card">
+        <div class="exercise-header">
+          <div class="exercise-icon">ðŸ¡</div>
+          <div>
+            <div class="exercise-name" data-de="Mein sicherer Ort" data-en="My Safe Place">Mein sicherer Ort</div>
+            <div class="exercise-type" data-de="Visualisierung Â· Drama-Element" data-en="Visualization Â· Drama Element">Visualisierung Â· Drama-Element</div>
+          </div>
+        </div>
+        <div style="background:linear-gradient(135deg,#EDE9FE,#CCFBF1);border-radius:12px;padding:16px;margin-bottom:16px;font-size:13px;color:#4C1D95;line-height:1.7;font-style:italic;" data-de="&quot;Dein sicherer Ort ist wie eine BÃ¼hne, die nur fÃ¼r dich existiert. Niemand sonst kann sie betreten. Du bist der Regisseur.&quot;" data-en="&quot;Your safe place is like a stage that exists only for you. No one else can enter it. You are the director.&quot;">"Dein sicherer Ort ist wie eine BÃ¼hne, die nur fÃ¼r dich existiert. Niemand sonst kann sie betreten. Du bist der Regisseur."</div>
+        <div class="form-group">
+          <label class="form-label" data-de="Wo ist dein sicherer Ort? (real oder imaginÃ¤r)" data-en="Where is your safe place? (real or imaginary)">Wo ist dein sicherer Ort? (real oder imaginÃ¤r)</label>
+          <input class="form-input" id="safe-where" placeholder="z.B. Ein Wald, ein Zimmer, eine Insel, ein Planeten..." />
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-de="Was siehst du dort?" data-en="What do you see there?">Was siehst du dort?</label>
+          <textarea class="form-textarea" id="safe-see" placeholder="Farben, Licht, Landschaft..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-de="Was hÃ¶rst du?" data-en="What do you hear?">Was hÃ¶rst du?</label>
+          <input class="form-input" id="safe-hear" placeholder="Wasser, Wind, Stille, Musik..." />
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-de="Wie fÃ¼hlst du dich dort?" data-en="How do you feel there?">Wie fÃ¼hlst du dich dort?</label>
+          <input class="form-input" id="safe-feel" placeholder="Geborgen, frei, stark..." />
+        </div>
+        <button class="btn btn-primary" onclick="saveSafePlace()">ðŸ’¾ <span data-de="Sicheren Ort speichern" data-en="Save safe place">Sicheren Ort speichern</span></button>
+        <div id="safe-saved" class="hidden mt-16" style="color:var(--teal);font-weight:700;text-align:center;">âœ“ <span data-de="Gespeichert! Du kannst jederzeit hierher zurÃ¼ckkehren." data-en="Saved! You can return here anytime.">Gespeichert! Du kannst jederzeit hierher zurÃ¼ckkehren.</span></div>
+      </div>
+
+      <!-- RESOURCE CHARACTER -->
+      <div class="exercise-card">
+        <div class="exercise-header">
+          <div class="exercise-icon">ðŸ¦¸</div>
+          <div>
+            <div class="exercise-name" data-de="Meine Ressourcen-Figur" data-en="My Resource Character">Meine Ressourcen-Figur</div>
+            <div class="exercise-type" data-de="Drama-Element Â· StÃ¤rkenarbeit" data-en="Drama Element Â· Strengths work">Drama-Element Â· StÃ¤rkenarbeit</div>
+          </div>
+        </div>
+        <p class="text-muted mb-16" data-de="Erschaffe eine Figur â€” dich selbst oder ein Wesen â€” das in schwierigen Momenten fÃ¼r dich da ist." data-en="Create a character â€” yourself or a being â€” who is there for you in difficult moments.">Erschaffe eine Figur â€” dich selbst oder ein Wesen â€” das in schwierigen Momenten fÃ¼r dich da ist.</p>
+        <div class="form-group">
+          <label class="form-label" data-de="Name der Figur" data-en="Character name">Name der Figur</label>
+          <input class="form-input" id="res-name" placeholder="z.B. PhÃ¶nix, der Weise Wolf, Lichtbringer..." />
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-de="Superkraft dieser Figur" data-en="This character's superpower">Superkraft dieser Figur</label>
+          <input class="form-input" id="res-power" placeholder="z.B. Furchtlosigkeit, MitgefÃ¼hl, Stille..." />
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-de="Was sagt sie zu mir in schwierigen Momenten?" data-en="What does it say to me in difficult moments?">Was sagt sie zu mir in schwierigen Momenten?</label>
+          <textarea class="form-textarea" id="res-message" placeholder="Schreib ihren Rat oder ihre Botschaft..."></textarea>
+        </div>
+        <button class="btn btn-amber" onclick="saveResourceChar()">âš¡ <span data-de="Figur aktivieren" data-en="Activate character">Figur aktivieren</span></button>
+        <div id="res-active" class="hidden" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);border-radius:12px;padding:16px;margin-top:12px;">
+          <div style="font-weight:700;font-size:15px;color:#92400E;" id="res-display-name"></div>
+          <div style="font-size:13px;color:#78350F;margin-top:6px;" id="res-display-message"></div>
+        </div>
+      </div>
+
+      <!-- SHAKE OFF -->
+      <div class="exercise-card">
+        <div class="exercise-header">
+          <div class="exercise-icon">ðŸ•</div>
+          <div>
+            <div class="exercise-name" data-de="Dramatisches SchÃ¼tteln" data-en="Shake It Off">Dramatisches SchÃ¼tteln</div>
+            <div class="exercise-type" data-de="TRE-basiert Â· KÃ¶rperÃ¼bung Â· 5 Minuten" data-en="TRE-based Â· Body exercise Â· 5 minutes">TRE-basiert Â· KÃ¶rperÃ¼bung Â· 5 Minuten</div>
+          </div>
+        </div>
+        <div style="background:linear-gradient(135deg,#FFFBEB,#FEF3C7);border-radius:12px;padding:16px;margin-bottom:16px;font-size:13px;color:#78350F;line-height:1.7;border-left:4px solid #F59E0B;" data-de="Hunde schÃ¼tteln sich nach einem Schreck â€” und sind dann wieder entspannt. Wir kÃ¶nnen das auch! Das SchÃ¼tteln hilft dem Nervensystem, Stress abzubauen." data-en="Dogs shake after a scare â€” and then they're relaxed again. We can do this too! Shaking helps the nervous system release stress.">Hunde schÃ¼tteln sich nach einem Schreck â€” und sind dann wieder entspannt. Wir kÃ¶nnen das auch! Das SchÃ¼tteln hilft dem Nervensystem, Stress abzubauen.</div>
+        <ol style="font-size:13px;color:var(--text-muted);line-height:2;padding-left:20px;">
+          <li data-de="Stelle dich hin, FÃ¼ÃŸe schulterbreit" data-en="Stand up, feet shoulder-width apart">Stelle dich hin, FÃ¼ÃŸe schulterbreit</li>
+          <li data-de="Beuge leicht die Knie und beginne, die Beine zu lockern" data-en="Bend your knees slightly and start loosening your legs">Beuge leicht die Knie und beginne, die Beine zu lockern</li>
+          <li data-de="Lass das SchÃ¼tteln sich von den Beinen in den ganzen KÃ¶rper ausbreiten" data-en="Let the shaking spread from your legs through your whole body">Lass das SchÃ¼tteln sich von den Beinen in den ganzen KÃ¶rper ausbreiten</li>
+          <li data-de="Atme dabei tief und ruhig weiter" data-en="Keep breathing deeply and calmly">Atme dabei tief und ruhig weiter</li>
+          <li data-de="SchÃ¼ttle 3-5 Minuten lang, dann komm langsam zur Ruhe" data-en="Shake for 3-5 minutes, then slowly come to rest">SchÃ¼ttle 3-5 Minuten lang, dann komm langsam zur Ruhe</li>
+        </ol>
+        <div style="text-align:center;margin-top:16px;">
+          <div class="timer-circle" id="shake-timer">5:00</div>
+          <button class="btn btn-teal" onclick="startShakeTimer()" id="shake-btn" data-de="Timer starten" data-en="Start timer">Timer starten</button>
+        </div>
+      </div>
+    </div>
+    <!-- END EXERCISES -->
+
+    <!-- TRAUMA BINDER -->
+    <div id="section-binder" class="section">
+      <div class="hero">
+        <h1 data-de="Trauma-Ordner ðŸ“" data-en="Trauma Binder ðŸ“">Trauma-Ordner ðŸ“</h1>
+        <p data-de="Dein persÃ¶nlicher, sicherer Bereich. Alles an einem Ort." data-en="Your personal, secure area. Everything in one place.">Dein persÃ¶nlicher, sicherer Bereich. Alles an einem Ort.</p>
+      </div>
+      <div class="binder-tabs">
+        <div class="binder-tab active" onclick="switchBinder('meine-geschichte')" data-de="Meine Geschichte" data-en="My Story">Meine Geschichte</div>
+        <div class="binder-tab" onclick="switchBinder('trigger')" data-de="Trigger" data-en="Triggers">Trigger</div>
+        <div class="binder-tab" onclick="switchBinder('ressourcen')" data-de="Ressourcen" data-en="Resources">Ressourcen</div>
+        <div class="binder-tab" onclick="switchBinder('kontakte')" data-de="Hilfe-Kontakte" data-en="Help Contacts">Hilfe-Kontakte</div>
+        <div class="binder-tab" onclick="switchBinder('sitzungen')" data-de="Therapie" data-en="Therapy">Therapie</div>
+        <div class="binder-tab" onclick="switchBinder('notfall')" data-de="Notfallplan" data-en="Crisis Plan">Notfallplan</div>
+      </div>
+
+      <div id="binder-meine-geschichte" class="binder-section active">
+        <div class="card">
+          <div class="card-title" data-de="Meine Geschichte (Zusammenfassung)" data-en="My Story (Summary)">Meine Geschichte (Zusammenfassung)</div>
+          <div class="card-sub" data-de="Eine kurze Zusammenfassung, die du dir oder einem Therapeuten zeigen kannst" data-en="A brief summary you can show yourself or a therapist">Eine kurze Zusammenfassung, die du dir oder einem Therapeuten zeigen kannst</div>
+          <textarea class="form-textarea" id="binder-story" style="min-height:200px;" placeholder="Schreib so viel oder so wenig du mÃ¶chtest..."></textarea>
+          <button class="btn btn-primary mt-16" onclick="saveBinderField('binder-story','story')" data-de="Speichern" data-en="Save">Speichern</button>
+        </div>
+      </div>
+
+      <div id="binder-trigger" class="binder-section">
+        <div class="card">
+          <div class="card-title" data-de="Meine Trigger" data-en="My Triggers">Meine Trigger</div>
+          <div class="card-sub" data-de="Was lÃ¶st starke Reaktionen aus? Und was hilft dann?" data-en="What triggers strong reactions? And what helps?">Was lÃ¶st starke Reaktionen aus? Und was hilft dann?</div>
+          <div id="triggers-list"></div>
+          <div style="background:var(--bg);border-radius:12px;padding:16px;border:1px dashed var(--border);margin-top:12px;">
+            <div style="font-weight:700;font-size:13px;margin-bottom:10px;" data-de="Neuen Trigger hinzufÃ¼gen:" data-en="Add new trigger:">Neuen Trigger hinzufÃ¼gen:</div>
+            <input class="form-input mb-8" id="new-trigger-what" placeholder="Was ist der AuslÃ¶ser?" />
+            <input class="form-input mb-8" id="new-trigger-body" placeholder="Was passiert in deinem KÃ¶rper?" />
+            <input class="form-input mb-8" id="new-trigger-help" placeholder="Was hilft dir dann?" />
+            <button class="btn btn-primary btn-sm" onclick="addTrigger()">+ <span data-de="HinzufÃ¼gen" data-en="Add">HinzufÃ¼gen</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div id="binder-ressourcen" class="binder-section">
+        <div class="card">
+          <div class="card-title" data-de="Meine Ressourcen" data-en="My Resources">Meine Ressourcen</div>
+          <div class="grid-2">
+            <div style="background:linear-gradient(135deg,#EDE9FE,#F5F3FF);border-radius:14px;padding:18px;">
+              <div style="font-weight:700;margin-bottom:8px;color:var(--purple);" data-de="ðŸ¡ Mein sicherer Ort" data-en="ðŸ¡ My Safe Place">ðŸ¡ Mein sicherer Ort</div>
+              <div id="binder-safe-display" style="font-size:13px;color:var(--text-muted);" data-de="Noch nicht erstellt â€” gehe zu Ãœbungen" data-en="Not yet created â€” go to Exercises">Noch nicht erstellt â€” gehe zu Ãœbungen</div>
+            </div>
+            <div style="background:linear-gradient(135deg,#FEF3C7,#FFFBEB);border-radius:14px;padding:18px;">
+              <div style="font-weight:700;margin-bottom:8px;color:#92400E;" data-de="ðŸ¦¸ Meine Ressourcen-Figur" data-en="ðŸ¦¸ My Resource Character">ðŸ¦¸ Meine Ressourcen-Figur</div>
+              <div id="binder-res-display" style="font-size:13px;color:var(--text-muted);" data-de="Noch nicht erstellt â€” gehe zu Ãœbungen" data-en="Not yet created â€” go to Exercises">Noch nicht erstellt â€” gehe zu Ãœbungen</div>
+            </div>
+          </div>
+          <div class="form-group mt-16">
+            <label class="form-label" data-de="Was gibt mir Kraft? (Personen, Orte, AktivitÃ¤ten, Musik...)" data-en="What gives me strength? (People, places, activities, music...)">Was gibt mir Kraft? (Personen, Orte, AktivitÃ¤ten, Musik...)</label>
+            <textarea class="form-textarea" id="binder-strength" placeholder="..."></textarea>
+          </div>
+          <button class="btn btn-primary" onclick="saveBinderField('binder-strength','strength')" data-de="Speichern" data-en="Save">Speichern</button>
+        </div>
+      </div>
+
+      <div id="binder-kontakte" class="binder-section">
+        <div class="card">
+          <div class="card-title" data-de="Meine Hilfe-Kontakte" data-en="My Help Contacts">Meine Hilfe-Kontakte</div>
+          <div id="contacts-list"></div>
+          <div style="background:var(--bg);border-radius:12px;padding:16px;border:1px dashed var(--border);margin-top:12px;">
+            <div style="font-weight:700;font-size:13px;margin-bottom:10px;" data-de="Neuen Kontakt hinzufÃ¼gen:" data-en="Add new contact:">Neuen Kontakt hinzufÃ¼gen:</div>
+            <input class="form-input mb-8" id="new-contact-name" placeholder="Name" />
+            <input class="form-input mb-8" id="new-contact-role" placeholder="Rolle (z.B. Therapeutin, Mama, Beste Freundin)" />
+            <input class="form-input mb-8" id="new-contact-phone" placeholder="Telefonnummer" />
+            <button class="btn btn-teal btn-sm" onclick="addContact()">+ <span data-de="Kontakt hinzufÃ¼gen" data-en="Add contact">Kontakt hinzufÃ¼gen</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div id="binder-sitzungen" class="binder-section">
+        <div class="card">
+          <div class="card-title" data-de="Therapiesitzungen" data-en="Therapy Sessions">Therapiesitzungen</div>
+          <div id="sessions-list"></div>
+          <div style="background:var(--bg);border-radius:12px;padding:16px;border:1px dashed var(--border);margin-top:12px;">
+            <div style="font-weight:700;font-size:13px;margin-bottom:10px;" data-de="Neue Sitzung protokollieren:" data-en="Log new session:">Neue Sitzung protokollieren:</div>
+            <input class="form-input mb-8" id="sess-date" type="date" />
+            <input class="form-input mb-8" id="sess-topic" placeholder="Thema der Sitzung" />
+            <textarea class="form-textarea mb-8" id="sess-notes" placeholder="Notizen, Erkenntnisse..." style="min-height:80px;"></textarea>
+            <button class="btn btn-primary btn-sm" onclick="addSession()">+ <span data-de="Sitzung speichern" data-en="Save session">Sitzung speichern</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div id="binder-notfall" class="binder-section">
+        <div class="card">
+          <div class="card-title" data-de="Mein Notfallplan" data-en="My Crisis Plan">Mein Notfallplan</div>
+          <div class="card-sub" data-de="FÃ¼r Momente, wenn es zu viel wird. Schreib jetzt, damit du es spÃ¤ter weiÃŸt." data-en="For moments when it's too much. Write now so you'll know later.">FÃ¼r Momente, wenn es zu viel wird. Schreib jetzt, damit du es spÃ¤ter weiÃŸt.</div>
+          <div class="form-group">
+            <label class="form-label" data-de="ðŸš¨ Warnsignale â€” woran erkenne ich, dass ich in der Krise bin?" data-en="ðŸš¨ Warning signs â€” how do I know I'm in crisis?">ðŸš¨ Warnsignale â€” woran erkenne ich, dass ich in der Krise bin?</label>
+            <textarea class="form-textarea" id="crisis-signs" placeholder="z.B. Ich kann nicht mehr atmen, ich will verschwinden..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-de="ðŸ›Ÿ Was hilft sofort?" data-en="ðŸ›Ÿ What helps immediately?">ðŸ›Ÿ Was hilft sofort?</label>
+            <textarea class="form-textarea" id="crisis-immediate" placeholder="z.B. Box-Atmung, kalt Wasser trinken, eine Person anrufen..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-de="ðŸ“ž Wen rufe ich an?" data-en="ðŸ“ž Who do I call?">ðŸ“ž Wen rufe ich an?</label>
+            <textarea class="form-textarea" id="crisis-call" placeholder="Name + Nummer"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-de="ðŸ’¬ Was sage ich mir selbst?" data-en="ðŸ’¬ What do I tell myself?">ðŸ’¬ Was sage ich mir selbst?</label>
+            <textarea class="form-textarea" id="crisis-self" placeholder="Ein Satz, der mir Halt gibt..."></textarea>
+          </div>
+          <div style="background:#FEF2F2;border-radius:12px;padding:14px;border:1px solid #FCA5A5;margin-bottom:16px;">
+            <div style="font-weight:700;font-size:13px;color:#991B1B;margin-bottom:8px;" data-de="â˜Žï¸ Notfallnummern Deutschland" data-en="â˜Žï¸ Emergency Numbers Germany">â˜Žï¸ Notfallnummern Deutschland</div>
+            <div style="font-size:13px;color:#7F1D1D;line-height:1.8;">Telefonseelsorge: <strong>0800 111 0 111</strong> (kostenlos, 24/7)<br>Kinder & Jugend: <strong>0800 111 0 333</strong><br>Notruf: <strong>112 / 110</strong></div>
+          </div>
+          <button class="btn btn-primary" onclick="saveCrisisPlan()" data-de="Notfallplan speichern" data-en="Save crisis plan">Notfallplan speichern</button>
+        </div>
+      </div>
+    </div>
+    <!-- END TRAUMA BINDER -->
+
+    <!-- SUPERCLUB -->
+    <div id="section-superclub" class="section">
+      <div class="hero">
+        <h1 data-de="SuperClub ðŸ‘¥" data-en="Super Club ðŸ‘¥">SuperClub ðŸ‘¥</h1>
+        <p data-de="Du bist nicht allein. Gemeinsam sind wir stÃ¤rker." data-en="You are not alone. Together we are stronger.">Du bist nicht allein. Gemeinsam sind wir stÃ¤rker.</p>
+      </div>
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab('club','profile')" data-de="Mein Charakter" data-en="My Character">Mein Charakter</div>
+        <div class="tab" onclick="switchTab('club','wall')" data-de="Gemeinschaft" data-en="Community">Gemeinschaft</div>
+        <div class="tab" onclick="switchTab('club','challenges')" data-de="Herausforderungen" data-en="Challenges">Herausforderungen</div>
+        <div class="tab" onclick="switchTab('club','badges')" data-de="Abzeichen" data-en="Badges">Abzeichen</div>
+      </div>
+
+      <div id="club-tab-profile" class="tab-content active">
+        <div class="hero-card">
+          <div class="character-display" id="club-char-display">
+            <span class="character-avatar">ðŸ¦¸</span>
+            <div class="character-name" data-de="Erstelle deinen SuperClub-Charakter!" data-en="Create your SuperClub character!">Erstelle deinen SuperClub-Charakter!</div>
+            <div class="character-power" data-de="Ein anonymes Alter Ego fÃ¼r die Gemeinschaft" data-en="An anonymous alter ego for the community">Ein anonymes Alter Ego fÃ¼r die Gemeinschaft</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title" data-de="Dein SuperClub-Profil" data-en="Your SuperClub Profile">Dein SuperClub-Profil</div>
+          <div class="form-group">
+            <label class="form-label" data-de="Dein Charakter-Name (kein echter Name!)" data-en="Your character name (no real name!)">Dein Charakter-Name (kein echter Name!)</label>
+            <input class="form-input" id="club-name" placeholder="z.B. Sturmvogel, Lichtbringer, Nebelwanderer..." />
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-de="Deine Superkraft (trotz allem)" data-en="Your superpower (despite everything)">Deine Superkraft (trotz allem)</label>
+            <input class="form-input" id="club-power" placeholder="z.B. Ich stehe immer wieder auf. Ich spÃ¼re tief." />
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-de="Dein Charakter-Symbol (wÃ¤hle ein Emoji)" data-en="Your character symbol (choose an emoji)">Dein Charakter-Symbol (wÃ¤hle ein Emoji)</label>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+              <span style="font-size:24px;cursor:pointer;" onclick="setClubEmoji('ðŸ¦…')">ðŸ¦…</span>
+              <span style="font-size:24px;cursor:pointer;" onclick="setClubEmoji('ðŸŒŠ')">ðŸŒŠ</span>
+              <span style="font-size:24px;cursor:pointer;" onclick="setClubEmoji('ðŸ”¥')">ðŸ”¥</span>
+              <span style="font-size:24px;cursor:pointer;" onclick="setClubEmoji('âš¡')">âš¡</span>
+              <span style="font-size:24px;cursor:pointer;" onclick="setClubEmoji('ðŸŒº')">ðŸŒº</span>
+              <span style="font-size:24px;cursor:pointer;" onclick="setClubEmoji('ðŸ¦‹')">ðŸ¦‹</span>
+              <span style="font-size:24px;cursor:pointer;" onclick="setClubEmoji('ðŸŒ™')">ðŸŒ™</span>
+              <span style="font-size:24px;cursor:pointer;" onclick="setClubEmoji('â­')">â­</span>
+              <span style="font-size:24px;cursor:pointer;" onclick="setClubEmoji('ðŸ‰')">ðŸ‰</span>
+              <span style="font-size:24px;cursor:pointer;" onclick="setClubEmoji('ðŸ¦Š')">ðŸ¦Š</span>
+              <span style="font-size:24px;cursor:pointer;" onclick="setClubEmoji('ðŸŒˆ')">ðŸŒˆ</span>
+              <span style="font-size:24px;cursor:pointer;" onclick="setClubEmoji('ðŸ”®')">ðŸ”®</span>
+            </div>
+            <div style="font-size:32px;" id="club-emoji-preview">ðŸ¦¸</div>
+          </div>
+          <button class="btn btn-primary" onclick="saveClubProfile()">âœ¨ <span data-de="Charakter erstellen" data-en="Create character">Charakter erstellen</span></button>
+        </div>
+      </div>
+
+      <div id="club-tab-wall" class="tab-content">
+        <div class="card">
+          <div class="card-title" data-de="Gemeinschafts-Wand" data-en="Community Wall">Gemeinschafts-Wand</div>
+          <div class="card-sub" data-de="Anonyme Weisheiten von Superclub-Mitgliedern" data-en="Anonymous wisdom from Superclub members">Anonyme Weisheiten von Superclub-Mitgliedern</div>
+          <div id="community-wall"></div>
+          <div style="background:var(--bg);border-radius:12px;padding:16px;border:1px dashed var(--border);margin-top:16px;">
+            <label class="form-label" data-de="Teile deine Weisheit (anonym):" data-en="Share your wisdom (anonymously):">Teile deine Weisheit (anonym):</label>
+            <textarea class="form-textarea" id="new-post-text" placeholder="Eine Erkenntnis, ein Satz, eine Hoffnung..." style="min-height:80px;"></textarea>
+            <button class="btn btn-teal btn-sm mt-16" onclick="addCommunityPost()" data-de="Teilen" data-en="Share">Teilen</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="club-tab-challenges" class="tab-content">
+        <div class="card">
+          <div class="card-title" data-de="Drama-Herausforderungen der Woche" data-en="Drama Challenges of the Week">Drama-Herausforderungen der Woche</div>
+          <div id="challenges-list"></div>
+        </div>
+      </div>
+
+      <div id="club-tab-badges" class="tab-content">
+        <div class="card">
+          <div class="card-title" data-de="Deine Abzeichen" data-en="Your Badges">Deine Abzeichen</div>
+          <div class="card-sub" data-de="Verdient durch deine Reise" data-en="Earned through your journey">Verdient durch deine Reise</div>
+          <div class="badge-grid" id="badges-grid"></div>
+        </div>
+      </div>
+    </div>
+    <!-- END SUPERCLUB -->
+
+    <!-- PROGRESS -->
+    <div id="section-progress" class="section">
+      <div class="hero">
+        <h1 data-de="Mein Fortschritt ðŸ“Š" data-en="My Progress ðŸ“Š">Mein Fortschritt ðŸ“Š</h1>
+        <p data-de="Schau, wie weit du schon gekommen bist." data-en="See how far you've already come.">Schau, wie weit du schon gekommen bist.</p>
+      </div>
+      <div class="grid-3 mb-16">
+        <div class="progress-stat"><div class="progress-num" id="stat-days">0</div><div class="progress-label" data-de="Tage dabei" data-en="Days going">Tage dabei</div></div>
+        <div class="progress-stat"><div class="progress-num" id="stat-exercises">0</div><div class="progress-label" data-de="Ãœbungen gemacht" data-en="Exercises done">Ãœbungen gemacht</div></div>
+        <div class="progress-stat"><div class="progress-num" id="stat-entries">0</div><div class="progress-label" data-de="Journal-EintrÃ¤ge" data-en="Journal entries">Journal-EintrÃ¤ge</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title" data-de="Stimmungsverlauf (letzte 30 Tage)" data-en="Mood Trend (last 30 days)">Stimmungsverlauf (letzte 30 Tage)</div>
+        <div class="mood-chart" id="mood-chart"></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-top:6px;">
+          <span data-de="vor 30 Tagen" data-en="30 days ago">vor 30 Tagen</span><span data-de="heute" data-en="today">heute</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title" data-de="AktivitÃ¤ts-Kalender" data-en="Activity Calendar">AktivitÃ¤ts-Kalender</div>
+        <div class="streak-grid" id="streak-grid"></div>
+      </div>
+      <div class="card">
+        <div class="card-title" data-de="WÃ¶chentliche Reflexion" data-en="Weekly Reflection">WÃ¶chentliche Reflexion</div>
+        <div class="form-group">
+          <label class="form-label" data-de="Was hat sich diese Woche verÃ¤ndert?" data-en="What changed this week?">Was hat sich diese Woche verÃ¤ndert?</label>
+          <textarea class="form-textarea" id="weekly-reflection" placeholder="Auch kleine VerÃ¤nderungen zÃ¤hlen..."></textarea>
+        </div>
+        <button class="btn btn-primary" onclick="saveWeeklyReflection()" data-de="Speichern" data-en="Save">Speichern</button>
+      </div>
+    </div>
+    <!-- END PROGRESS -->
+
+    <!-- OUTPATIENT HELP -->
+    <div id="section-help" class="section">
+      <div class="hero">
+        <h1 data-de="Ambulante Hilfe ðŸ¥" data-en="Outpatient Help ðŸ¥">Ambulante Hilfe ðŸ¥</h1>
+        <p data-de="Du musst das nicht alleine tragen. Hilfe zu suchen ist StÃ¤rke." data-en="You don't have to carry this alone. Seeking help is strength.">Du musst das nicht alleine tragen. Hilfe zu suchen ist StÃ¤rke.</p>
+      </div>
+
+      <div class="crisis-box">
+        <div class="crisis-title">ðŸ“ž <span data-de="Wenn du jetzt Hilfe brauchst" data-en="If you need help right now">Wenn du jetzt Hilfe brauchst</span></div>
+        <div class="crisis-number"><div class="crisis-flag">ðŸ‡©ðŸ‡ª</div><div class="crisis-info"><strong>Telefonseelsorge</strong><span>0800 111 0 111 â€” Kostenlos, 24/7</span></div></div>
+        <div class="crisis-number"><div class="crisis-flag">ðŸ‡©ðŸ‡ª</div><div class="crisis-info"><strong>Kinder- und Jugendtelefon</strong><span>0800 111 0 333 â€” FÃ¼r Kinder & Jugendliche</span></div></div>
+        <div class="crisis-number"><div class="crisis-flag">ðŸ‡©ðŸ‡ª</div><div class="crisis-info"><strong>Online-Beratung</strong><span>online-beratung.de â€” Chat & E-Mail</span></div></div>
+        <div class="crisis-number"><div class="crisis-flag">ðŸ†˜</div><div class="crisis-info"><strong>Notruf</strong><span>112 (Feuerwehr/Rettung) Â· 110 (Polizei)</span></div></div>
+        <div class="crisis-number"><div class="crisis-flag">ðŸŒ</div><div class="crisis-info"><strong>International Crisis Text Line</strong><span>HOME an 741741 senden (USA/UK/IE/CA)</span></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" data-de="Therapieformen erklÃ¤rt" data-en="Therapy Types Explained">Therapieformen erklÃ¤rt</div>
+        <div class="therapy-type">
+          <div class="therapy-name">TF-KVT â€” Traumafokussierte Kognitive Verhaltenstherapie</div>
+          <div class="therapy-desc" data-de="Die am besten erforschte Therapie fÃ¼r PTBS. Hilft, traumatische Gedanken zu verarbeiten und zu verÃ¤ndern. Besonders wirksam fÃ¼r Kinder und Jugendliche." data-en="The best-researched therapy for PTSD. Helps process and change traumatic thoughts. Especially effective for children and adolescents.">Die am besten erforschte Therapie fÃ¼r PTBS. Hilft, traumatische Gedanken zu verarbeiten und zu verÃ¤ndern. Besonders wirksam fÃ¼r Kinder und Jugendliche.</div>
+        </div>
+        <div class="therapy-type">
+          <div class="therapy-name">EMDR â€” Eye Movement Desensitization and Reprocessing</div>
+          <div class="therapy-desc" data-de="Nutzt Augenbewegungen, um traumatische Erinnerungen zu verarbeiten. Sehr wirksam und muss die Erinnerungen nicht direkt verbalisiert werden." data-en="Uses eye movements to process traumatic memories. Very effective and the memories don't need to be directly verbalized.">Nutzt Augenbewegungen, um traumatische Erinnerungen zu verarbeiten. Sehr wirksam und muss die Erinnerungen nicht direkt verbalisiert werden.</div>
+        </div>
+        <div class="therapy-type">
+          <div class="therapy-name">Dramatherapie / Ausdruckstherapie</div>
+          <div class="therapy-desc" data-de="Nutzt Theater, Rolle, Geschichten und Bewegung. Besonders geeignet, wenn Worte nicht ausreichen. Genau das, was diese App unterstÃ¼tzt!" data-en="Uses theater, role, stories and movement. Especially suitable when words aren't enough. Exactly what this app supports!">Nutzt Theater, Rolle, Geschichten und Bewegung. Besonders geeignet, wenn Worte nicht ausreichen. Genau das, was diese App unterstÃ¼tzt!</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" data-de="Einen Therapeuten finden" data-en="Finding a Therapist">Einen Therapeuten finden</div>
+        <div style="font-size:13px;color:var(--text-muted);line-height:1.8;">
+          ðŸ”— <a href="https://www.bptk.de/service/therapeutensuche/" target="_blank">BPtK Therapeutensuche (Deutschland)</a><br>
+          ðŸ”— <a href="https://www.traumazentrum.de" target="_blank">Deutsches Institut fÃ¼r Psychotraumatologie</a><br>
+          ðŸ”— <a href="https://kidtrauma.org" target="_blank">KidTrauma â€” Kinder & Jugendliche</a><br>
+          ðŸ”— <a href="https://www.online-beratung.de" target="_blank">Online-Beratung fÃ¼r Jugendliche</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" data-de="Fragen fÃ¼r das erste GesprÃ¤ch" data-en="Questions for the First Session">Fragen fÃ¼r das erste GesprÃ¤ch</div>
+        <ul style="font-size:13px;color:var(--text-muted);line-height:2.2;padding-left:18px;">
+          <li data-de="Haben Sie Erfahrung mit Jugendlichen und Trauma?" data-en="Do you have experience with youth and trauma?">Haben Sie Erfahrung mit Jugendlichen und Trauma?</li>
+          <li data-de="Welche Therapieform nutzen Sie bei PTBS?" data-en="What therapy approach do you use for PTSD?">Welche Therapieform nutzen Sie bei PTBS?</li>
+          <li data-de="Muss ich alles direkt erzÃ¤hlen?" data-en="Do I have to tell everything directly?">Muss ich alles direkt erzÃ¤hlen?</li>
+          <li data-de="Wie kann ich meine Eltern einbeziehen â€” oder nicht?" data-en="How can I involve my parents â€” or not?">Wie kann ich meine Eltern einbeziehen â€” oder nicht?</li>
+          <li data-de="Was passiert, wenn es mir in der Sitzung zu viel wird?" data-en="What happens if it gets too much for me in the session?">Was passiert, wenn es mir in der Sitzung zu viel wird?</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title" data-de="FÃ¼r Eltern & Bezugspersonen" data-en="For Parents & Caregivers">FÃ¼r Eltern & Bezugspersonen</div>
+        <div style="background:#FEF3C7;border-radius:12px;padding:16px;margin-bottom:12px;border-left:4px solid #F59E0B;">
+          <div style="font-weight:700;font-size:13px;color:#92400E;margin-bottom:6px;" data-de="âŒ Das NICHT sagen:" data-en="âŒ Don't say:">âŒ Das NICHT sagen:</div>
+          <div style="font-size:12px;color:#78350F;line-height:1.7;" data-de="'Stell dich nicht so an' Â· 'Das ist doch lange vorbei' Â· 'Du musst stark sein' Â· 'ErzÃ¤hl mir alles'" data-en="'Stop overreacting' Â· 'That's long past' Â· 'You have to be strong' Â· 'Tell me everything'">'Stell dich nicht so an' Â· 'Das ist doch lange vorbei' Â· 'Du musst stark sein' Â· 'ErzÃ¤hl mir alles'</div>
+        </div>
+        <div style="background:#F0FDF4;border-radius:12px;padding:16px;border-left:4px solid #22C55E;">
+          <div style="font-weight:700;font-size:13px;color:#166534;margin-bottom:6px;" data-de="âœ… Das HILFT wirklich:" data-en="âœ… What actually helps:">âœ… Das HILFT wirklich:</div>
+          <div style="font-size:12px;color:#15803D;line-height:1.7;" data-de="'Ich bin fÃ¼r dich da' Â· 'Du musst nichts erzÃ¤hlen' Â· 'Ich glaube dir' Â· Einfach da sein, zuhÃ¶ren, Geduld haben" data-en="'I'm here for you' Â· 'You don't have to tell me anything' Â· 'I believe you' Â· Simply being present, listening, being patient">'Ich bin fÃ¼r dich da' Â· 'Du musst nichts erzÃ¤hlen' Â· 'Ich glaube dir' Â· Einfach da sein, zuhÃ¶ren, Geduld haben</div>
+        </div>
+      </div>
+    </div>
+    <!-- END HELP -->
+
+    <!-- SETTINGS -->
+    <div id="section-settings" class="section">
+      <div class="hero">
+        <h1 data-de="Einstellungen âš™ï¸" data-en="Settings âš™ï¸">Einstellungen âš™ï¸</h1>
+        <p data-de="Passe DramaHeal an deine BedÃ¼rfnisse an." data-en="Customize DramaHeal to your needs.">Passe DramaHeal an deine BedÃ¼rfnisse an.</p>
+      </div>
+      <div class="card">
+        <div class="card-title" data-de="Sprache / Language" data-en="Language / Sprache">Sprache / Language</div>
+        <div style="display:flex;gap:12px;margin-top:8px;">
+          <button class="btn btn-primary" onclick="setLang('de')" data-de="ðŸ‡©ðŸ‡ª Deutsch" data-en="ðŸ‡©ðŸ‡ª Deutsch">ðŸ‡©ðŸ‡ª Deutsch</button>
+          <button class="btn btn-outline" onclick="setLang('en')" data-de="ðŸ‡¬ðŸ‡§ English" data-en="ðŸ‡¬ðŸ‡§ English">ðŸ‡¬ðŸ‡§ English</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title" data-de="Erscheinungsbild" data-en="Appearance">Erscheinungsbild</div>
+        <div style="display:flex;gap:12px;margin-top:8px;align-items:center;">
+          <button class="btn btn-outline" onclick="toggleDark()" data-de="ðŸŒ™ Dark Mode umschalten" data-en="ðŸŒ™ Toggle Dark Mode">ðŸŒ™ Dark Mode umschalten</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title" data-de="Datenschutz & Daten" data-en="Privacy & Data">Datenschutz & Daten</div>
+        <div style="font-size:13px;color:var(--text-muted);line-height:1.7;margin-bottom:12px;" data-de="Alle deine Daten werden ausschlieÃŸlich lokal auf deinem GerÃ¤t gespeichert (localStorage). Es werden keine Daten an externe Server gesendet â€” auÃŸer fÃ¼r die Anmeldung Ã¼ber Firebase Auth." data-en="All your data is stored exclusively locally on your device (localStorage). No data is sent to external servers â€” except for login via Firebase Auth.">Alle deine Daten werden ausschlieÃŸlich lokal auf deinem GerÃ¤t gespeichert (localStorage). Es werden keine Daten an externe Server gesendet â€” auÃŸer fÃ¼r die Anmeldung Ã¼ber Firebase Auth.</div>
+        <button class="btn btn-outline" style="border-color:#EF4444;color:#EF4444;" onclick="confirmReset()" data-de="âš ï¸ Alle Daten zurÃ¼cksetzen" data-en="âš ï¸ Reset all data">âš ï¸ Alle Daten zurÃ¼cksetzen</button>
+      </div>
+      <div class="card">
+        <div class="card-title" data-de="Ãœber DramaHeal" data-en="About DramaHeal">Ãœber DramaHeal</div>
+        <div style="font-size:13px;color:var(--text-muted);line-height:1.8;">
+          <strong>DramaHeal v1.0</strong><br>
+          <span data-de="Wissenschaftliche Grundlagen: Keiller et al. (2023) Dramatherapie-Review Â· VA PTSD Coach Â· TF-CBT Frameworks Â· Somatic Experiencing Â· Moreno Psychodrama Â· Narrative Therapy" data-en="Scientific basis: Keiller et al. (2023) Drama Therapy Review Â· VA PTSD Coach Â· TF-CBT Frameworks Â· Somatic Experiencing Â· Moreno Psychodrama Â· Narrative Therapy">Wissenschaftliche Grundlagen: Keiller et al. (2023) Dramatherapie-Review Â· VA PTSD Coach Â· TF-CBT Frameworks Â· Somatic Experiencing Â· Moreno Psychodrama Â· Narrative Therapy</span><br><br>
+          <em data-de="âš ï¸ Diese App ersetzt keine professionelle Therapie. Bei schweren Symptomen bitte immer professionelle Hilfe suchen." data-en="âš ï¸ This app does not replace professional therapy. For severe symptoms, always seek professional help.">âš ï¸ Diese App ersetzt keine professionelle Therapie. Bei schweren Symptomen bitte immer professionelle Hilfe suchen.</em>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title" data-de="Anmeldung" data-en="Sign In">Anmeldung</div>
+        <div id="settings-user-info" style="font-size:13px;color:var(--text-muted);margin-bottom:12px;"></div>
+        <button class="btn btn-outline" onclick="signOut()" data-de="Abmelden" data-en="Sign Out">Abmelden</button>
+      </div>
+    </div>
+    <!-- END SETTINGS -->
+
+  </div><!-- END CONTENT -->
+</div><!-- END MAIN -->
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut as fbSignOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBWKpWwPRFqjSxCmxSBpqZjLenlL7B7REU",
+  authDomain: "shapiro-apps.firebaseapp.com",
+  projectId: "shapiro-apps",
+  storageBucket: "shapiro-apps.appspot.com",
+  messagingSenderId: "33734446646",
+  appId: "1:33734446646:web:1d7df4012cf441b1c45297"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+window.signInGoogle = async () => {
+  try {
+    await signInWithPopup(auth, provider);
+  } catch(e) {
+    document.getElementById('auth-error-google').style.display='block';
+    document.getElementById('auth-error-google').textContent = e.message;
+  }
+};
+
+window.signInEmail = async () => {
+  const email = document.getElementById('auth-email').value;
+  const pass = document.getElementById('auth-password').value;
+  const errEl = document.getElementById('auth-error');
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+  } catch(e) {
+    if(e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential') {
+      try {
+        await createUserWithEmailAndPassword(auth, email, pass);
+      } catch(e2) {
+        errEl.style.display='block'; errEl.textContent = e2.message;
+      }
+    } else {
+      errEl.style.display='block'; errEl.textContent = e.message;
+    }
+  }
+};
+
+window.signOut = async () => {
+  await fbSignOut(auth);
+};
+
+window.toggleEmailForm = () => {
+  const f = document.getElementById('email-form');
+  f.style.display = f.style.display === 'none' ? 'block' : 'none';
+};
+
+onAuthStateChanged(auth, (user) => {
+  if(user) {
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('sidebar-username').textContent = user.displayName || user.email || 'Anonym';
+    if(user.photoURL) {
+      document.getElementById('sidebar-avatar').innerHTML = `<img src="${user.photoURL}" alt="avatar">`;
+    }
+    document.getElementById('settings-user-info').textContent = `Angemeldet als: ${user.email || user.displayName}`;
+    window.currentUserId = user.uid;
+    window.initApp();
+  } else {
+    document.getElementById('auth-screen').style.display = 'flex';
+    window.currentUserId = null;
+  }
+});
+</script>
+
+<script>
+// ===== CORE APP STATE =====
+let currentLang = 'en';
+let isDark = false;
+let currentMood = null;
+let breathInterval = null;
+let shakeInterval = null;
+let rpIndex = 0;
+let selectedBodyArea = null;
+let clubEmoji = 'ðŸ¦¸';
+
+const rpCards = [
+  { cat: { de: 'Familie', en: 'Family' }, scenario: { de: 'Zuhause fÃ¼hlt sich nicht sicher an. Du weiÃŸt nicht, wie du deinen Eltern erklÃ¤ren kannst, was du durchmachst.', en: 'Home doesn\'t feel safe. You don\'t know how to explain to your parents what you\'re going through.' }, chars: { de: ['StÃ¤rke', 'Verletzt', 'Zeuge', 'SchÃ¼tzer'], en: ['Strength', 'Hurt', 'Witness', 'Protector'] }, questions: { de: 'Was wÃ¼rde deine "StÃ¤rke"-Rolle sagen?\nWas braucht die "Verletzte"-Rolle?\nWas beobachtet der "Zeuge"?', en: 'What would your "Strength" role say?\nWhat does the "Hurt" role need?\nWhat does the "Witness" observe?' } },
+  { cat: { de: 'Schule', en: 'School' }, scenario: { de: 'In der Schule fÃ¼hlt du dich wie ein Fremder. Niemand weiÃŸ, was du trÃ¤gst. Du mÃ¶chtest unsichtbar sein.', en: 'At school you feel like a stranger. No one knows what you carry. You want to be invisible.' }, chars: { de: ['Unsichtbar', 'Mutig', 'Freund', 'Lehrer'], en: ['Invisible', 'Brave', 'Friend', 'Teacher'] }, questions: { de: 'Was braucht "Unsichtbar", um gesehen zu werden?\nWas wÃ¼rde "Mutig" anders machen?', en: 'What does "Invisible" need to be seen?\nWhat would "Brave" do differently?' } },
+  { cat: { de: 'Innen', en: 'Inner World' }, scenario: { de: 'Ein Flashback hat dich mitten in den Tag katapultiert. Dein Herz rast. Die Gegenwart fÃ¼hlt sich unwirklich an.', en: 'A flashback catapulted you into the middle of the day. Your heart is racing. The present feels unreal.' }, chars: { de: ['Vergangenheit', 'Gegenwart', 'BeschÃ¼tzer', 'Heiler'], en: ['Past', 'Present', 'Protector', 'Healer'] }, questions: { de: 'Was sagt "Gegenwart" zu "Vergangenheit"?\nWas braucht der "BeschÃ¼tzer"?', en: 'What does "Present" say to "Past"?\nWhat does the "Protector" need?' } },
+  { cat: { de: 'Freundschaft', en: 'Friendship' }, scenario: { de: 'Ein Freund fragt dich, warum du dich so verÃ¤ndert hast. Du weiÃŸt nicht, wie du antworten sollst.', en: 'A friend asks why you\'ve changed so much. You don\'t know how to answer.' }, chars: { de: ['Ehrlich', 'Verschlossen', 'VerstÃ¤ndnisvoll', 'Verwirrt'], en: ['Honest', 'Closed', 'Understanding', 'Confused'] }, questions: { de: 'Was wÃ¼rde "Ehrlich" sagen?\nWas fÃ¼hlt "Verschlossen" dabei?', en: 'What would "Honest" say?\nWhat does "Closed" feel?' } },
+  { cat: { de: 'Zukunft', en: 'Future' }, scenario: { de: 'Du stellst dir vor, wie dein Leben in 5 Jahren aussieht â€” jenseits des Traumas. Was siehst du?', en: 'You imagine what your life looks like in 5 years â€” beyond the trauma. What do you see?' }, chars: { de: ['Hoffnung', 'Zweifel', 'Weisheit', 'Freiheit'], en: ['Hope', 'Doubt', 'Wisdom', 'Freedom'] }, questions: { de: 'Was zeigt "Hoffnung" dir?\nWas fÃ¼rchtet "Zweifel"?\nWas weiÃŸ "Weisheit"?', en: 'What does "Hope" show you?\nWhat does "Doubt" fear?\nWhat does "Wisdom" know?' } },
+  { cat: { de: 'Vergangenheit', en: 'Past' }, scenario: { de: 'Du schreibst einen Brief an dein jÃ¼ngeres Ich â€” vor dem Trauma. Was wÃ¼rdest du sagen?', en: 'You write a letter to your younger self â€” before the trauma. What would you say?' }, chars: { de: ['Ã„lteres Ich', 'JÃ¼ngeres Ich', 'BeschÃ¼tzer', 'Zeuge'], en: ['Older Self', 'Younger Self', 'Protector', 'Witness'] }, questions: { de: 'Was mÃ¶chte "Ã„lteres Ich" dem jÃ¼ngeren sagen?\nWas braucht "JÃ¼ngeres Ich" zu hÃ¶ren?', en: 'What does "Older Self" want to say to the younger one?\nWhat does "Younger Self" need to hear?' } }
+];
+
+const faqData = [
+  { q: { de: 'Bin ich normal?', en: 'Am I normal?' }, a: { de: 'Ja, absolut. PTBS ist eine normale Reaktion auf abnormale Erfahrungen. Dein Gehirn und KÃ¶rper haben das Schlimmste Ã¼berlebt und reagieren auf eine Art, die zu dem passt, was du erlebt hast. Das macht dich nicht "verrÃ¼ckt" â€” das macht dich menschlich.', en: 'Yes, absolutely. PTSD is a normal reaction to abnormal experiences. Your brain and body survived the worst and are responding in a way that fits what you experienced. That doesn\'t make you "crazy" â€” it makes you human.' } },
+  { q: { de: 'Wie lange dauert das?', en: 'How long does this last?' }, a: { de: 'Jeder Heilungsweg ist anders. Mit der richtigen UnterstÃ¼tzung â€” Therapie, kreative Arbeit wie hier, SelbstfÃ¼rsorge â€” kann sich PTBS deutlich verbessern. Heilung ist kein gerader Weg, aber sie ist mÃ¶glich.', en: 'Everyone\'s healing journey is different. With the right support â€” therapy, creative work like here, self-care â€” PTSD can improve significantly. Healing is not a straight path, but it is possible.' } },
+  { q: { de: 'Muss ich Ã¼ber das Trauma sprechen?', en: 'Do I have to talk about the trauma?' }, a: { de: 'Nein. Es gibt viele Wege zur Heilung, und nicht alle brauchen direkte Konfrontation mit dem Trauma. Drama-Therapie, kreatives Schreiben und KÃ¶rperarbeit kÃ¶nnen helfen, ohne das Trauma direkt benennen zu mÃ¼ssen.', en: 'No. There are many paths to healing, and not all require directly confronting the trauma. Drama therapy, creative writing and body work can help without directly naming the trauma.' } },
+  { q: { de: 'Was kÃ¶nnen meine Freunde tun?', en: 'What can my friends do?' }, a: { de: 'Einfach da sein, zuhÃ¶ren ohne zu urteilen, keine Fragen Ã¼ber das Trauma stellen, deine Grenzen respektieren, dich zu normalen AktivitÃ¤ten einladen, sagen: "Ich bin fÃ¼r dich da."', en: 'Simply be there, listen without judging, don\'t ask questions about the trauma, respect your boundaries, invite you to normal activities, say: "I\'m here for you."' } },
+  { q: { de: 'Was kÃ¶nnen meine Eltern tun?', en: 'What can my parents do?' }, a: { de: 'Dir glauben. Da sein ohne zu drÃ¤ngen. Professionelle Hilfe unterstÃ¼tzen. Keine Kommentare wie "Stell dich nicht so an". Dich in Entscheidungen einbeziehen. Geduldig sein.', en: 'Believe you. Be there without pushing. Support professional help. No comments like "stop overreacting". Involve you in decisions. Be patient.' } },
+  { q: { de: 'Wann brauche ich professionelle Hilfe?', en: 'When do I need professional help?' }, a: { de: 'Wenn Symptome lÃ¤nger als einen Monat anhalten, deinen Alltag stark einschrÃ¤nken, du dir selbst schaden mÃ¶chtest, oder du das GefÃ¼hl hast, nicht alleine weiterzukommen â€” dann ist es Zeit, professionelle UnterstÃ¼tzung zu suchen. Das ist mutig, nicht schwach.', en: 'When symptoms last more than a month, strongly limit your daily life, you want to harm yourself, or you feel you can\'t continue alone â€” then it\'s time to seek professional support. That is brave, not weak.' } }
+];
+
+const challengesData = [
+  { de: 'Schreib einen Brief an dein jÃ¼ngeres Ich', en: 'Write a letter to your younger self' },
+  { de: 'Zeichne deine aktuelle Emotion als Wettermuster', en: 'Draw your current emotion as a weather pattern' },
+  { de: 'Beschreibe dein Leben in genau 6 WÃ¶rtern', en: 'Describe your life in exactly 6 words' },
+  { de: 'Sei fÃ¼r 2 Minuten dein eigener Held / deine eigene Heldin', en: 'Be your own hero/heroine for 2 minutes' },
+  { de: 'Schreib das Ende deiner Geschichte neu â€” so wie du es dir wÃ¼nschst', en: 'Rewrite the ending of your story â€” the way you wish it to be' },
+  { de: 'Finde heute drei Dinge, die trotz allem schÃ¶n waren', en: 'Find three things that were beautiful today despite everything' }
+];
+
+const badgesData = [
+  { id: 'first', icon: 'ðŸŒ±', de: 'Erster Schritt', en: 'First Step' },
+  { id: 'week', icon: 'ðŸ”¥', de: '7 Tage', en: '7 Days' },
+  { id: 'story', icon: 'ðŸ“–', de: 'GeschichtenerzÃ¤hler', en: 'Storyteller' },
+  { id: 'character', icon: 'ðŸŽ­', de: 'CharakterkÃ¼nstler', en: 'Character Artist' },
+  { id: 'exercise', icon: 'ðŸŒŸ', de: '3 Ãœbungen', en: '3 Exercises' },
+  { id: 'club', icon: 'ðŸ‘‘', de: 'SuperClub Held', en: 'SuperClub Hero' },
+  { id: 'binder', icon: 'ðŸ“', de: 'Ordner-Meister', en: 'Binder Master' },
+  { id: 'challenge', icon: 'âš¡', de: 'Herausforderung', en: 'Challenger' }
+];
+
+const communityPosts = [
+  { alias: { de: 'Sturmvogel', en: 'Stormpetrel' }, emoji: 'ðŸ¦…', text: { de: 'Ich habe gelernt, dass Weinen keine SchwÃ¤che ist. Es ist der KÃ¶rper, der aufrÃ¤umt.', en: 'I learned that crying is not weakness. It is the body cleaning up.' } },
+  { alias: { de: 'Lichtsucher', en: 'Lightseeker' }, emoji: 'ðŸŒŸ', text: { de: 'Jeden Tag ein kleiner Schritt. Manchmal rÃ¼ckwÃ¤rts. Aber ich bewege mich.', en: 'One small step every day. Sometimes backwards. But I\'m moving.' } },
+  { alias: { de: 'Nebelwanderin', en: 'Fog Walker' }, emoji: 'ðŸŒ™', text: { de: 'Ich dachte, ich wÃ¤re gebrochen. Ich bin gebogen, aber ganz.', en: 'I thought I was broken. I am bent, but whole.' } },
+  { alias: { de: 'PhÃ¶nix17', en: 'Phoenix17' }, emoji: 'ðŸ”¥', text: { de: 'Die Dramawerkzeuge hier haben mir geholfen, Ã¼ber mich zu sprechen, ohne direkt Ã¼ber mich zu sprechen. Das war der SchlÃ¼ssel.', en: 'The drama tools here helped me talk about myself without directly talking about myself. That was the key.' } },
+  { alias: { de: 'Ruhiger Sturm', en: 'Quiet Storm' }, emoji: 'ðŸŒŠ', text: { de: 'Du musst deinem Schmerz keinen Namen geben, damit er zÃ¤hlt.', en: 'You don\'t have to name your pain for it to count.' } }
+];
+
+const quotes = [
+  { de: 'Der Mut beginnt nicht damit, den Sturm aufzuhalten. Er beginnt damit, trotzdem weiterzugehen.', en: 'Courage doesn\'t begin by stopping the storm. It begins by walking through it anyway.' },
+  { de: 'Du bist nicht kaputt. Du bist ein Mensch mit einer Geschichte.', en: 'You are not broken. You are a person with a story.' },
+  { de: 'Heilung ist keine Gerade, sondern eine Spirale aufwÃ¤rts.', en: 'Healing is not a straight line, but an upward spiral.' },
+  { de: 'Was du Ã¼berlebt hast, ist Beweis fÃ¼r deine StÃ¤rke.', en: 'What you survived is proof of your strength.' },
+  { de: 'Deine Geschichte hat noch kein Ende geschrieben.', en: 'Your story hasn\'t finished being written yet.' },
+  { de: 'Jeder kleine Schritt zÃ¤hlt. Auch das Atmen.', en: 'Every small step counts. Even breathing.' },
+  { de: 'Du verdienst FÃ¼rsorge â€” auch von dir selbst.', en: 'You deserve care â€” including from yourself.' }
+];
+
+const dailyExercises = [
+  { icon: 'ðŸŒ', title: { de: 'Grounding: 5-4-3-2-1', en: 'Grounding: 5-4-3-2-1' }, desc: { de: 'Benenne 5 Dinge, die du siehst, 4 die du berÃ¼hrst, 3 die du hÃ¶rst, 2 die du riechst, 1 das du schmeckst.', en: 'Name 5 things you see, 4 you touch, 3 you hear, 2 you smell, 1 you taste.' } },
+  { icon: 'ðŸ“¦', title: { de: 'Box-Atmung', en: 'Box Breathing' }, desc: { de: '4 Sekunden einatmen, 4 halten, 4 ausatmen, 4 halten. Dreimal wiederholen.', en: '4 seconds inhale, 4 hold, 4 exhale, 4 hold. Repeat three times.' } },
+  { icon: 'ðŸŽ¬', title: { de: 'Charakter erschaffen', en: 'Create a character' }, desc: { de: 'Erschaffe heute einen Charakter, der etwas Schwieriges erlebt hat â€” und finde seine StÃ¤rke.', en: 'Create a character today who experienced something difficult â€” and find their strength.' } },
+  { icon: 'ðŸ“œ', title: { de: 'Das MÃ¤rchen-Ende', en: 'The Fairy Tale Ending' }, desc: { de: 'Schreib heute das Ende deiner Geschichte so, wie du dir es wÃ¼nschst.', en: 'Write the ending of your story today the way you wish it to be.' } },
+  { icon: 'ðŸ§', title: { de: 'KÃ¶rper-Check-in', en: 'Body Check-in' }, desc: { de: 'Nimm dir 3 Minuten: Wo spÃ¼rst du etwas in deinem KÃ¶rper? Nur beobachten, nicht bewerten.', en: 'Take 3 minutes: Where do you feel something in your body? Only observe, don\'t judge.' } },
+  { icon: 'ðŸ¡', title: { de: 'Sicherer Ort', en: 'Safe Place' }, desc: { de: 'SchlieÃŸe die Augen und besuche fÃ¼r 5 Minuten deinen sicheren Ort.', en: 'Close your eyes and visit your safe place for 5 minutes.' } },
+  { icon: 'ðŸ¦¸', title: { de: 'Ressourcen-Figur aktivieren', en: 'Activate Resource Character' }, desc: { de: 'Erschaffe oder besuche heute deine Ressourcen-Figur. Was wÃ¼rde sie dir sagen?', en: 'Create or visit your resource character today. What would they say to you?' } }
+];
+
+// ===== INIT =====
+window.initApp = function() {
+  // Check saved lang/theme
+  const savedLang = localStorage.getItem('dh_lang');
+  const savedDark = localStorage.getItem('dh_dark');
+  if(savedLang) { currentLang = savedLang; applyLang(); }
+  if(savedDark === 'true') { isDark = true; document.documentElement.setAttribute('data-theme','dark'); }
+
+  // Daily content
+  const dayIndex = Math.floor(Date.now() / 86400000) % dailyExercises.length;
+  const ex = dailyExercises[dayIndex];
+  document.getElementById('daily-icon').textContent = ex.icon;
+  document.getElementById('daily-title').textContent = ex.title[currentLang];
+  document.getElementById('daily-desc').textContent = ex.desc[currentLang];
+
+  const qIndex = Math.floor(Date.now() / 86400000) % quotes.length;
+  document.getElementById('daily-quote').textContent = quotes[qIndex][currentLang];
+
+  // Streak
+  const uid = window.currentUserId || 'guest';
+  const streak = parseInt(localStorage.getItem(`dh_streak_${uid}`)||'0');
+  document.getElementById('home-streak').textContent = streak;
+  document.getElementById('stat-days').textContent = streak;
+
+  // Story entries
+  const entries = JSON.parse(localStorage.getItem(`dh_entries_${uid}`)||'[]');
+  document.getElementById('stat-entries').textContent = entries.length;
+
+  // Exercises done
+  const exDone = parseInt(localStorage.getItem(`dh_exercises_${uid}`)||'0');
+  document.getElementById('stat-exercises').textContent = exDone;
+
+  // Init sub-components
+  initRPCards();
+  initFAQ();
+  initBadges();
+  initCommunityWall();
+  initChallenges();
+  initMoodChart();
+  initStreakGrid();
+  loadStoryEntries();
+  loadTriggers();
+  loadContacts();
+  loadSessions();
+  loadBinderResources();
+
+  // Track first visit for badge
+  if(!localStorage.getItem(`dh_firstvisit_${uid}`)) {
+    localStorage.setItem(`dh_firstvisit_${uid}`, Date.now());
+    earnBadge('first');
+  }
+  updateStreak();
+};
+
+function updateStreak() {
+  const uid = window.currentUserId || 'guest';
+  const today = new Date().toDateString();
+  const lastVisit = localStorage.getItem(`dh_lastvisit_${uid}`);
+  if(lastVisit !== today) {
+    localStorage.setItem(`dh_lastvisit_${uid}`, today);
+    const streak = parseInt(localStorage.getItem(`dh_streak_${uid}`)||'0') + 1;
+    localStorage.setItem(`dh_streak_${uid}`, streak);
+    document.getElementById('home-streak').textContent = streak;
+    document.getElementById('stat-days').textContent = streak;
+    if(streak >= 7) earnBadge('week');
+  }
+}
+
+// ===== NAVIGATION =====
+window.showSection = function(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const sectionEl = document.getElementById('section-'+name);
+  if(sectionEl) sectionEl.classList.add('active');
+  const navItems = document.querySelectorAll('.nav-item');
+  navItems.forEach(item => {
+    if(item.getAttribute('onclick') && item.getAttribute('onclick').includes(`'${name}'`)) {
+      item.classList.add('active');
+    }
+  });
+  // Update header title
+  const label = document.querySelector(`.nav-item[onclick="showSection('${name}')"] .nav-label`);
+  if(label) document.getElementById('header-title').textContent = 'ðŸŽ­ ' + label.textContent;
+};
+
+// ===== LANGUAGE =====
+window.toggleLang = function() {
+  currentLang = currentLang === 'de' ? 'en' : 'de';
+  applyLang();
+};
+window.setLang = function(lang) { currentLang = lang; applyLang(); };
+
+function applyLang() {
+  localStorage.setItem('dh_lang', currentLang);
+  const isDE = currentLang === 'de';
+  document.getElementById('lang-btn').textContent = isDE ? 'ðŸ‡¬ðŸ‡§ English' : 'ðŸ‡©ðŸ‡ª Deutsch';
+
+  // Apply all data-de/data-en attributes
+  document.querySelectorAll('[data-de]').forEach(el => {
+    const text = el.getAttribute('data-' + currentLang);
+    if(text) {
+      if(el.tagName === 'TEXTAREA' || el.tagName === 'INPUT') {
+        el.placeholder = text;
+      } else {
+        el.innerHTML = text;
+      }
+    }
+  });
+
+  // Refresh dynamic content
+  const dayIndex = Math.floor(Date.now() / 86400000) % dailyExercises.length;
+  const ex = dailyExercises[dayIndex];
+  document.getElementById('daily-title').textContent = ex.title[currentLang];
+  document.getElementById('daily-desc').textContent = ex.desc[currentLang];
+  const qIndex = Math.floor(Date.now() / 86400000) % quotes.length;
+  document.getElementById('daily-quote').textContent = quotes[qIndex][currentLang];
+  initRPCards();
+  initFAQ();
+  initBadges();
+  initCommunityWall();
+  initChallenges();
+  document.getElementById('sb-sub').textContent = isDE ? 'FÃ¼r Jugendliche' : 'For Youth';
+}
+
+// ===== DARK MODE =====
+window.toggleDark = function() {
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : '');
+  localStorage.setItem('dh_dark', isDark);
+};
+
+// ===== MOOD =====
+window.selectMood = function(level, btn) {
+  currentMood = level;
+  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  saveMoodEntry(level);
+
+  const msgs = {
+    de: {
+      1: { msg: 'ðŸ’™ Es ist okay, sich schlecht zu fÃ¼hlen. Du bist hier â€” das ist Mut.', sug: 'â†’ Versuche jetzt die Grounding-Ãœbung (5-4-3-2-1)' },
+      2: { msg: 'ðŸ’› Schwere Tage gehÃ¶ren dazu. Du schaffst das.', sug: 'â†’ Vielleicht hilft heute Box-Atmung' },
+      3: { msg: 'ðŸŒ¿ In der Mitte zu sein ist auch okay.', sug: 'â†’ Wie wÃ¤re es mit einem kurzen Tagebucheintrag?' },
+      4: { msg: 'ðŸŒŸ Das ist schÃ¶n zu hÃ¶ren! Nutze diese Energie.', sug: 'â†’ Probiere heute ein Drama-Werkzeug aus' },
+      5: { msg: 'âœ¨ Wunderbar! Diese StÃ¤rke gehÃ¶rt dir.', sug: 'â†’ Teile etwas im SuperClub' }
+    },
+    en: {
+      1: { msg: 'ðŸ’™ It\'s okay to feel bad. You\'re here â€” that takes courage.', sug: 'â†’ Try the Grounding exercise now (5-4-3-2-1)' },
+      2: { msg: 'ðŸ’› Heavy days are part of it. You\'ve got this.', sug: 'â†’ Maybe box breathing will help today' },
+      3: { msg: 'ðŸŒ¿ Being in the middle is okay too.', sug: 'â†’ How about a short journal entry?' },
+      4: { msg: 'ðŸŒŸ That\'s great to hear! Use this energy.', sug: 'â†’ Try a drama tool today' },
+      5: { msg: 'âœ¨ Wonderful! This strength is yours.', sug: 'â†’ Share something in SuperClub' }
+    }
+  };
+  const m = msgs[currentLang][level];
+  document.getElementById('mood-message').textContent = m.msg;
+  document.getElementById('mood-suggestion').textContent = m.sug;
+  const resp = document.getElementById('mood-response');
+  resp.classList.add('show');
+};
+
+function saveMoodEntry(level) {
+  const uid = window.currentUserId || 'guest';
+  const moods = JSON.parse(localStorage.getItem(`dh_moods_${uid}`)||'[]');
+  moods.push({ date: Date.now(), mood: level });
+  if(moods.length > 30) moods.shift();
+  localStorage.setItem(`dh_moods_${uid}`, JSON.stringify(moods));
+  initMoodChart();
+}
+
+// ===== DRAMA TOOLS =====
+window.openTool = function(name) {
+  document.getElementById('modal-'+name).classList.add('open');
+  if(name === 'roleplay') renderRPCard();
+};
+window.closeTool = function(name) {
+  document.getElementById('modal-'+name).classList.remove('open');
+};
+
+function initRPCards() {
+  const container = document.getElementById('rp-container');
+  if(!container) return;
+  container.innerHTML = '';
+  rpCards.forEach((card, i) => {
+    const div = document.createElement('div');
+    div.className = 'rp-card' + (i === rpIndex ? ' visible' : '');
+    div.innerHTML = `
+      <div class="rp-card-category">${card.cat[currentLang]}</div>
+      <div class="rp-card-scenario">${card.scenario[currentLang]}</div>
+      <div class="rp-card-chars">
+        ${card.chars[currentLang].map(c => `<span class="rp-char" onclick="showRPReflection(${i})">${c}</span>`).join('')}
+      </div>`;
+    container.appendChild(div);
+  });
+  const counter = document.getElementById('rp-counter');
+  if(counter) counter.textContent = `${rpIndex+1} / ${rpCards.length}`;
+}
+
+function renderRPCard() {
+  document.querySelectorAll('.rp-card').forEach((c,i) => {
+    c.classList.toggle('visible', i === rpIndex);
+  });
+  const counter = document.getElementById('rp-counter');
+  if(counter) counter.textContent = `${rpIndex+1} / ${rpCards.length}`;
+  document.getElementById('rp-reflection').classList.add('hidden');
+}
+
+window.nextCard = function() { rpIndex = (rpIndex+1) % rpCards.length; renderRPCard(); };
+window.prevCard = function() { rpIndex = (rpIndex-1+rpCards.length) % rpCards.length; renderRPCard(); };
+
+window.showRPReflection = function(idx) {
+  const card = rpCards[idx];
+  const ref = document.getElementById('rp-reflection');
+  const qs = document.getElementById('rp-questions');
+  qs.innerHTML = card.questions[currentLang].split('\n').map(q => `<div style="padding:4px 0;border-bottom:1px dashed var(--border);">â€¢ ${q}</div>`).join('');
+  ref.classList.remove('hidden');
+};
+
+// Mask Studio
+const maskEmojis = {
+  outer: ['ðŸ˜','ðŸ˜Š','ðŸ˜Ž','ðŸ¤”','ðŸ˜¤','ðŸ˜­','ðŸ™ƒ','ðŸ˜'],
+  inner: ['ðŸ’œ','ðŸ”¥','ðŸŒŠ','â­','ðŸ’”','ðŸŒ±','ðŸŒ™','âœ¨']
+};
+let maskOuterIdx = 0, maskInnerIdx = 0;
+window.cycleMask = function(side) {
+  if(side==='outer') { maskOuterIdx=(maskOuterIdx+1)%maskEmojis.outer.length; document.getElementById('mask-outer').textContent=maskEmojis.outer[maskOuterIdx]; }
+  else { maskInnerIdx=(maskInnerIdx+1)%maskEmojis.inner.length; document.getElementById('mask-inner').textContent=maskEmojis.inner[maskInnerIdx]; }
+};
+window.addMaskWord = function(side) {
+  const inp = document.getElementById(`mask-${side}-word`);
+  const word = inp.value.trim();
+  if(!word) return;
+  const div = document.createElement('div');
+  div.className = 'mask-word';
+  div.textContent = word;
+  document.getElementById(`mask-${side}-words`).appendChild(div);
+  inp.value = '';
+};
+window.saveMask = function() {
+  const uid = window.currentUserId||'guest';
+  const data = {
+    name: document.getElementById('mask-name').value,
+    outerEmoji: document.getElementById('mask-outer').textContent,
+    innerEmoji: document.getElementById('mask-inner').textContent,
+    outerWords: [...document.querySelectorAll('#mask-outer-words .mask-word')].map(w=>w.textContent),
+    innerWords: [...document.querySelectorAll('#mask-inner-words .mask-word')].map(w=>w.textContent),
+    date: Date.now()
+  };
+  localStorage.setItem(`dh_mask_${uid}`, JSON.stringify(data));
+  closeTool('mask');
+  earnBadge('character');
+};
+
+// Characters
+window.saveCharacter = function() {
+  const uid = window.currentUserId||'guest';
+  const chars = JSON.parse(localStorage.getItem(`dh_chars_${uid}`)||'[]');
+  chars.push({
+    name: document.getElementById('char-name').value,
+    age: document.getElementById('char-age').value,
+    experience: document.getElementById('char-experience').value,
+    feelings: document.getElementById('char-feelings').value,
+    needs: document.getElementById('char-needs').value,
+    date: Date.now()
+  });
+  localStorage.setItem(`dh_chars_${uid}`, JSON.stringify(chars));
+  document.getElementById('char-saved').classList.remove('hidden');
+  setTimeout(()=>document.getElementById('char-saved').classList.add('hidden'),2000);
+  earnBadge('character');
+};
+
+window.saveFairytale = function() {
+  const uid = window.currentUserId||'guest';
+  const tales = JSON.parse(localStorage.getItem(`dh_tales_${uid}`)||'[]');
+  tales.push({
+    intro: document.getElementById('fairy-intro').value,
+    challenge: document.getElementById('fairy-challenge').value,
+    turning: document.getElementById('fairy-turning').value,
+    strength: document.getElementById('fairy-strength').value,
+    new: document.getElementById('fairy-new').value,
+    date: Date.now()
+  });
+  localStorage.setItem(`dh_tales_${uid}`, JSON.stringify(tales));
+  document.getElementById('fairy-saved').classList.remove('hidden');
+  setTimeout(()=>document.getElementById('fairy-saved').classList.add('hidden'),2000);
+  earnBadge('story');
+};
+
+window.togglePerspective = function(card, id) {
+  const wasActive = card.classList.contains('active');
+  document.querySelectorAll('.perspective-card').forEach(c=>c.classList.remove('active'));
+  if(!wasActive) card.classList.add('active');
+};
+
+window.savePerspective = function() {
+  const uid = window.currentUserId||'guest';
+  const persp = JSON.parse(localStorage.getItem(`dh_persp_${uid}`)||'[]');
+  persp.push({ situation: document.getElementById('persp-situation').value, reflection: document.getElementById('persp-reflection').value, date: Date.now() });
+  localStorage.setItem(`dh_persp_${uid}`, JSON.stringify(persp));
+  closeTool('perspective');
+};
+
+window.selectBodyArea = function(area) {
+  selectedBodyArea = area;
+  document.querySelectorAll('.body-area').forEach(el => el.classList.remove('active'));
+  document.getElementById('ba-'+area).classList.add('active');
+  const names = { head:{de:'Kopf',en:'Head'}, chest:{de:'Brust',en:'Chest'}, belly:{de:'Bauch',en:'Belly'}, leftarm:{de:'Linker Arm',en:'Left Arm'}, rightarm:{de:'Rechter Arm',en:'Right Arm'}, leftleg:{de:'Linkes Bein',en:'Left Leg'}, rightleg:{de:'Rechtes Bein',en:'Right Leg'} };
+  document.getElementById('body-selected-area').textContent = names[area][currentLang];
+};
+
+window.toggleFeeling = function(chip) { chip.classList.toggle('selected'); };
+
+window.saveBodyLog = function() {
+  const uid = window.currentUserId||'guest';
+  const logs = JSON.parse(localStorage.getItem(`dh_body_${uid}`)||'[]');
+  const feelings = [...document.querySelectorAll('.feeling-chip.selected')].map(c=>c.textContent);
+  logs.push({ area: selectedBodyArea, feelings, notes: document.getElementById('body-notes').value, date: Date.now() });
+  localStorage.setItem(`dh_body_${uid}`, JSON.stringify(logs));
+  closeTool('body');
+};
+
+// ===== STORY =====
+window.switchTab = function(group, name) {
+  const prefix = group === 'story' ? 'story-tab' : group === 'know' ? 'know-tab' : group === 'club' ? 'club-tab' : 'club-tab';
+  document.querySelectorAll(`[id^="${prefix}-"]`).forEach(el => el.classList.remove('active'));
+  const el = document.getElementById(`${prefix}-${name}`);
+  if(el) el.classList.add('active');
+  // Update tab buttons
+  const tabsEl = group === 'story' ? document.getElementById('story-tabs') : null;
+};
+
+window.saveStoryEntry = function(type) {
+  const uid = window.currentUserId||'guest';
+  const entries = JSON.parse(localStorage.getItem(`dh_entries_${uid}`)||'[]');
+  let text = '';
+  if(type==='free') text = document.getElementById('story-free-text').value;
+  else if(type==='poetic') text = document.getElementById('story-poetic-text').value;
+  else if(type==='guided') {
+    text = `Vor dem Erlebnis: ${document.getElementById('guided-before').value}\nDas Schwerste: ${document.getElementById('guided-hardest').value}\nWas half: ${document.getElementById('guided-helped').value}\nGelernt: ${document.getElementById('guided-learned').value}\nZukunft: ${document.getElementById('guided-future').value}`;
+  }
+  if(!text.trim()) return;
+  entries.push({ type, text, date: Date.now() });
+  localStorage.setItem(`dh_entries_${uid}`, JSON.stringify(entries));
+  document.getElementById('stat-entries').textContent = entries.length;
+  earnBadge('story');
+  loadStoryEntries();
+};
+
+function loadStoryEntries() {
+  const uid = window.currentUserId||'guest';
+  const entries = JSON.parse(localStorage.getItem(`dh_entries_${uid}`)||'[]');
+  const list = document.getElementById('story-entries-list');
+  if(!list) return;
+  if(entries.length === 0) {
+    list.innerHTML = `<div class="text-muted text-center" style="padding:20px;">${currentLang==='de'?'Noch keine EintrÃ¤ge. Fang an zu schreiben!':'No entries yet. Start writing!'}</div>`;
+    return;
+  }
+  list.innerHTML = entries.slice().reverse().map((e,i) => `
+    <div style="background:var(--bg);border-radius:12px;padding:14px;margin-bottom:10px;border:1px solid var(--border);">
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;">${new Date(e.date).toLocaleDateString(currentLang==='de'?'de-DE':'en-US')} Â· ${e.type}</div>
+      <div style="font-size:13px;color:var(--text);line-height:1.6;white-space:pre-wrap;">${e.text.substring(0,200)}${e.text.length>200?'...':''}</div>
+    </div>`).join('');
+}
+
+window.clearStoryField = function(id) { document.getElementById(id).value=''; };
+
+// ===== FAQ =====
+function initFAQ() {
+  const list = document.getElementById('faq-list');
+  if(!list) return;
+  list.innerHTML = faqData.map((faq,i) => `
+    <div class="faq-item" id="faq-${i}">
+      <div class="faq-q" onclick="toggleFAQ(${i})">${faq.q[currentLang]}<span class="faq-arrow">â–¼</span></div>
+      <div class="faq-a">${faq.a[currentLang]}</div>
+    </div>`).join('');
+}
+
+window.toggleFAQ = function(i) {
+  document.getElementById('faq-'+i).classList.toggle('open');
+};
+
+// ===== EXERCISES =====
+window.startBoxBreathing = function() {
+  if(breathInterval) { clearInterval(breathInterval); breathInterval=null; document.getElementById('breath-btn').textContent = currentLang==='de'?'Ãœbung starten':'Start exercise'; document.getElementById('breath-box').className='breathing-box'; return; }
+  document.getElementById('breath-btn').textContent = currentLang==='de'?'Stoppen':'Stop';
+  const phases = [
+    {text:{de:'Einatmen',en:'Inhale'}, cls:'inhale', dur:4},
+    {text:{de:'Halten',en:'Hold'}, cls:'hold', dur:4},
+    {text:{de:'Ausatmen',en:'Exhale'}, cls:'exhale', dur:4},
+    {text:{de:'Halten',en:'Hold'}, cls:'hold', dur:4}
+  ];
+  let p=0, t=phases[0].dur;
+  const box=document.getElementById('breath-box'), txt=document.getElementById('breath-text');
+  box.className='breathing-box '+phases[0].cls;
+  txt.textContent=`${phases[0].text[currentLang]} (${t})`;
+  breathInterval=setInterval(()=>{
+    t--;
+    if(t<=0){p=(p+1)%phases.length; t=phases[p].dur; box.className='breathing-box '+phases[p].cls;}
+    txt.textContent=`${phases[p].text[currentLang]} (${t})`;
+  },1000);
+  const uid=window.currentUserId||'guest';
+  const ex=parseInt(localStorage.getItem(`dh_exercises_${uid}`)||'0')+1;
+  localStorage.setItem(`dh_exercises_${uid}`, ex);
+  document.getElementById('stat-exercises').textContent=ex;
+  if(ex>=3) earnBadge('exercise');
+};
+
+window.saveSafePlace = function() {
+  const uid=window.currentUserId||'guest';
+  const data={where:document.getElementById('safe-where').value, see:document.getElementById('safe-see').value, hear:document.getElementById('safe-hear').value, feel:document.getElementById('safe-feel').value};
+  localStorage.setItem(`dh_safe_${uid}`,JSON.stringify(data));
+  document.getElementById('safe-saved').classList.remove('hidden');
+  loadBinderResources();
+};
+
+window.saveResourceChar = function() {
+  const uid=window.currentUserId||'guest';
+  const data={name:document.getElementById('res-name').value, power:document.getElementById('res-power').value, message:document.getElementById('res-message').value};
+  localStorage.setItem(`dh_reschar_${uid}`,JSON.stringify(data));
+  document.getElementById('res-display-name').textContent=`âš¡ ${data.name} â€” ${data.power}`;
+  document.getElementById('res-display-message').textContent=data.message;
+  document.getElementById('res-active').classList.remove('hidden');
+  loadBinderResources();
+};
+
+let shakeSeconds=300;
+window.startShakeTimer = function() {
+  if(shakeInterval){clearInterval(shakeInterval);shakeInterval=null;shakeSeconds=300;document.getElementById('shake-timer').textContent='5:00';document.getElementById('shake-btn').textContent=currentLang==='de'?'Timer starten':'Start timer';return;}
+  document.getElementById('shake-btn').textContent=currentLang==='de'?'Stoppen':'Stop';
+  shakeInterval=setInterval(()=>{
+    shakeSeconds--;
+    const m=Math.floor(shakeSeconds/60), s=shakeSeconds%60;
+    document.getElementById('shake-timer').textContent=`${m}:${s.toString().padStart(2,'0')}`;
+    if(shakeSeconds<=0){clearInterval(shakeInterval);shakeInterval=null;document.getElementById('shake-timer').textContent='âœ“';document.getElementById('shake-btn').textContent=currentLang==='de'?'Nochmal':'Again';}
+  },1000);
+};
+
+// ===== TRAUMA BINDER =====
+window.switchBinder = function(name) {
+  document.querySelectorAll('.binder-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.binder-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('binder-'+name).classList.add('active');
+  event.target.classList.add('active');
+};
+
+window.saveBinderField = function(fieldId, key) {
+  const uid=window.currentUserId||'guest';
+  localStorage.setItem(`dh_binder_${key}_${uid}`, document.getElementById(fieldId).value);
+};
+
+window.addTrigger = function() {
+  const uid=window.currentUserId||'guest';
+  const triggers=JSON.parse(localStorage.getItem(`dh_triggers_${uid}`)||'[]');
+  triggers.push({what:document.getElementById('new-trigger-what').value, body:document.getElementById('new-trigger-body').value, help:document.getElementById('new-trigger-help').value});
+  localStorage.setItem(`dh_triggers_${uid}`,JSON.stringify(triggers));
+  document.getElementById('new-trigger-what').value='';
+  document.getElementById('new-trigger-body').value='';
+  document.getElementById('new-trigger-help').value='';
+  loadTriggers();
+};
+
+function loadTriggers() {
+  const uid=window.currentUserId||'guest';
+  const triggers=JSON.parse(localStorage.getItem(`dh_triggers_${uid}`)||'[]');
+  const list=document.getElementById('triggers-list');
+  if(!list) return;
+  list.innerHTML=triggers.map((t,i)=>`
+    <div style="background:var(--bg);border-radius:12px;padding:14px;margin-bottom:10px;border-left:4px solid var(--purple);">
+      <div style="font-weight:700;font-size:14px;color:var(--text);">${t.what||'?'}</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">${currentLang==='de'?'Im KÃ¶rper':'In body'}: ${t.body||'-'}</div>
+      <div style="font-size:12px;color:var(--teal);margin-top:2px;">âœ“ ${t.help||'-'}</div>
+    </div>`).join('') || `<div class="text-muted">${currentLang==='de'?'Noch keine Trigger gespeichert.':'No triggers saved yet.'}</div>`;
+}
+
+window.addContact = function() {
+  const uid=window.currentUserId||'guest';
+  const contacts=JSON.parse(localStorage.getItem(`dh_contacts_${uid}`)||'[]');
+  contacts.push({name:document.getElementById('new-contact-name').value, role:document.getElementById('new-contact-role').value, phone:document.getElementById('new-contact-phone').value});
+  localStorage.setItem(`dh_contacts_${uid}`,JSON.stringify(contacts));
+  document.getElementById('new-contact-name').value='';
+  document.getElementById('new-contact-role').value='';
+  document.getElementById('new-contact-phone').value='';
+  loadContacts();
+  earnBadge('binder');
+};
+
+function loadContacts() {
+  const uid=window.currentUserId||'guest';
+  const contacts=JSON.parse(localStorage.getItem(`dh_contacts_${uid}`)||'[]');
+  const list=document.getElementById('contacts-list');
+  if(!list) return;
+  list.innerHTML=contacts.map(c=>`
+    <div class="contact-card">
+      <div class="contact-info">
+        <div class="contact-avatar">ðŸ‘¤</div>
+        <div><div class="contact-name">${c.name}</div><div class="contact-role">${c.role}</div></div>
+      </div>
+      <a href="tel:${c.phone}" style="font-weight:700;color:var(--teal);">${c.phone}</a>
+    </div>`).join('') || `<div class="text-muted">${currentLang==='de'?'Noch keine Kontakte hinzugefÃ¼gt.':'No contacts added yet.'}</div>`;
+}
+
+window.addSession = function() {
+  const uid=window.currentUserId||'guest';
+  const sessions=JSON.parse(localStorage.getItem(`dh_sessions_${uid}`)||'[]');
+  sessions.push({date:document.getElementById('sess-date').value, topic:document.getElementById('sess-topic').value, notes:document.getElementById('sess-notes').value});
+  localStorage.setItem(`dh_sessions_${uid}`,JSON.stringify(sessions));
+  document.getElementById('sess-date').value='';
+  document.getElementById('sess-topic').value='';
+  document.getElementById('sess-notes').value='';
+  loadSessions();
+};
+
+function loadSessions() {
+  const uid=window.currentUserId||'guest';
+  const sessions=JSON.parse(localStorage.getItem(`dh_sessions_${uid}`)||'[]');
+  const list=document.getElementById('sessions-list');
+  if(!list) return;
+  list.innerHTML=sessions.slice().reverse().map(s=>`
+    <div style="background:var(--bg);border-radius:12px;padding:14px;margin-bottom:10px;border:1px solid var(--border);">
+      <div style="font-size:12px;color:var(--text-muted);">${s.date}</div>
+      <div style="font-weight:700;font-size:14px;">${s.topic}</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-top:4px;white-space:pre-wrap;">${s.notes}</div>
+    </div>`).join('') || `<div class="text-muted">${currentLang==='de'?'Noch keine Sitzungen protokolliert.':'No sessions logged yet.'}</div>`;
+}
+
+window.saveCrisisPlan = function() {
+  const uid=window.currentUserId||'guest';
+  const plan={signs:document.getElementById('crisis-signs').value, immediate:document.getElementById('crisis-immediate').value, call:document.getElementById('crisis-call').value, self:document.getElementById('crisis-self').value};
+  localStorage.setItem(`dh_crisis_${uid}`,JSON.stringify(plan));
+  earnBadge('binder');
+  alert(currentLang==='de'?'âœ“ Notfallplan gespeichert!':'âœ“ Crisis plan saved!');
+};
+
+function loadBinderResources() {
+  const uid=window.currentUserId||'guest';
+  const safe=JSON.parse(localStorage.getItem(`dh_safe_${uid}`)||'null');
+  const res=JSON.parse(localStorage.getItem(`dh_reschar_${uid}`)||'null');
+  const safeEl=document.getElementById('binder-safe-display');
+  const resEl=document.getElementById('binder-res-display');
+  if(safeEl && safe) safeEl.innerHTML=`<strong>${safe.where}</strong><br>${currentLang==='de'?'GefÃ¼hl':'Feeling'}: ${safe.feel}`;
+  if(resEl && res) resEl.innerHTML=`<strong>${res.name}</strong> â€” ${res.power}`;
+}
+
+// ===== SUPERCLUB =====
+window.setClubEmoji = function(emoji) { clubEmoji=emoji; document.getElementById('club-emoji-preview').textContent=emoji; };
+
+window.saveClubProfile = function() {
+  const uid=window.currentUserId||'guest';
+  const name=document.getElementById('club-name').value;
+  const power=document.getElementById('club-power').value;
+  const profile={name,power,emoji:clubEmoji};
+  localStorage.setItem(`dh_club_${uid}`,JSON.stringify(profile));
+  const display=document.getElementById('club-char-display');
+  display.innerHTML=`<span class="character-avatar">${clubEmoji}</span><div class="character-name">${name}</div><div class="character-power">${power}</div>`;
+  earnBadge('club');
+};
+
+function initCommunityWall() {
+  const uid=window.currentUserId||'guest';
+  const wall=document.getElementById('community-wall');
+  if(!wall) return;
+  const userPosts=JSON.parse(localStorage.getItem(`dh_posts_${uid}`)||'[]');
+  const allPosts=[...communityPosts.map(p=>({alias:p.alias[currentLang], emoji:p.emoji, text:p.text[currentLang]})), ...userPosts];
+  wall.innerHTML=allPosts.map(p=>`
+    <div class="community-post">
+      <div class="post-avatar">${p.emoji}</div>
+      <div><div class="post-name">${p.alias}</div><div class="post-text">${p.text}</div></div>
+    </div>`).join('');
+}
+
+window.addCommunityPost = function() {
+  const uid=window.currentUserId||'guest';
+  const text=document.getElementById('new-post-text').value.trim();
+  if(!text) return;
+  const profile=JSON.parse(localStorage.getItem(`dh_club_${uid}`)||'null');
+  const posts=JSON.parse(localStorage.getItem(`dh_posts_${uid}`)||'[]');
+  posts.push({alias:profile?profile.name:(currentLang==='de'?'Anonym':'Anonymous'), emoji:profile?profile.emoji:'â­', text});
+  localStorage.setItem(`dh_posts_${uid}`,JSON.stringify(posts));
+  document.getElementById('new-post-text').value='';
+  initCommunityWall();
+};
+
+function initChallenges() {
+  const uid=window.currentUserId||'guest';
+  const completed=JSON.parse(localStorage.getItem(`dh_challenges_${uid}`)||'[]');
+  const list=document.getElementById('challenges-list');
+  if(!list) return;
+  list.innerHTML=challengesData.map((c,i)=>`
+    <div class="challenge-card">
+      <div class="challenge-num">${currentLang==='de'?'Herausforderung':'Challenge'} ${i+1}</div>
+      <div class="challenge-text">${c[currentLang]}</div>
+      <button class="challenge-done ${completed.includes(i)?'completed':''}" onclick="completeChallenge(${i})">
+        ${completed.includes(i)?(currentLang==='de'?'âœ“ Erledigt!':'âœ“ Done!'):(currentLang==='de'?'Erledigen':'Mark done')}
+      </button>
+    </div>`).join('');
+}
+
+window.completeChallenge = function(i) {
+  const uid=window.currentUserId||'guest';
+  const completed=JSON.parse(localStorage.getItem(`dh_challenges_${uid}`)||'[]');
+  if(!completed.includes(i)) {
+    completed.push(i);
+    localStorage.setItem(`dh_challenges_${uid}`,JSON.stringify(completed));
+    confetti();
+    if(completed.length>=3) earnBadge('challenge');
+  }
+  initChallenges();
+};
+
+// ===== BADGES =====
+function initBadges() {
+  const uid=window.currentUserId||'guest';
+  const earned=JSON.parse(localStorage.getItem(`dh_badges_${uid}`)||'[]');
+  const grid=document.getElementById('badges-grid');
+  if(!grid) return;
+  grid.innerHTML=badgesData.map(b=>`
+    <div class="badge ${earned.includes(b.id)?'earned':''}" title="${b[currentLang]}">
+      <div class="badge-icon">${b.icon}</div>
+      <div class="badge-name">${b[currentLang]}</div>
+    </div>`).join('');
+}
+
+function earnBadge(id) {
+  const uid=window.currentUserId||'guest';
+  const earned=JSON.parse(localStorage.getItem(`dh_badges_${uid}`)||'[]');
+  if(!earned.includes(id)) {
+    earned.push(id);
+    localStorage.setItem(`dh_badges_${uid}`,JSON.stringify(earned));
+    initBadges();
+    confetti();
+  }
+}
+
+// ===== PROGRESS =====
+function initMoodChart() {
+  const uid=window.currentUserId||'guest';
+  const moods=JSON.parse(localStorage.getItem(`dh_moods_${uid}`)||'[]');
+  const chart=document.getElementById('mood-chart');
+  if(!chart) return;
+  const colors=['#EF4444','#F97316','#EAB308','#22C55E','#8B5CF6'];
+  chart.innerHTML='';
+  for(let i=0;i<30;i++) {
+    const m=moods[moods.length-30+i];
+    const bar=document.createElement('div');
+    bar.className='mood-bar';
+    const level=m?m.mood:0;
+    bar.style.height=(level*16)+'px';
+    bar.style.background=level?colors[level-1]:'var(--border)';
+    bar.title=m?`${new Date(m.date).toLocaleDateString()}`:'-';
+    chart.appendChild(bar);
+  }
+}
+
+function initStreakGrid() {
+  const uid=window.currentUserId||'guest';
+  const grid=document.getElementById('streak-grid');
+  if(!grid) return;
+  grid.innerHTML='';
+  const today=new Date();
+  for(let i=27;i>=0;i--) {
+    const d=new Date(today); d.setDate(d.getDate()-i);
+    const div=document.createElement('div');
+    div.className='streak-day';
+    const dayStr=d.toDateString();
+    if(dayStr===today.toDateString()) div.classList.add('done');
+    else if(Math.random()>0.5) div.classList.add('done-light'); // demo
+    grid.appendChild(div);
+  }
+}
+
+window.saveWeeklyReflection = function() {
+  const uid=window.currentUserId||'guest';
+  localStorage.setItem(`dh_weekly_${uid}`, document.getElementById('weekly-reflection').value);
+  alert(currentLang==='de'?'âœ“ Gespeichert!':'âœ“ Saved!');
+};
+
+// ===== CONFETTI =====
+function confetti() {
+  const colors=['#6B21A8','#0D9488','#F59E0B','#EF4444','#3B82F6'];
+  for(let i=0;i<25;i++) {
+    const piece=document.createElement('div');
+    piece.className='confetti-piece';
+    piece.style.left=Math.random()*100+'vw';
+    piece.style.background=colors[Math.floor(Math.random()*colors.length)];
+    piece.style.setProperty('--drift',(Math.random()*200-100)+'px');
+    piece.style.animationDelay=Math.random()*0.5+'s';
+    piece.style.width=piece.style.height=(6+Math.random()*10)+'px';
+    document.body.appendChild(piece);
+    setTimeout(()=>piece.remove(),3500);
+  }
+}
+
+// ===== SETTINGS =====
+window.confirmReset = function() {
+  if(confirm(currentLang==='de'?'Wirklich alle Daten lÃ¶schen?':'Really delete all data?')) {
+    const uid=window.currentUserId||'guest';
+    const keys=Object.keys(localStorage).filter(k=>k.includes(uid));
+    keys.forEach(k=>localStorage.removeItem(k));
+    location.reload();
+  }
+};
+
+// ===== SERVICE WORKER =====
+if('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    const swCode = `
+      const CACHE='dramaheal-v1';
+      self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['/']))));
+      self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));
+    `;
+    const blob=new Blob([swCode],{type:'application/javascript'});
+    const url=URL.createObjectURL(blob);
+    navigator.serviceWorker.register(url).catch(()=>{});
+  });
+}
+</script>
+</body>
+</html>
+
