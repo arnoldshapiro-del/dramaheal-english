@@ -2514,6 +2514,13 @@ ul, ol { list-style: none; }
     <p class="empty-state" id="activity-empty" data-de="Noch keine Aktivitäten. Starte deine erste Übung!" data-en="No activities yet. Start your first exercise!">Noch keine Aktivitäten. Starte deine erste Übung!</p>
   </div>
 
+  <!-- G) Daily Inspirational Quote -->
+  <div class="card" style="text-align:center;background:linear-gradient(135deg,var(--purple-50),var(--teal-50));border-left:4px solid var(--purple);">
+    <div style="font-size:28px;margin-bottom:8px;">💜</div>
+    <p id="daily-quote" style="font-size:16px;font-style:italic;color:var(--text);line-height:1.7;"></p>
+    <div style="margin-top:8px;font-size:12px;color:var(--text-muted);" data-de="— Tägliches Zitat" data-en="— Daily Quote">— Tägliches Zitat</div>
+  </div>
+
 </div>
 
     <div id="section-drama" class="section">
@@ -3275,6 +3282,59 @@ ul, ol { list-style: none; }
     <p data-en="Your journey of healing, in your own words" data-de="Deine Heilungsreise, in deinen eigenen Worten">Your journey of healing, in your own words</p>
   </div>
 
+  <!-- Writing Tabs (from V1) -->
+  <div class="card" style="margin-bottom:1.5rem;">
+    <h3 data-de="📝 Schreibwerkstatt" data-en="📝 Writing Workshop">📝 Writing Workshop</h3>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+      <button class="btn-secondary" onclick="showStoryTab('free')" id="story-tab-free-btn" style="padding:8px 16px;border-radius:20px;" data-de="Freies Schreiben" data-en="Free Writing">Free Writing</button>
+      <button class="btn-secondary" onclick="showStoryTab('guided')" id="story-tab-guided-btn" style="padding:8px 16px;border-radius:20px;" data-de="Geführtes Schreiben" data-en="Guided Writing">Guided Writing</button>
+      <button class="btn-secondary" onclick="showStoryTab('poetic')" id="story-tab-poetic-btn" style="padding:8px 16px;border-radius:20px;" data-de="Poetisches Schreiben" data-en="Poetic Writing">Poetic Writing</button>
+    </div>
+
+    <!-- Free Writing -->
+    <div id="story-tab-free" style="display:block;">
+      <p data-de="Schreib frei, ohne Regeln. Was auch immer in dir ist — lass es raus." data-en="Write freely, without rules. Whatever is inside you — let it out.">Write freely, without rules. Whatever is inside you — let it out.</p>
+      <textarea id="story-free-text" style="width:100%;min-height:120px;padding:12px;border:1px solid var(--border);border-radius:8px;margin:12px 0;background:var(--bg);color:var(--text);resize:vertical;font-family:var(--font-sans);" data-de-placeholder="Schreib einfach los..." data-en-placeholder="Just start writing..." placeholder="Just start writing..."></textarea>
+      <button class="btn-primary" onclick="saveStoryWriting('free')" style="width:100%;">💾 <span data-de="Speichern" data-en="Save">Save</span></button>
+    </div>
+
+    <!-- Guided Writing -->
+    <div id="story-tab-guided" style="display:none;">
+      <p data-de="Beantworte diese Fragen Schritt für Schritt:" data-en="Answer these questions step by step:">Answer these questions step by step:</p>
+      <div style="margin:12px 0;">
+        <label style="font-weight:600;font-size:13px;display:block;margin-bottom:4px;" data-de="Vor dem Erlebnis — Wie war dein Leben?" data-en="Before the experience — What was your life like?">Before the experience — What was your life like?</label>
+        <textarea id="guided-before" style="width:100%;min-height:60px;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);resize:vertical;" placeholder="..."></textarea>
+      </div>
+      <div style="margin:12px 0;">
+        <label style="font-weight:600;font-size:13px;display:block;margin-bottom:4px;" data-de="Das Schwerste — Was war am schwierigsten?" data-en="The hardest part — What was most difficult?">The hardest part — What was most difficult?</label>
+        <textarea id="guided-hardest" style="width:100%;min-height:60px;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);resize:vertical;" placeholder="..."></textarea>
+      </div>
+      <div style="margin:12px 0;">
+        <label style="font-weight:600;font-size:13px;display:block;margin-bottom:4px;" data-de="Was hat geholfen?" data-en="What helped?">What helped?</label>
+        <textarea id="guided-helped" style="width:100%;min-height:60px;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);resize:vertical;" placeholder="..."></textarea>
+      </div>
+      <div style="margin:12px 0;">
+        <label style="font-weight:600;font-size:13px;display:block;margin-bottom:4px;" data-de="Was hast du gelernt?" data-en="What did you learn?">What did you learn?</label>
+        <textarea id="guided-learned" style="width:100%;min-height:60px;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);resize:vertical;" placeholder="..."></textarea>
+      </div>
+      <div style="margin:12px 0;">
+        <label style="font-weight:600;font-size:13px;display:block;margin-bottom:4px;" data-de="Deine Zukunft — Was wünschst du dir?" data-en="Your future — What do you wish for?">Your future — What do you wish for?</label>
+        <textarea id="guided-future" style="width:100%;min-height:60px;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);resize:vertical;" placeholder="..."></textarea>
+      </div>
+      <button class="btn-primary" onclick="saveStoryWriting('guided')" style="width:100%;">💾 <span data-de="Speichern" data-en="Save">Save</span></button>
+    </div>
+
+    <!-- Poetic Writing -->
+    <div id="story-tab-poetic" style="display:none;">
+      <p data-de="Drücke dich in Versen, Metaphern oder Haiku aus. Es muss sich nicht reimen." data-en="Express yourself in verses, metaphors, or haiku. It doesn't have to rhyme.">Express yourself in verses, metaphors, or haiku. It doesn't have to rhyme.</p>
+      <textarea id="story-poetic-text" style="width:100%;min-height:120px;padding:12px;border:1px solid var(--border);border-radius:8px;margin:12px 0;background:var(--bg);color:var(--text);resize:vertical;font-family:Georgia,serif;font-style:italic;" data-de-placeholder="Schreib ein Gedicht, Haiku oder freie Verse..." data-en-placeholder="Write a poem, haiku, or free verse..." placeholder="Write a poem, haiku, or free verse..."></textarea>
+      <button class="btn-primary" onclick="saveStoryWriting('poetic')" style="width:100%;">💾 <span data-de="Speichern" data-en="Save">Save</span></button>
+    </div>
+
+    <!-- Saved Entries -->
+    <div id="story-entries-list" style="margin-top:16px;"></div>
+  </div>
+
   <!-- A) Story Timeline Builder -->
   <div class="card">
     <h3 data-en="Story Timeline Builder" data-de="Geschichts-Zeitstrahl">Story Timeline Builder</h3>
@@ -3669,7 +3729,38 @@ ul, ol { list-style: none; }
     </div>
   </div>
 
-  <!-- E) Treatment Options Overview -->
+  <!-- E) Frequently Asked Questions (from V1) -->
+  <div class="card" style="margin-top:1.5rem;">
+    <h3 data-en="❓ Frequently Asked Questions" data-de="❓ Häufig gestellte Fragen">❓ Frequently Asked Questions</h3>
+    <div id="faq-section">
+      <details style="margin-bottom:8px;border:1px solid var(--border);border-radius:8px;padding:12px;">
+        <summary style="cursor:pointer;font-weight:600;" data-de="Bin ich normal?" data-en="Am I normal?">Am I normal?</summary>
+        <p style="margin-top:8px;color:var(--text-muted);line-height:1.7;" data-de="Ja, absolut. PTBS ist eine normale Reaktion auf abnormale Erfahrungen. Dein Gehirn und Körper haben das Schlimmste überlebt und reagieren auf eine Art, die zu dem passt, was du erlebt hast. Das macht dich nicht 'verrückt' — das macht dich menschlich." data-en="Yes, absolutely. PTSD is a normal reaction to abnormal experiences. Your brain and body survived the worst and are responding in a way that fits what you experienced. That doesn't make you 'crazy' — it makes you human.">Yes, absolutely. PTSD is a normal reaction to abnormal experiences. Your brain and body survived the worst and are responding in a way that fits what you experienced. That doesn't make you "crazy" — it makes you human.</p>
+      </details>
+      <details style="margin-bottom:8px;border:1px solid var(--border);border-radius:8px;padding:12px;">
+        <summary style="cursor:pointer;font-weight:600;" data-de="Wie lange dauert das?" data-en="How long does this last?">How long does this last?</summary>
+        <p style="margin-top:8px;color:var(--text-muted);line-height:1.7;" data-de="Jeder Heilungsweg ist anders. Mit der richtigen Unterstützung — Therapie, kreative Arbeit, Selbstfürsorge — kann sich PTBS deutlich verbessern. Heilung ist kein gerader Weg, aber sie ist möglich." data-en="Everyone's healing journey is different. With the right support — therapy, creative work, self-care — PTSD can improve significantly. Healing is not a straight path, but it is possible.">Everyone's healing journey is different. With the right support — therapy, creative work, self-care — PTSD can improve significantly. Healing is not a straight path, but it is possible.</p>
+      </details>
+      <details style="margin-bottom:8px;border:1px solid var(--border);border-radius:8px;padding:12px;">
+        <summary style="cursor:pointer;font-weight:600;" data-de="Muss ich über das Trauma sprechen?" data-en="Do I have to talk about the trauma?">Do I have to talk about the trauma?</summary>
+        <p style="margin-top:8px;color:var(--text-muted);line-height:1.7;" data-de="Nein. Es gibt viele Wege zur Heilung, und nicht alle brauchen direkte Konfrontation mit dem Trauma. Drama-Therapie, kreatives Schreiben und Körperarbeit können helfen, ohne das Trauma direkt benennen zu müssen." data-en="No. There are many paths to healing, and not all require directly confronting the trauma. Drama therapy, creative writing and body work can help without directly naming the trauma.">No. There are many paths to healing, and not all require directly confronting the trauma. Drama therapy, creative writing and body work can help without directly naming the trauma.</p>
+      </details>
+      <details style="margin-bottom:8px;border:1px solid var(--border);border-radius:8px;padding:12px;">
+        <summary style="cursor:pointer;font-weight:600;" data-de="Was können meine Freunde tun?" data-en="What can my friends do?">What can my friends do?</summary>
+        <p style="margin-top:8px;color:var(--text-muted);line-height:1.7;" data-de="Einfach da sein, zuhören ohne zu urteilen, keine Fragen über das Trauma stellen, deine Grenzen respektieren, dich zu normalen Aktivitäten einladen, sagen: 'Ich bin für dich da.'" data-en="Simply be there, listen without judging, don't ask questions about the trauma, respect your boundaries, invite you to normal activities, say: 'I'm here for you.'">Simply be there, listen without judging, don't ask questions about the trauma, respect your boundaries, invite you to normal activities, say: "I'm here for you."</p>
+      </details>
+      <details style="margin-bottom:8px;border:1px solid var(--border);border-radius:8px;padding:12px;">
+        <summary style="cursor:pointer;font-weight:600;" data-de="Was können meine Eltern tun?" data-en="What can my parents do?">What can my parents do?</summary>
+        <p style="margin-top:8px;color:var(--text-muted);line-height:1.7;" data-de="Dir glauben. Da sein ohne zu drängen. Professionelle Hilfe unterstützen. Keine Kommentare wie 'Stell dich nicht so an'. Dich in Entscheidungen einbeziehen. Geduldig sein." data-en="Believe you. Be there without pushing. Support professional help. No comments like 'stop overreacting'. Involve you in decisions. Be patient.">Believe you. Be there without pushing. Support professional help. No comments like "stop overreacting". Involve you in decisions. Be patient.</p>
+      </details>
+      <details style="margin-bottom:8px;border:1px solid var(--border);border-radius:8px;padding:12px;">
+        <summary style="cursor:pointer;font-weight:600;" data-de="Wann brauche ich professionelle Hilfe?" data-en="When do I need professional help?">When do I need professional help?</summary>
+        <p style="margin-top:8px;color:var(--text-muted);line-height:1.7;" data-de="Wenn Symptome länger als einen Monat anhalten, deinen Alltag stark einschränken, du dir selbst schaden möchtest, oder du das Gefühl hast, nicht alleine weiterzukommen — dann ist es Zeit, professionelle Unterstützung zu suchen. Das ist mutig, nicht schwach." data-en="When symptoms last more than a month, strongly limit your daily life, you want to harm yourself, or you feel you can't continue alone — then it's time to seek professional support. That is brave, not weak.">When symptoms last more than a month, strongly limit your daily life, you want to harm yourself, or you feel you can't continue alone — then it's time to seek professional support. That is brave, not weak.</p>
+      </details>
+    </div>
+  </div>
+
+  <!-- F) Treatment Options Overview -->
   <div class="card" style="margin-top:1.5rem;">
     <h3 data-en="Treatment Options" data-de="Behandlungsoptionen">Treatment Options</h3>
     <p data-en="These are evidence-based treatments that have been proven to help young people with PTSD. All of them work — the best one is the one that feels right for YOU." data-de="Dies sind evidenzbasierte Behandlungen, die sich bewährt haben, jungen Menschen mit PTBS zu helfen. Alle funktionieren — die beste ist diejenige, die sich für DICH richtig anfühlt.">These are evidence-based treatments that have been proven to help young people with PTSD. All of them work — the best one is the one that feels right for YOU.</p>
@@ -4749,6 +4840,63 @@ ul, ol { list-style: none; }
     <button class="btn-primary" onclick="saveSuperClub()" data-de="SuperClub speichern" data-en="Save SuperClub">Save SuperClub</button>
   </div>
 
+
+  <!-- D) Daily Challenges -->
+  <h3 data-de="⚡ Tägliche Herausforderungen" data-en="⚡ Daily Challenges" style="margin-top:2rem;">⚡ Daily Challenges</h3>
+  <p data-de="Kleine tägliche Aufgaben, die deinen Heilungsweg unterstützen:" data-en="Small daily tasks that support your healing journey:">Small daily tasks that support your healing journey:</p>
+  <div class="card-grid" id="challenges-grid">
+    <div class="card" style="text-align:center;padding:16px;cursor:pointer;" onclick="this.style.borderColor='var(--teal)';this.style.background='var(--teal-50)';">
+      <div style="font-size:28px;">✉️</div>
+      <p data-de="Schreib einen Brief an dein jüngeres Ich" data-en="Write a letter to your younger self">Write a letter to your younger self</p>
+    </div>
+    <div class="card" style="text-align:center;padding:16px;cursor:pointer;" onclick="this.style.borderColor='var(--teal)';this.style.background='var(--teal-50)';">
+      <div style="font-size:28px;">🎨</div>
+      <p data-de="Zeichne deine aktuelle Emotion als Wettermuster" data-en="Draw your current emotion as a weather pattern">Draw your current emotion as a weather pattern</p>
+    </div>
+    <div class="card" style="text-align:center;padding:16px;cursor:pointer;" onclick="this.style.borderColor='var(--teal)';this.style.background='var(--teal-50)';">
+      <div style="font-size:28px;">✍️</div>
+      <p data-de="Beschreibe dein Leben in genau 6 Wörtern" data-en="Describe your life in exactly 6 words">Describe your life in exactly 6 words</p>
+    </div>
+    <div class="card" style="text-align:center;padding:16px;cursor:pointer;" onclick="this.style.borderColor='var(--teal)';this.style.background='var(--teal-50)';">
+      <div style="font-size:28px;">🦸</div>
+      <p data-de="Sei für 2 Minuten dein eigener Held" data-en="Be your own hero for 2 minutes">Be your own hero for 2 minutes</p>
+    </div>
+    <div class="card" style="text-align:center;padding:16px;cursor:pointer;" onclick="this.style.borderColor='var(--teal)';this.style.background='var(--teal-50)';">
+      <div style="font-size:28px;">📝</div>
+      <p data-de="Schreib das Ende deiner Geschichte neu — so wie du es dir wünschst" data-en="Rewrite the ending of your story — the way you wish it to be">Rewrite the ending of your story — the way you wish it to be</p>
+    </div>
+    <div class="card" style="text-align:center;padding:16px;cursor:pointer;" onclick="this.style.borderColor='var(--teal)';this.style.background='var(--teal-50)';">
+      <div style="font-size:28px;">🌈</div>
+      <p data-de="Finde heute drei Dinge, die trotz allem schön waren" data-en="Find three things that were beautiful today despite everything">Find three things that were beautiful today despite everything</p>
+    </div>
+  </div>
+
+  <!-- E) Community Inspiration Wall -->
+  <h3 data-de="💬 Gemeinschaftswand" data-en="💬 Community Inspiration Wall" style="margin-top:2rem;">💬 Community Inspiration Wall</h3>
+  <p data-de="Worte von anderen, die den gleichen Weg gehen:" data-en="Words from others walking the same path:">Words from others walking the same path:</p>
+  <div id="community-wall">
+    <div class="card" style="margin-bottom:10px;border-left:4px solid var(--purple);">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><span style="font-size:24px;">🦅</span><strong data-de="Sturmvogel" data-en="Stormpetrel">Stormpetrel</strong></div>
+      <p style="font-style:italic;color:var(--text-secondary);" data-de="Ich habe gelernt, dass Weinen keine Schwäche ist. Es ist der Körper, der aufräumt." data-en="I learned that crying is not weakness. It is the body cleaning up.">I learned that crying is not weakness. It is the body cleaning up.</p>
+    </div>
+    <div class="card" style="margin-bottom:10px;border-left:4px solid var(--teal);">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><span style="font-size:24px;">🌟</span><strong data-de="Lichtsucher" data-en="Lightseeker">Lightseeker</strong></div>
+      <p style="font-style:italic;color:var(--text-secondary);" data-de="Jeden Tag ein kleiner Schritt. Manchmal rückwärts. Aber ich bewege mich." data-en="One small step every day. Sometimes backwards. But I'm moving.">One small step every day. Sometimes backwards. But I'm moving.</p>
+    </div>
+    <div class="card" style="margin-bottom:10px;border-left:4px solid var(--amber);">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><span style="font-size:24px;">🌙</span><strong data-de="Nebelwanderin" data-en="Fog Walker">Fog Walker</strong></div>
+      <p style="font-style:italic;color:var(--text-secondary);" data-de="Ich dachte, ich wäre gebrochen. Ich bin gebogen, aber ganz." data-en="I thought I was broken. I am bent, but whole.">I thought I was broken. I am bent, but whole.</p>
+    </div>
+    <div class="card" style="margin-bottom:10px;border-left:4px solid var(--rose);">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><span style="font-size:24px;">🔥</span><strong data-de="Phönix17" data-en="Phoenix17">Phoenix17</strong></div>
+      <p style="font-style:italic;color:var(--text-secondary);" data-de="Die Dramawerkzeuge hier haben mir geholfen, über mich zu sprechen, ohne direkt über mich zu sprechen. Das war der Schlüssel." data-en="The drama tools here helped me talk about myself without directly talking about myself. That was the key.">The drama tools here helped me talk about myself without directly talking about myself. That was the key.</p>
+    </div>
+    <div class="card" style="margin-bottom:10px;border-left:4px solid var(--emerald);">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><span style="font-size:24px;">🌊</span><strong data-de="Ruhiger Sturm" data-en="Quiet Storm">Quiet Storm</strong></div>
+      <p style="font-style:italic;color:var(--text-secondary);" data-de="Du musst deinem Schmerz keinen Namen geben, damit er zählt." data-en="You don't have to name your pain for it to count.">You don't have to name your pain for it to count.</p>
+    </div>
+  </div>
+
 </div>
 
 <div id="section-coping" class="section">
@@ -5315,6 +5463,36 @@ window.saveDailyCheckin = function() {
   drawMoodChart();
   updateStreakCalendar();
   showToast('Check-in gespeichert!', 'Check-in saved!');
+  // Personalized mood response
+  const moodMsgs = {
+    de: {
+      1: {msg:'💙 Es ist okay, sich schlecht zu fühlen. Du bist hier — das ist Mut.',sug:'→ Versuche jetzt die Grounding-Übung (5-4-3-2-1)'},
+      2: {msg:'💛 Schwere Tage gehören dazu. Du schaffst das.',sug:'→ Vielleicht hilft heute Box-Atmung'},
+      3: {msg:'🌿 In der Mitte zu sein ist auch okay.',sug:'→ Wie wäre es mit einem kurzen Tagebucheintrag?'},
+      4: {msg:'🌟 Das ist schön zu hören! Nutze diese Energie.',sug:'→ Probiere heute ein Drama-Werkzeug aus'},
+      5: {msg:'✨ Wunderbar! Diese Stärke gehört dir.',sug:'→ Teile etwas im SuperClub'}
+    },
+    en: {
+      1: {msg:"💙 It's okay to feel bad. You're here — that takes courage.",sug:'→ Try the Grounding exercise now (5-4-3-2-1)'},
+      2: {msg:"💛 Heavy days are part of it. You've got this.",sug:'→ Maybe box breathing will help today'},
+      3: {msg:'🌿 Being in the middle is okay too.',sug:'→ How about a short journal entry?'},
+      4: {msg:"🌟 That's great to hear! Use this energy.",sug:'→ Try a drama tool today'},
+      5: {msg:'✨ Wonderful! This strength is yours.',sug:'→ Share something in SuperClub'}
+    }
+  };
+  const moodResp = moodMsgs[currentLang][moodVal];
+  if (moodResp) {
+    let respDiv = document.getElementById('mood-response-msg');
+    if (!respDiv) {
+      respDiv = document.createElement('div');
+      respDiv.id = 'mood-response-msg';
+      respDiv.style.cssText = 'margin-top:12px;padding:16px;border-radius:12px;background:rgba(107,33,168,0.07);text-align:center;animation:fadeIn 0.3s ease;';
+      const checkinCard = document.getElementById('checkin-note') || document.querySelector('#mood-selector');
+      if (checkinCard && checkinCard.parentNode) checkinCard.parentNode.appendChild(respDiv);
+    }
+    respDiv.innerHTML = '<div style="font-size:15px;font-weight:600;margin-bottom:6px;">' + moodResp.msg + '</div><div style="font-size:13px;color:var(--teal);font-weight:500;">' + moodResp.sug + '</div>';
+    respDiv.style.display = 'block';
+  }
 };
 
 // Allow clicking mood buttons
@@ -6781,6 +6959,87 @@ window.ctSaveBodyLog = function() {
   closeCreativeTool('bodycompass');
   showToast('Körpergefühl gespeichert!', 'Body feeling saved!');
 };
+
+/* ==========================================================================
+   RESTORED FROM V1: Quotes, Story Writing Tabs, Story Entries
+   ========================================================================== */
+const dailyQuotes = [
+  {de:'Der Mut beginnt nicht damit, den Sturm aufzuhalten. Er beginnt damit, trotzdem weiterzugehen.',en:'Courage doesn\'t begin by stopping the storm. It begins by walking through it anyway.'},
+  {de:'Du bist nicht kaputt. Du bist ein Mensch mit einer Geschichte.',en:'You are not broken. You are a person with a story.'},
+  {de:'Heilung ist keine Gerade, sondern eine Spirale aufwärts.',en:'Healing is not a straight line, but an upward spiral.'},
+  {de:'Was du überlebt hast, ist Beweis für deine Stärke.',en:'What you survived is proof of your strength.'},
+  {de:'Deine Geschichte hat noch kein Ende geschrieben.',en:'Your story hasn\'t finished being written yet.'},
+  {de:'Jeder kleine Schritt zählt. Auch das Atmen.',en:'Every small step counts. Even breathing.'},
+  {de:'Du verdienst Fürsorge — auch von dir selbst.',en:'You deserve care — including from yourself.'}
+];
+
+// Show daily quote on home
+(function initDailyQuote() {
+  const quoteEl = document.getElementById('daily-quote');
+  if (quoteEl) {
+    const dayIdx = Math.floor(Date.now() / 86400000) % dailyQuotes.length;
+    quoteEl.textContent = dailyQuotes[dayIdx][currentLang];
+  }
+})();
+
+// Story writing tabs
+window.showStoryTab = function(tab) {
+  ['free','guided','poetic'].forEach(t => {
+    const el = document.getElementById('story-tab-' + t);
+    if (el) el.style.display = t === tab ? 'block' : 'none';
+    const btn = document.getElementById('story-tab-' + t + '-btn');
+    if (btn) btn.style.background = t === tab ? 'var(--purple)' : '';
+    if (btn) btn.style.color = t === tab ? '#fff' : '';
+  });
+};
+
+// Save story writing entries
+window.saveStoryWriting = function(type) {
+  if (!currentUser) return;
+  const entries = loadData('storyEntries', []);
+  let text = '';
+  if (type === 'free') text = document.getElementById('story-free-text').value;
+  else if (type === 'poetic') text = document.getElementById('story-poetic-text').value;
+  else if (type === 'guided') {
+    const b = document.getElementById('guided-before');
+    const h = document.getElementById('guided-hardest');
+    const hp = document.getElementById('guided-helped');
+    const l = document.getElementById('guided-learned');
+    const f = document.getElementById('guided-future');
+    text = (currentLang === 'de' ? 'Vorher: ' : 'Before: ') + (b?b.value:'') + '\n' +
+           (currentLang === 'de' ? 'Schwerste: ' : 'Hardest: ') + (h?h.value:'') + '\n' +
+           (currentLang === 'de' ? 'Was half: ' : 'What helped: ') + (hp?hp.value:'') + '\n' +
+           (currentLang === 'de' ? 'Gelernt: ' : 'Learned: ') + (l?l.value:'') + '\n' +
+           (currentLang === 'de' ? 'Zukunft: ' : 'Future: ') + (f?f.value:'');
+  }
+  if (!text.trim()) { showToast('Bitte schreib etwas!', 'Please write something!'); return; }
+  entries.push({ type, text, date: Date.now() });
+  saveData('storyEntries', entries);
+  showToast('Eintrag gespeichert!', 'Entry saved!');
+  loadStoryWritingEntries();
+  // Clear fields
+  if (type === 'free' && document.getElementById('story-free-text')) document.getElementById('story-free-text').value = '';
+  if (type === 'poetic' && document.getElementById('story-poetic-text')) document.getElementById('story-poetic-text').value = '';
+};
+
+function loadStoryWritingEntries() {
+  if (!currentUser) return;
+  const entries = loadData('storyEntries', []);
+  const list = document.getElementById('story-entries-list');
+  if (!list) return;
+  if (entries.length === 0) {
+    list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted);">' + (currentLang==='de' ? 'Noch keine Einträge. Fang an zu schreiben!' : 'No entries yet. Start writing!') + '</div>';
+    return;
+  }
+  list.innerHTML = entries.slice().reverse().slice(0, 10).map(e => {
+    const d = new Date(e.date);
+    const dateStr = d.toLocaleDateString(currentLang==='de'?'de-DE':'en-US');
+    const typeLabel = {free:{de:'Frei',en:'Free'},guided:{de:'Geführt',en:'Guided'},poetic:{de:'Poetisch',en:'Poetic'}}[e.type] || {de:e.type,en:e.type};
+    return '<div style="background:var(--bg);border-radius:12px;padding:14px;margin-bottom:10px;border:1px solid var(--border);">' +
+      '<div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;">' + dateStr + ' · ' + typeLabel[currentLang] + '</div>' +
+      '<div style="font-size:13px;color:var(--text);line-height:1.6;white-space:pre-wrap;">' + escapeHtml(e.text.substring(0,300)) + (e.text.length>300?'...':'') + '</div></div>';
+  }).join('');
+}
 </script>
 </body>
 </html>
