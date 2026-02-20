@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>DramaHeal — Dramapädagogik & PTBS für Jugendliche</title>
+<title>TraumaHeal — Dramapädagogik & PTBS für Jugendliche</title>
 <meta name="theme-color" content="#6B21A8">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="DramaHeal">
-<meta name="description" content="DramaHeal — Dramapädagogik & PTBS-Therapie für Jugendliche. Drama therapy and PTSD healing for youth and adolescents.">
+<meta name="apple-mobile-web-app-title" content="TraumaHeal">
+<meta name="description" content="TraumaHeal — Dramapädagogik & PTBS-Therapie für Jugendliche. Drama therapy and PTSD healing for youth and adolescents.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
-   DramaHeal Design System — Premium CSS
+   TraumaHeal Design System — Premium CSS
    ============================================================ */
 
 /* --- CSS Custom Properties (Light Theme) --- */
@@ -2239,11 +2239,11 @@ ul, ol { list-style: none; }
 <div id="auth-screen">
   <div class="auth-box">
     <span class="auth-logo" aria-hidden="true">🎭</span>
-    <div class="auth-title">DramaHeal</div>
+    <div class="auth-title">TraumaHeal</div>
     <p class="auth-tagline" data-de="Dein sicherer Raum für Heilung durch Drama & Kreativität" data-en="Your safe space for healing through drama &amp; creativity">Dein sicherer Raum für Heilung durch Drama &amp; Kreativität</p>
 
     <!-- Google Sign-In -->
-    <button class="auth-btn-google" id="google-sign-in-btn">
+    <button class="auth-btn-google" id="google-sign-in-btn" onclick="signInGoogle()">
       <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59A14.5 14.5 0 019.5 24c0-1.59.28-3.14.76-4.59l-7.98-6.19A23.99 23.99 0 000 24c0 3.77.9 7.35 2.56 10.56l7.97-5.97z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 5.97C6.51 42.62 14.62 48 24 48z"/></svg>
       <span data-de="Mit Google anmelden" data-en="Sign in with Google">Mit Google anmelden</span>
     </button>
@@ -2254,7 +2254,7 @@ ul, ol { list-style: none; }
     </div>
 
     <!-- Email toggle -->
-    <button class="auth-email-toggle" id="email-toggle-btn">
+    <button class="auth-email-toggle" id="email-toggle-btn" onclick="toggleEmailForm()">
       <span>✉️</span>
       <span data-de="Mit E-Mail anmelden" data-en="Sign in with email">Mit E-Mail anmelden</span>
     </button>
@@ -2263,8 +2263,11 @@ ul, ol { list-style: none; }
     <div class="auth-email-form" id="email-form">
       <input type="email" class="auth-input" id="auth-email" data-de-placeholder="E-Mail-Adresse" data-en-placeholder="Email address" placeholder="E-Mail-Adresse" autocomplete="email">
       <input type="password" class="auth-input" id="auth-password" data-de-placeholder="Passwort" data-en-placeholder="Password" placeholder="Passwort" autocomplete="current-password">
-      <button class="auth-submit-btn" id="email-sign-in-btn">
+      <button class="auth-submit-btn" id="email-sign-in-btn" onclick="signInEmail()">
         <span data-de="Anmelden" data-en="Sign In">Anmelden</span>
+      </button>
+      <button class="auth-submit-btn" id="email-sign-up-btn" onclick="signUpEmail()" style="background:transparent;border:2px solid var(--primary);color:var(--primary);margin-top:8px;">
+        <span data-de="Neues Konto erstellen" data-en="Create new account">Neues Konto erstellen</span>
       </button>
     </div>
 
@@ -2286,7 +2289,7 @@ ul, ol { list-style: none; }
 <nav id="sidebar" aria-label="Main Navigation">
   <div class="sidebar-header">
     <span class="sidebar-logo-emoji" aria-hidden="true">🎭</span>
-    <div class="sidebar-brand">DramaHeal</div>
+    <div class="sidebar-brand">TraumaHeal</div>
     <div class="sidebar-subtitle" data-de="Heilung durch Drama" data-en="Healing Through Drama">Heilung durch Drama</div>
   </div>
 
@@ -2403,7 +2406,7 @@ ul, ol { list-style: none; }
 <div id="section-home" class="section active">
 
   <div class="section-header">
-    <h1 data-de="🏠 Willkommen bei DramaHeal" data-en="🏠 Welcome to DramaHeal">🏠 Willkommen bei DramaHeal</h1>
+    <h1 data-de="🏠 Willkommen bei TraumaHeal" data-en="🏠 Welcome to TraumaHeal">🏠 Willkommen bei TraumaHeal</h1>
     <p data-de="Dein sicherer Raum für Heilung durch Theater und Drama" data-en="Your safe space for healing through theatre and drama">Dein sicherer Raum für Heilung durch Theater und Drama</p>
   </div>
 
@@ -3270,7 +3273,7 @@ ul, ol { list-style: none; }
 
 <!-- ============================================================ -->
 <!-- CHUNK 3 — SECTIONS 3-6: Story, Knowledge, Body, Somatic     -->
-<!-- DramaHeal — Drama Therapy + PTSD App for Youth               -->
+<!-- TraumaHeal — Drama Therapy + PTSD App for Youth               -->
 <!-- ============================================================ -->
 
 <!-- ============================================================ -->
@@ -5152,9 +5155,9 @@ ul, ol { list-style: none; }
         </div>
       </div>
       <div class="card">
-        <h3 data-de="Über DramaHeal" data-en="About DramaHeal">Über DramaHeal</h3>
+        <h3 data-de="Über TraumaHeal" data-en="About TraumaHeal">Über TraumaHeal</h3>
         <p><strong>Version 2.0</strong></p>
-        <p data-de="DramaHeal kombiniert evidenzbasierte Dramatherapie mit PTBS-Behandlungswerkzeugen, speziell entwickelt für Jugendliche." data-en="DramaHeal combines evidence-based drama therapy with PTSD treatment tools, designed specifically for teenagers.">Evidenzbasierte Dramatherapie für Jugendliche.</p>
+        <p data-de="TraumaHeal kombiniert evidenzbasierte Dramatherapie mit PTBS-Behandlungswerkzeugen, speziell entwickelt für Jugendliche." data-en="TraumaHeal combines evidence-based drama therapy with PTSD treatment tools, designed specifically for teenagers.">Evidenzbasierte Dramatherapie für Jugendliche.</p>
         <p style="margin-top:8px;" data-de="Basierend auf: Theater der Unterdrückten (Boal), Psychodrama (Moreno), Somatic Experiencing (Levine), Polyvagale Theorie (Porges), TF-CBT." data-en="Based on: Theatre of the Oppressed (Boal), Psychodrama (Moreno), Somatic Experiencing (Levine), Polyvagal Theory (Porges), TF-CBT.">Boal, Moreno, Levine, Porges, TF-CBT.</p>
         <p style="margin-top:12px;color:var(--text-muted);font-size:13px;" data-de="⚠️ Diese App ist ein therapeutisches Unterstützungswerkzeug, kein Ersatz für professionelle Behandlung." data-en="⚠️ This app is a therapeutic support tool, not a replacement for professional treatment.">⚠️ Kein Ersatz für professionelle Behandlung.</p>
       </div>
@@ -5220,8 +5223,8 @@ window.toggleEmailForm = function() {
 };
 
 window.signInEmail = async function() {
-  const email = document.getElementById('email-input')?.value?.trim();
-  const pass = document.getElementById('password-input')?.value;
+  const email = document.getElementById('auth-email')?.value?.trim();
+  const pass = document.getElementById('auth-password')?.value;
   if (!email || !pass) { showToast('Bitte E-Mail und Passwort eingeben.', 'Please enter email and password.'); return; }
   try {
     await signInWithEmailAndPassword(auth, email, pass);
@@ -5231,8 +5234,8 @@ window.signInEmail = async function() {
 };
 
 window.signUpEmail = async function() {
-  const email = document.getElementById('email-input')?.value?.trim();
-  const pass = document.getElementById('password-input')?.value;
+  const email = document.getElementById('auth-email')?.value?.trim();
+  const pass = document.getElementById('auth-password')?.value;
   if (!email || !pass) { showToast('Bitte E-Mail und Passwort eingeben.', 'Please enter email and password.'); return; }
   if (pass.length < 6) { showToast('Passwort muss mindestens 6 Zeichen haben.', 'Password must be at least 6 characters.'); return; }
   try {
@@ -6539,7 +6542,7 @@ window.exportProgress = function() {
   history.forEach(h => uniqueDays.add(h.day));
   exercises.forEach(e => uniqueDays.add(e.day || e.date?.slice(0,10)));
 
-  let text = '=== DramaHeal ' + (currentLang==='de'?'Fortschrittsbericht':'Progress Report') + ' ===\n';
+  let text = '=== TraumaHeal ' + (currentLang==='de'?'Fortschrittsbericht':'Progress Report') + ' ===\n';
   text += (currentLang==='de'?'Erstellt am: ':'Generated: ') + new Date().toLocaleDateString(currentLang==='de'?'de-DE':'en-US') + '\n\n';
   text += (currentLang==='de'?'Aktive Tage: ':'Active days: ') + uniqueDays.size + '\n';
   text += (currentLang==='de'?'Uebungen abgeschlossen: ':'Exercises completed: ') + exercises.length + '\n';
