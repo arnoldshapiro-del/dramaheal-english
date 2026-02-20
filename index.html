@@ -2295,23 +2295,23 @@ ul, ol { list-style: none; }
       <span class="nav-icon" aria-hidden="true">🏠</span>
       <span class="nav-label" data-de="Startseite" data-en="Home">Startseite</span>
     </div>
-    <div class="nav-item" data-section="drama-tools">
+    <div class="nav-item" data-section="drama">
       <span class="nav-icon" aria-hidden="true">🎭</span>
       <span class="nav-label" data-de="Dramawerkzeuge" data-en="Drama Tools">Dramawerkzeuge</span>
     </div>
-    <div class="nav-item" data-section="my-story">
+    <div class="nav-item" data-section="story">
       <span class="nav-icon" aria-hidden="true">📖</span>
       <span class="nav-label" data-de="Meine Geschichte" data-en="My Story">Meine Geschichte</span>
     </div>
-    <div class="nav-item" data-section="ptsd-knowledge">
+    <div class="nav-item" data-section="knowledge">
       <span class="nav-icon" aria-hidden="true">🧠</span>
       <span class="nav-label" data-de="PTBS-Wissen" data-en="PTSD Knowledge">PTBS-Wissen</span>
     </div>
-    <div class="nav-item" data-section="body-nervous">
+    <div class="nav-item" data-section="body">
       <span class="nav-icon" aria-hidden="true">🫀</span>
       <span class="nav-label" data-de="Körper & Nervensystem" data-en="Body &amp; Nervous System">Körper &amp; Nervensystem</span>
     </div>
-    <div class="nav-item" data-section="somatic-tools">
+    <div class="nav-item" data-section="somatic">
       <span class="nav-icon" aria-hidden="true">🧘</span>
       <span class="nav-label" data-de="Somatische Werkzeuge" data-en="Somatic Tools">Somatische Werkzeuge</span>
     </div>
@@ -2319,23 +2319,23 @@ ul, ol { list-style: none; }
       <span class="nav-icon" aria-hidden="true">🌱</span>
       <span class="nav-label" data-de="Übungen" data-en="Exercises">Übungen</span>
     </div>
-    <div class="nav-item" data-section="trauma-binder">
+    <div class="nav-item" data-section="binder">
       <span class="nav-icon" aria-hidden="true">📁</span>
       <span class="nav-label" data-de="Trauma-Ordner" data-en="Trauma Binder">Trauma-Ordner</span>
     </div>
-    <div class="nav-item" data-section="safety-plan">
+    <div class="nav-item" data-section="safety">
       <span class="nav-icon" aria-hidden="true">🛡️</span>
       <span class="nav-label" data-de="Sicherheitsplan" data-en="Safety Plan">Sicherheitsplan</span>
     </div>
-    <div class="nav-item" data-section="forum-theatre">
+    <div class="nav-item" data-section="forum">
       <span class="nav-icon" aria-hidden="true">🎪</span>
       <span class="nav-label" data-de="Forumtheater" data-en="Forum Theatre">Forumtheater</span>
     </div>
-    <div class="nav-item" data-section="super-club">
+    <div class="nav-item" data-section="superclub">
       <span class="nav-icon" aria-hidden="true">👥</span>
       <span class="nav-label" data-de="SuperClub" data-en="Super Club">SuperClub</span>
     </div>
-    <div class="nav-item" data-section="coping-toolbox">
+    <div class="nav-item" data-section="coping">
       <span class="nav-icon" aria-hidden="true">🧰</span>
       <span class="nav-label" data-de="Bewältigungs-Toolbox" data-en="Coping Toolbox">Bewältigungs-Toolbox</span>
     </div>
@@ -2343,19 +2343,19 @@ ul, ol { list-style: none; }
       <span class="nav-icon" aria-hidden="true">📊</span>
       <span class="nav-label" data-de="Fortschritt" data-en="Progress">Fortschritt</span>
     </div>
-    <div class="nav-item" data-section="outpatient-help">
+    <div class="nav-item" data-section="help">
       <span class="nav-icon" aria-hidden="true">🏥</span>
       <span class="nav-label" data-de="Ambulante Hilfe" data-en="Outpatient Help">Ambulante Hilfe</span>
     </div>
-    <div class="nav-item" data-section="research-library">
+    <div class="nav-item" data-section="research">
       <span class="nav-icon" aria-hidden="true">📚</span>
       <span class="nav-label" data-de="Forschungsbibliothek" data-en="Research Library">Forschungsbibliothek</span>
     </div>
-    <div class="nav-item" data-section="for-parents">
+    <div class="nav-item" data-section="parents">
       <span class="nav-icon" aria-hidden="true">👨‍👩‍👧</span>
       <span class="nav-label" data-de="Für Eltern" data-en="For Parents">Für Eltern</span>
     </div>
-    <div class="nav-item" data-section="for-therapists">
+    <div class="nav-item" data-section="therapists">
       <span class="nav-icon" aria-hidden="true">🩺</span>
       <span class="nav-label" data-de="Für Therapeuten" data-en="For Therapists">Für Therapeuten</span>
     </div>
@@ -4922,7 +4922,22 @@ window.showSection = function(name) {
   if (name === 'forum') { loadScenarios(); loadRoleplayJournal(); }
   if (name === 'superclub') { loadSuperClub(); }
   if (name === 'coping') { loadToolbox(); }
-  if (name === 'therapist') { loadSessionPlans(); }
+  if (name === 'therapists') { loadSessionPlans(); }
+};
+
+// Attach click listeners to all nav items
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const section = item.getAttribute('data-section');
+    if (section) showSection(section);
+  });
+});
+
+// navigateTo — used by quick-action cards on home page
+window.navigateTo = function(sectionId) {
+  // Accepts either 'section-safety' or just 'safety'
+  const name = sectionId.replace('section-', '');
+  showSection(name);
 };
 
 /* ==========================================================================
